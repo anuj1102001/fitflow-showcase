@@ -3,10 +3,10 @@ import { forwardRef, type InputHTMLAttributes, type ReactNode, type SelectHTMLAt
 import { cn } from "./cn";
 
 const control =
-  "w-full rounded-2xl border border-line bg-panel-2/60 px-4 text-[15px] text-fg placeholder:text-fg-3 transition duration-200 ease-soft hover:border-line-2 focus:border-lime/60 focus:bg-panel focus:shadow-ring focus:outline-none disabled:opacity-60 aria-[invalid=true]:border-bad/70";
+  "w-full rounded-[10px] border border-line bg-panel px-3.5 text-[15px] text-fg placeholder:text-fg-3 transition duration-200 ease-soft hover:border-line-2 focus:border-fg/40 focus:shadow-ring focus:outline-none disabled:opacity-60 aria-[invalid=true]:border-bad/70";
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function Input({ className, ...p }, ref) {
-  return <input ref={ref} className={cn(control, "h-12", className)} {...p} />;
+  return <input ref={ref} className={cn(control, "h-11", className)} {...p} />;
 });
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLTextAreaElement>>(function Textarea({ className, ...p }, ref) {
@@ -16,7 +16,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<H
 export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSelectElement>>(function Select({ className, children, ...p }, ref) {
   return (
     <div className={cn("relative", className)}>
-      <select ref={ref} className={cn(control, "h-12 appearance-none pr-10 [&>option]:bg-panel")} {...p}>
+      <select ref={ref} className={cn(control, "h-11 appearance-none pr-10 [&>option]:bg-panel")} {...p}>
         {children}
       </select>
       <ChevronDown size={16} className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-fg-3" aria-hidden />
@@ -52,7 +52,7 @@ export function Switch({ checked, onChange, label, disabled }: { checked: boolea
       aria-label={label}
       disabled={disabled}
       onClick={() => onChange(!checked)}
-      className={cn("relative h-7 w-12 shrink-0 rounded-full border transition-colors duration-200 disabled:opacity-50", checked ? "border-lime bg-lime" : "border-line-2 bg-panel-2")}
+      className={cn("relative h-7 w-12 shrink-0 rounded-full border transition-colors duration-200 disabled:opacity-50", checked ? "border-lime-fg bg-lime" : "border-line-2 bg-panel-2")}
     >
       <span className={cn("absolute top-[3px] h-5 w-5 rounded-full shadow transition-transform duration-200 ease-soft", checked ? "translate-x-[23px] bg-lime-ink" : "translate-x-[3px] bg-fg-3")} />
     </button>
@@ -66,7 +66,7 @@ export function Chip({ selected, onClick, children }: { selected: boolean; onCli
       type="button"
       aria-pressed={selected}
       onClick={onClick}
-      className={cn("min-h-10 rounded-full border px-3.5 py-2 text-[13px] font-medium transition", selected ? "border-lime bg-lime/15 text-fg" : "border-line bg-panel-2/60 text-fg-2 hover:border-line-2 hover:text-fg")}
+      className={cn("min-h-10 rounded-lg border px-3.5 py-2 text-[13px] font-medium transition", selected ? "border-fg/50 bg-panel-2 text-fg" : "border-line bg-panel-2/60 text-fg-2 hover:border-line-2 hover:text-fg")}
     >
       {children}
     </button>

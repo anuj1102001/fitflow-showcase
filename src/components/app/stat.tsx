@@ -42,9 +42,8 @@ export function StatTile({
       transition={{ duration: 0.6, ease: EASE, delay: index * 0.06 }}
       style={{ transformPerspective: 1000 }}
       whileHover={{ y: -3 }}
-      className={cn("card panel-sheen group relative overflow-hidden p-5", accent && "border-lime/25")}
+      className={cn("card panel-sheen group relative overflow-hidden p-5", accent && "border-lime-fg/25")}
     >
-      {accent && <div className="lime-glow pointer-events-none absolute -right-16 -top-20 h-48 w-48 opacity-60" aria-hidden />}
       <div className="relative flex items-center justify-between gap-2">
         <p className="flex items-center gap-1.5 text-[13px] font-medium text-fg-2">
           {icon && <span className="text-fg-3">{icon}</span>}

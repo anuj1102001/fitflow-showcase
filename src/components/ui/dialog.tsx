@@ -23,7 +23,7 @@ export function Dialog({ open, onClose, title, description, children, className,
       onClick={(e) => e.target === ref.current && onClose()}
       className={cn(
         "mb-0 mt-auto max-h-[92dvh] w-full max-w-full overflow-y-auto rounded-t-[28px] border border-line bg-panel p-0 text-fg shadow-pop backdrop:bg-black/60 backdrop:backdrop-blur-[2px] open:animate-sheet",
-        "sm:m-auto sm:w-[calc(100%-2rem)] sm:rounded-[28px] sm:open:animate-pop",
+        "sm:m-auto sm:w-[calc(100%-2rem)] sm:rounded-2xl sm:open:animate-pop",
         wide ? "sm:max-w-2xl" : "sm:max-w-md",
         className,
       )}

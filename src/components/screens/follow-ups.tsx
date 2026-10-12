@@ -91,7 +91,7 @@ export function FollowUpsScreen() {
       <Panel title="Choose a lead" subtitle="Open leads, most urgent first" bodyClass="px-3 pb-3 sm:px-3">
         <div className="relative mb-2 px-2">
           <Search size={14} className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-fg-3" />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search…" aria-label="Search leads" className="h-9 w-full rounded-full border border-line bg-panel-2/50 pl-8 pr-3 text-[13px] placeholder:text-fg-3 focus:border-lime/50 focus:outline-none" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search…" aria-label="Search leads" className="h-9 w-full rounded-full border border-line bg-panel-2/50 pl-8 pr-3 text-[13px] placeholder:text-fg-3 focus:border-lime-fg/50 focus:outline-none" />
         </div>
         <ul className="max-h-[260px] space-y-0.5 overflow-y-auto xl:max-h-[620px]">
           {filtered.map((l) => {
@@ -145,9 +145,9 @@ export function FollowUpsScreen() {
                   <p className="mb-2 text-[13px] font-medium text-fg-2">What do you want this message to do?</p>
                   <div className="flex flex-wrap gap-2">
                     {FOLLOW_UP_GOALS.map((g) => (
-                      <button key={g} onClick={() => setGoal(g)} aria-pressed={goal === g} className={cn("rounded-full border px-3.5 py-2 text-[13px] font-medium transition", goal === g ? "border-lime bg-lime/15 text-fg" : "border-line bg-panel-2/50 text-fg-2 hover:border-line-2 hover:text-fg")}>
+                      <button key={g} onClick={() => setGoal(g)} aria-pressed={goal === g} className={cn("rounded-lg border px-3.5 py-2 text-[13px] font-medium transition", goal === g ? "border-lime-fg bg-lime/15 text-fg" : "border-line bg-panel-2/50 text-fg-2 hover:border-line-2 hover:text-fg")}>
                         {g}
-                        {g === SUGGESTED[lead.stage] && <span className="ml-1.5 text-[11px] text-lime">suggested</span>}
+                        {g === SUGGESTED[lead.stage] && <span className="ml-1.5 text-[11px] text-lime-fg">suggested</span>}
                       </button>
                     ))}
                   </div>
@@ -191,7 +191,7 @@ export function FollowUpsScreen() {
                         </p>
                         <DemoTag>Draft · not sent</DemoTag>
                       </div>
-                      <div className={cn("relative rounded-2xl border bg-panel-2/40 transition", streaming ? "border-lime/40" : "border-line focus-within:border-lime/50")}>
+                      <div className={cn("relative rounded-2xl border bg-panel-2/40 transition", streaming ? "border-lime-fg/40" : "border-line focus-within:border-lime-fg/50")}>
                         <textarea
                           value={text}
                           readOnly={streaming}
@@ -199,7 +199,7 @@ export function FollowUpsScreen() {
                           aria-label="Message draft"
                           className="min-h-[200px] w-full resize-y rounded-2xl bg-transparent px-4 py-3.5 text-[14.5px] leading-relaxed text-fg focus:outline-none"
                         />
-                        {streaming && <span className="pointer-events-none absolute bottom-4 right-4 h-4 w-[2px] animate-pulse bg-lime" aria-hidden />}
+                        {streaming && <span className="pointer-events-none absolute bottom-4 right-4 h-4 w-[2px] animate-pulse bg-s1" aria-hidden />}
                       </div>
                       <div className="mt-1.5 flex justify-between px-1 text-[12px] text-fg-3">
                         <span>Edit freely. It&apos;s your voice.</span>
@@ -287,7 +287,7 @@ export function FollowUpsScreen() {
                               setDraftId(d.id);
                             }, 30);
                           }}
-                          className="rounded-full px-2.5 py-1 text-[12px] font-medium text-lime hover:bg-lime/10"
+                          className="rounded-md px-2.5 py-1 text-[12px] font-medium text-lime-fg hover:bg-lime/10"
                         >
                           Open
                         </button>

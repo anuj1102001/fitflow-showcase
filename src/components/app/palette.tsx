@@ -78,7 +78,7 @@ export function CommandPalette() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.98 }}
               transition={{ duration: 0.22, ease: EASE }}
-              className="relative w-full max-w-xl overflow-hidden rounded-3xl border border-line bg-panel shadow-pop"
+              className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-line bg-panel shadow-pop"
             >
               <div className="flex items-center gap-3 border-b border-line px-5">
                 <Search size={18} className="text-fg-3" />
@@ -113,7 +113,7 @@ export function CommandPalette() {
                         onClick={it.run}
                         className={cn("flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left", idx === i ? "bg-panel-2 text-fg" : "text-fg-2")}
                       >
-                        <span className={cn("grid h-7 w-7 place-items-center rounded-lg", idx === i ? "text-lime" : "text-fg-3")}>{it.icon}</span>
+                        <span className={cn("grid h-7 w-7 place-items-center rounded-lg", idx === i ? "text-lime-fg" : "text-fg-3")}>{it.icon}</span>
                         <span className="min-w-0 flex-1">
                           <span className="block truncate text-[14px] font-medium">{it.label}</span>
                           {it.hint && <span className="block truncate text-[12px] text-fg-3">{it.hint}</span>}

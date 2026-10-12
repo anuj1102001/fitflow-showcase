@@ -13,9 +13,12 @@ page.on("dialog", (d) => d.accept());
 
 const desktop = { width: 1440, height: 900, deviceScaleFactor: 1.5 };
 const click = (t) => page.evaluate((x) => [...document.querySelectorAll("button")].find((b) => b.textContent.includes(x) && b.offsetParent)?.click(), t);
-async function shot(name, path, { viewport = desktop, wait = 2600, before } = {}) {
+// The theme for each capture is staged in localStorage on the app origin, then applied before first paint.
+await page.goto(BASE, { waitUntil: "load" });
+async function shot(name, path, { viewport = desktop, wait = 2600, before, dark = false } = {}) {
+  await page.evaluate((t) => localStorage.setItem("ff-theme", t), dark ? "dark" : "light");
   await page.setViewport(viewport);
-  await page.goto(BASE + path, { waitUntil: "networkidle2" });
+  await page.goto(BASE + path, { waitUntil: "load" });
   await sleep(600);
   await click("Skip");
   if (before) await before();
@@ -25,7 +28,9 @@ async function shot(name, path, { viewport = desktop, wait = 2600, before } = {}
 }
 
 await shot("landing", "/", { wait: 3500 });
+await shot("landing-dark", "/", { wait: 3500, dark: true });
 await shot("overview", "/app", { wait: 3500 });
+await shot("overview-dark", "/app", { wait: 3500, dark: true });
 await shot("leads", "/app/leads");
 await shot("offer-builder", "/app/offers?new=1", {
   wait: 1500,

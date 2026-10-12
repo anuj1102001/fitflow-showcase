@@ -2,22 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
-/* FITFLOW colour tokens (dark interface). Storefront themes define their own scoped tokens. */
+/*
+ * FITFLOW design tokens. Mirrors the "Color" variable collection in the Figma file (modes: Light, Dark).
+ * Light is defined on :root; html.dark swaps the values. Storefront themes define their own scoped tokens.
+ */
 @layer base {
   :root {
+    color-scheme: light;
+    --bg: 246 246 243;
+    --panel: 255 255 255;
+    --panel-2: 241 241 237;
+    --line: 228 228 222;
+    --line-2: 208 208 200;
+    --fg: 20 21 18;
+    --fg-2: 82 85 78;
+    --fg-3: 112 115 107;
+    --lime: 200 240 74;
+    --lime-ink: 18 22 6;
+    --lime-fg: 70 102 0;
+    --chart: 70 102 0;
+    --ok: 21 128 61;
+    --warn: 161 98 7;
+    --bad: 196 43 43;
+    --info: 29 95 200;
+    --violet: 109 72 210;
+    --hl: 255 255 255;
+    --hl-a: 0.9;
+    --sh-a: 0.55;
+    --av-mix: 42%;
+    /* Chart series (validated for >=3:1 against --panel) */
+    --s-1: 77 124 15;
+    --s-2: 37 99 235;
+    --s-3: 234 88 12;
+    --s-4: 124 58 237;
+    --s-5: 5 150 105;
+    --axis: 112 115 107;
+    --grid: 228 228 222;
+  }
+  html.dark {
     color-scheme: dark;
-    --bg: 10 11 13;
-    --panel: 18 20 23;
-    --panel-2: 26 28 32;
-    --line: 37 40 45;
-    --line-2: 54 58 64;
-    --fg: 242 243 238;
-    --fg-2: 171 175 168;
+    --bg: 11 12 14;
+    --panel: 19 20 23;
+    --panel-2: 27 29 33;
+    --line: 39 41 46;
+    --line-2: 56 59 65;
+    --fg: 241 242 237;
+    --fg-2: 168 172 165;
     --fg-3: 128 132 125;
     --lime: 200 240 74;
-    --lime-ink: 12 14 6;
+    --lime-ink: 18 22 6;
     --lime-fg: 200 240 74;
-    --chart: 125 163 31; /* validated (dataviz checks) against --panel */
+    --chart: 125 163 31;
     --ok: 88 214 152;
     --warn: 245 186 70;
     --bad: 255 112 108;
@@ -26,7 +61,16 @@
     --hl: 255 255 255;
     --hl-a: 0.04;
     --sh-a: 2;
+    --av-mix: 100%;
+    --s-1: 200 240 74;
+    --s-2: 143 214 255;
+    --s-3: 255 179 138;
+    --s-4: 201 166 255;
+    --s-5: 127 224 184;
+    --axis: 128 132 125;
+    --grid: 39 41 46;
   }
+
   html {
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
@@ -41,18 +85,23 @@
   h3,
   h4 {
     @apply font-display;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.022em;
   }
   ::selection {
     @apply bg-lime text-lime-ink;
   }
   :focus-visible {
-    @apply outline-none ring-2 ring-lime ring-offset-2 ring-offset-bg;
+    @apply outline-none ring-2 ring-fg/80 ring-offset-2 ring-offset-bg;
   }
   button,
   [role="button"],
   summary {
     cursor: pointer;
+  }
+  /* Theme switches cross-fade surfaces instead of snapping. */
+  html.theming,
+  html.theming * {
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease !important;
   }
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -68,33 +117,26 @@
 
 @layer components {
   .card {
-    @apply rounded-3xl border border-line bg-panel shadow-card;
+    @apply rounded-2xl border border-line bg-panel shadow-card;
   }
   .card-2 {
-    @apply rounded-2xl border border-line bg-panel-2;
+    @apply rounded-xl border border-line bg-panel-2;
   }
+  /* Small section label: sentence case, quiet. */
   .eyebrow {
-    @apply font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-fg-3;
+    @apply text-[13px] font-medium text-fg-3;
   }
   .icon-btn {
-    @apply inline-grid h-10 w-10 shrink-0 place-items-center rounded-full border border-line bg-panel text-fg-2 transition hover:border-line-2 hover:text-fg;
+    @apply inline-grid h-10 w-10 shrink-0 place-items-center rounded-[10px] border border-line bg-panel text-fg-2 transition hover:border-line-2 hover:text-fg;
   }
   .link {
-    @apply font-medium text-lime-fg underline-offset-4 hover:underline;
-  }
-  /* Subtle dotted motif used behind hero areas and empty states. */
-  .dots {
-    background-image: radial-gradient(rgb(var(--fg) / 0.09) 1px, transparent 1px);
-    background-size: 22px 22px;
-  }
-  .dots-fade {
-    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+    @apply font-medium text-fg underline decoration-line-2 underline-offset-4 hover:decoration-fg;
   }
   .tabular {
     font-variant-numeric: tabular-nums;
   }
   .skeleton {
-    @apply relative overflow-hidden rounded-xl bg-panel-2;
+    @apply relative overflow-hidden rounded-lg bg-panel-2;
   }
   .skeleton::after {
     content: "";
@@ -107,25 +149,13 @@
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
-}
-
-@layer components {
-  /* Hairline grid used behind the hero and section intros. */
-  .grid-lines {
-    background-image: linear-gradient(rgb(var(--fg) / 0.045) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--fg) / 0.045) 1px, transparent 1px);
-    background-size: 56px 56px;
-  }
-  .lime-glow {
-    background: radial-gradient(closest-side, rgb(var(--lime) / 0.22), transparent);
-  }
-  .text-gradient {
-    background: linear-gradient(180deg, rgb(var(--fg)) 30%, rgb(var(--fg) / 0.55));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
   .panel-sheen {
-    background-image: linear-gradient(180deg, rgb(255 255 255 / 0.035), transparent 40%);
+    background-image: none;
+  }
+  /* GSAP SplitText word masks: room for ascenders/descenders at tight line-heights. */
+  .hw-mask {
+    padding: 0.14em 0.04em 0.1em;
+    margin: -0.14em -0.04em -0.1em;
   }
   /* Storefront themes set --sf-display; headings follow it. */
   .sf-root :is(h1, h2, h3) {

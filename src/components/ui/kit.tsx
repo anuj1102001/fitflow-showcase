@@ -14,7 +14,7 @@ import { cn } from "./cn";
 export function Segmented<T extends string>({ value, onChange, options, size = "md", className, label }: { value: T; onChange: (v: T) => void; options: readonly { id: T; label: ReactNode; icon?: ReactNode }[]; size?: "sm" | "md"; className?: string; label: string }) {
   const id = useId();
   return (
-    <div role="tablist" aria-label={label} className={cn("relative inline-flex items-center gap-0.5 rounded-full border border-line bg-panel-2/70 p-1", className)}>
+    <div role="tablist" aria-label={label} className={cn("relative inline-flex items-center gap-0.5 rounded-[10px] border border-line bg-panel-2/70 p-0.5", className)}>
       {options.map((o) => {
         const active = o.id === value;
         return (
@@ -23,9 +23,9 @@ export function Segmented<T extends string>({ value, onChange, options, size = "
             role="tab"
             aria-selected={active}
             onClick={() => onChange(o.id)}
-            className={cn("relative inline-flex items-center gap-1.5 whitespace-nowrap rounded-full font-medium transition-colors", size === "sm" ? "h-7 px-3 text-[12px]" : "h-8 px-3.5 text-[13px]", active ? "text-fg" : "text-fg-3 hover:text-fg-2")}
+            className={cn("relative inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg font-medium transition-colors", size === "sm" ? "h-7 px-2.5 text-[12px]" : "h-8 px-3 text-[13px]", active ? "text-fg" : "text-fg-3 hover:text-fg-2")}
           >
-            {active && <motion.span layoutId={`seg-${id}`} className="absolute inset-0 rounded-full border border-line-2 bg-panel shadow-[0_1px_0_rgb(255_255_255/.05)_inset]" transition={SPRING} />}
+            {active && <motion.span layoutId={`seg-${id}`} className="absolute inset-0 rounded-lg border border-line-2 bg-panel shadow-[0_1px_2px_rgb(0_0_0/.06)]" transition={SPRING} />}
             <span className="relative inline-flex items-center gap-1.5">
               {o.icon}
               {o.label}
@@ -41,7 +41,7 @@ export function Segmented<T extends string>({ value, onChange, options, size = "
 
 const TONES = {
   neutral: "border-line bg-panel-2 text-fg-2",
-  lime: "border-lime/30 bg-lime/10 text-lime",
+  lime: "border-lime-fg/25 bg-lime/15 text-lime-fg",
   ok: "border-ok/25 bg-ok/10 text-ok",
   warn: "border-warn/25 bg-warn/10 text-warn",
   bad: "border-bad/25 bg-bad/10 text-bad",
@@ -52,7 +52,7 @@ export type Tone = keyof typeof TONES;
 
 export function Badge({ tone = "neutral", children, className, dot }: { tone?: Tone; children: ReactNode; className?: string; dot?: boolean }) {
   return (
-    <span className={cn("inline-flex h-6 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 text-[11.5px] font-medium", TONES[tone], className)}>
+    <span className={cn("inline-flex h-6 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md border px-2 text-[11.5px] font-medium", TONES[tone], className)}>
       {dot && <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden />}
       {children}
     </span>
@@ -75,7 +75,7 @@ export function Avatar({ name, src, size = 36, className }: { name: string; src?
     <span
       aria-hidden
       className={cn("inline-grid shrink-0 place-items-center rounded-full font-display font-semibold", className)}
-      style={{ width: size, height: size, fontSize: size * 0.36, background: `color-mix(in srgb, ${color} 16%, rgb(var(--panel-2)))`, color, boxShadow: `inset 0 0 0 1px color-mix(in srgb, ${color} 28%, transparent)` }}
+      style={{ width: size, height: size, fontSize: size * 0.36, background: `color-mix(in srgb, ${color} 18%, rgb(var(--panel-2)))`, color: `color-mix(in srgb, ${color} var(--av-mix), rgb(var(--fg)))`, boxShadow: `inset 0 0 0 1px color-mix(in srgb, ${color} 30%, transparent)` }}
     >
       {initials(name)}
     </span>
@@ -171,7 +171,7 @@ export function Menu({ trigger, children, align = "right", width = 240, label }:
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.98 }}
             transition={{ duration: 0.18, ease: EASE }}
-            className={cn("absolute top-[calc(100%+8px)] z-[70] origin-top overflow-hidden rounded-2xl border border-line bg-panel p-1.5 shadow-pop", align === "right" ? "right-0" : "left-0")}
+            className={cn("absolute top-[calc(100%+6px)] z-[70] origin-top overflow-hidden rounded-xl border border-line bg-panel p-1 shadow-pop", align === "right" ? "right-0" : "left-0")}
             style={{ width }}
           >
             {children(() => setOpen(false))}
@@ -184,7 +184,7 @@ export function Menu({ trigger, children, align = "right", width = 240, label }:
 
 export function MenuItem({ icon, children, onClick, danger, hint }: { icon?: ReactNode; children: ReactNode; onClick: () => void; danger?: boolean; hint?: ReactNode }) {
   return (
-    <button role="menuitem" onClick={onClick} className={cn("flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-[13.5px] transition hover:bg-panel-2", danger ? "text-bad" : "text-fg-2 hover:text-fg")}>
+    <button role="menuitem" onClick={onClick} className={cn("flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13.5px] transition hover:bg-panel-2", danger ? "text-bad" : "text-fg-2 hover:text-fg")}>
       {icon && <span className="text-fg-3">{icon}</span>}
       <span className="flex-1">{children}</span>
       {hint && <span className="text-[11px] text-fg-3">{hint}</span>}
@@ -201,13 +201,13 @@ export function ProgressRing({ value, size = 44, stroke = 4, className, label }:
   return (
     <svg width={size} height={size} className={cn("-rotate-90", className)} role="img" aria-label={label ?? `${Math.round(v * 100)}%`}>
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgb(var(--line-2))" strokeWidth={stroke} />
-      <motion.circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgb(var(--lime))" strokeWidth={stroke} strokeLinecap="round" strokeDasharray={c} initial={{ strokeDashoffset: c }} animate={{ strokeDashoffset: c * (1 - v) }} transition={{ duration: 1, ease: EASE }} />
+      <motion.circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgb(var(--s-1))" strokeWidth={stroke} strokeLinecap="round" strokeDasharray={c} initial={{ strokeDashoffset: c }} animate={{ strokeDashoffset: c * (1 - v) }} transition={{ duration: 1, ease: EASE }} />
     </svg>
   );
 }
 
 export function Bar({ value, tone = "lime", className }: { value: number; tone?: "lime" | "warn" | "bad" | "ok"; className?: string }) {
-  const color = { lime: "bg-lime", warn: "bg-warn", bad: "bg-bad", ok: "bg-ok" }[tone];
+  const color = { lime: "bg-s1", warn: "bg-warn", bad: "bg-bad", ok: "bg-ok" }[tone];
   return (
     <div className={cn("h-1.5 overflow-hidden rounded-full bg-line", className)}>
       <motion.div className={cn("h-full rounded-full", color)} initial={{ width: 0 }} animate={{ width: `${Math.max(2, Math.min(100, value * 100))}%` }} transition={{ duration: 0.9, ease: EASE }} />
@@ -223,8 +223,8 @@ export function Sparkline({ values, width = 96, height = 28, className }: { valu
   const d = pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
   return (
     <svg width={width} height={height} className={className} aria-hidden>
-      <path d={`${d} L${width},${height} L0,${height} Z`} fill="rgb(var(--lime) / .1)" />
-      <motion.path d={d} fill="none" stroke="rgb(var(--lime))" strokeWidth={1.6} strokeLinejoin="round" strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.1, ease: EASE }} />
+      <path d={`${d} L${width},${height} L0,${height} Z`} fill="rgb(var(--s-1) / .1)" />
+      <motion.path d={d} fill="none" stroke="rgb(var(--s-1))" strokeWidth={1.6} strokeLinejoin="round" strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.1, ease: EASE }} />
     </svg>
   );
 }
@@ -235,10 +235,9 @@ export function Kbd({ children }: { children: ReactNode }) {
 
 export function Empty({ icon, title, body, action, className }: { icon: ReactNode; title: string; body: ReactNode; action?: ReactNode; className?: string }) {
   return (
-    <div className={cn("relative grid place-items-center overflow-hidden rounded-3xl border border-dashed border-line-2 px-6 py-12 text-center", className)}>
-      <div className="dots dots-fade absolute inset-0" aria-hidden />
+    <div className={cn("relative grid place-items-center overflow-hidden rounded-2xl border border-dashed border-line-2 bg-panel/50 px-6 py-12 text-center", className)}>
       <div className="relative">
-        <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-2xl border border-line bg-panel-2 text-lime">{icon}</div>
+        <div className="mx-auto mb-4 grid h-11 w-11 place-items-center rounded-xl border border-line bg-panel text-fg-2">{icon}</div>
         <p className="text-[16px] font-semibold">{title}</p>
         <p className="mx-auto mt-1.5 max-w-sm text-[14px] leading-relaxed text-fg-2">{body}</p>
         {action && <div className="mt-5">{action}</div>}

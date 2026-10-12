@@ -83,7 +83,7 @@ export function OverviewScreen() {
           <div className="mt-5 border-t border-line pt-4">
             <div className="mb-3 flex items-center justify-between">
               <p className="text-[13px] font-medium text-fg-2">Open pipeline</p>
-              <Link href="/app/leads" className="text-[12.5px] font-medium text-lime hover:underline">
+              <Link href="/app/leads" className="text-[12.5px] font-medium text-lime-fg hover:underline">
                 Open board
               </Link>
             </div>
@@ -99,7 +99,7 @@ export function OverviewScreen() {
                       <span className="text-[12px] tabular text-fg-3">{rupees(items.reduce((a, l) => a + l.value, 0))}</span>
                     </p>
                     <div className="mt-2 h-1 overflow-hidden rounded-full bg-line">
-                      <motion.div className="h-full rounded-full bg-lime" style={{ opacity: 1 - i * 0.18 }} initial={{ width: 0 }} animate={{ width: `${(items.length / total) * 100}%` }} transition={{ duration: 0.9, ease: EASE, delay: 0.2 + i * 0.06 }} />
+                      <motion.div className="h-full rounded-full bg-s1" style={{ opacity: 1 - i * 0.18 }} initial={{ width: 0 }} animate={{ width: `${(items.length / total) * 100}%` }} transition={{ duration: 0.9, ease: EASE, delay: 0.2 + i * 0.06 }} />
                     </div>
                   </Link>
                 );
@@ -111,12 +111,12 @@ export function OverviewScreen() {
         <Panel
           title={
             <span className="flex items-center gap-2">
-              <Sparkles size={16} className="text-lime" /> AI insights
+              <Sparkles size={16} className="text-lime-fg" /> AI insights
             </span>
           }
           subtitle="Simulated from your sample data"
           action={
-            <Link href="/app/assistant" className="text-[12.5px] font-medium text-lime hover:underline">
+            <Link href="/app/assistant" className="text-[12.5px] font-medium text-lime-fg hover:underline">
               Ask more
             </Link>
           }
@@ -156,7 +156,7 @@ export function OverviewScreen() {
               .slice(0, 4)
               .map((x, i) => {
                 const it = x as { tone: "warn" | "lime" | "bad" | "info"; title: string; body: string; href: string; cta: string };
-                const dot = { warn: "bg-warn", lime: "bg-lime", bad: "bg-bad", info: "bg-info" }[it.tone];
+                const dot = { warn: "bg-warn", lime: "bg-s1", bad: "bg-bad", info: "bg-info" }[it.tone];
                 return (
                   <motion.li key={it.title} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, ease: EASE, delay: 0.15 + i * 0.08 }}>
                     <Link href={it.href} className="group block rounded-2xl border border-line bg-panel-2/50 p-3.5 transition hover:border-line-2 hover:bg-panel-2">
@@ -165,7 +165,7 @@ export function OverviewScreen() {
                         {it.title}
                       </p>
                       <p className="mt-1 text-[13px] leading-relaxed text-fg-2">{it.body}</p>
-                      <p className="mt-2 inline-flex items-center gap-1 text-[12.5px] font-medium text-lime">
+                      <p className="mt-2 inline-flex items-center gap-1 text-[12.5px] font-medium text-lime-fg">
                         {it.cta} <ArrowRight size={13} className="transition group-hover:translate-x-0.5" />
                       </p>
                     </Link>
@@ -181,7 +181,7 @@ export function OverviewScreen() {
           title="Upcoming sessions"
           subtitle="Next on your calendar"
           action={
-            <button onClick={() => openBookingForm()} className="text-[12.5px] font-medium text-lime hover:underline">
+            <button onClick={() => openBookingForm()} className="text-[12.5px] font-medium text-lime-fg hover:underline">
               + Add
             </button>
           }
@@ -199,7 +199,7 @@ export function OverviewScreen() {
                         <span className="ml-0.5 text-[10px] font-medium text-fg-3">{time(b.start).match(/am|pm/)?.[0]}</span>
                       </span>
                     </div>
-                    <span className={cn("h-9 w-[3px] rounded-full", b.kind === "Discovery call" ? "bg-lime" : b.kind === "Check-in" ? "bg-info" : "bg-violet")} aria-hidden />
+                    <span className={cn("h-9 w-[3px] rounded-full", b.kind === "Discovery call" ? "bg-s1" : b.kind === "Check-in" ? "bg-info" : "bg-violet")} aria-hidden />
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-[14px] font-medium">{lead?.name ?? b.title}</p>
                       <p className="flex items-center gap-1.5 truncate text-[12.5px] text-fg-3">
@@ -242,7 +242,7 @@ export function OverviewScreen() {
           )}
           {drafts.length > 0 && (
             <Link href="/app/follow-ups" className="mt-3 flex items-center gap-2 rounded-2xl border border-line px-3.5 py-2.5 text-[13px] text-fg-2 transition hover:border-line-2">
-              <MessageSquareText size={14} className="text-lime" />
+              <MessageSquareText size={14} className="text-lime-fg" />
               {drafts.filter((d) => d.status === "draft").length} saved draft{drafts.filter((d) => d.status === "draft").length === 1 ? "" : "s"} · last {ago(drafts[0]!.createdAt)}
               <ArrowRight size={13} className="ml-auto" />
             </Link>
@@ -254,7 +254,7 @@ export function OverviewScreen() {
             {activity.map((a) => (
               <li key={a.id + a.lead.id} className="relative flex gap-3">
                 <span className={cn("relative z-10 mt-0.5 grid h-[31px] w-[31px] shrink-0 place-items-center rounded-full border bg-panel", a.kind === "note" ? "border-info/30 text-info" : "border-line-2 text-fg-3")}>
-                  {a.kind === "note" ? <MessageSquareText size={13} /> : <span className="h-1.5 w-1.5 rounded-full bg-lime" />}
+                  {a.kind === "note" ? <MessageSquareText size={13} /> : <span className="h-1.5 w-1.5 rounded-full bg-s1" />}
                 </span>
                 <Link href={`/app/leads?lead=${a.lead.id}`} className="min-w-0 flex-1 rounded-xl transition hover:opacity-80">
                   <p className="text-[13.5px] leading-snug">

@@ -15,6 +15,7 @@ An interactive SaaS product prototype that helps independent fitness coaches tur
 | Coach storefront, “Forge” theme | `/s/aarav` |
 | Coach storefront, “Bloom” theme | `/s/meera` |
 | Case study | `/case-study` |
+| Figma file | [FITFLOW AI — Product Design](https://www.figma.com/design/tplM1llRbk13QxwC9bzAxU) |
 
 Things worth clicking: drag a lead across the pipeline, create an offer with the AI builder and publish it, send an enquiry from Aarav's storefront and watch it arrive as a lead, restyle the storefront and see the 3D preview update, ask the assistant “What should I improve this week?”. Press <kbd>Ctrl/⌘ K</kbd> anywhere in the app.
 
@@ -40,15 +41,17 @@ Things worth clicking: drag a lead across the pipeline, create an offer with the
 
 ## Design system
 
-- **Colour:** near-black surfaces (`#0A0B0D`, `#121417`, `#1A1C20`), hairline borders, a three-tier text scale and one electric-lime accent (`#C8F04A`) reserved for action, selection and progress. All colours are CSS variables (`src/app/globals.css`, `tailwind.config.ts`).
-- **Type:** Bricolage Grotesque (display and numbers), Geist (UI), Geist Mono (labels); Fraunces for the Bloom storefront theme.
+- **Themes:** light and dark, following the OS by default with a Light / Dark / System toggle (saved in localStorage, applied before first paint). Every colour is a CSS variable in `src/app/globals.css`, mirrored 1:1 by the `color/*` variables in the Figma file.
+- **Colour:** warm-neutral surfaces, hairline borders, a three-tier text scale and one lime accent (`#C8F04A`) reserved for primary actions and selection; data colours are separate tokens validated per theme.
+- **Type:** Geist throughout (display to caption, tabular numbers), Geist Mono for code-like labels; Fraunces only for the Bloom storefront theme.
 - **Components:** `src/components/ui` (buttons, fields, segmented controls, badges, drawer, menu, dialog, toast, tooltip, progress ring, sparkline, empty states, skeletons) and `src/components/charts.tsx`.
 - **Motion:** one easing curve and one spring preset (`src/components/motion/kit.tsx`). Staggered entrances, sliding tab indicators, counting numbers, chart draw-ins, drawer/modal transitions and an AI generation sequence. Respects `prefers-reduced-motion`.
-- **3D:** CSS 3D transforms with spring-driven pointer parallax and scroll-linked depth (hero composition, storefront showcase, offer preview). WebGL was deliberately not used; see the case study.
+- **Scroll choreography (GSAP):** SplitText masked headline reveal and a pinned, scroll-scrubbed “How it works” sequence (ScrollTrigger with snapping) that swaps live product visuals per step.
+- **3D:** restrained CSS 3D transforms with spring parallax (hero product shot, storefront showcase, offer preview). WebGL was deliberately not used; see the case study.
 
 ## Tech stack
 
-Next.js 15 (App Router, static export-friendly) · React 19 · TypeScript · Tailwind CSS 3 (with container queries) · Motion (Framer Motion) · Recharts · Zustand (persisted to localStorage) · NumberFlow · Lucide icons. Photography from Unsplash.
+Figma (variables, styles, components) · Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS 3 (with container queries) · GSAP + ScrollTrigger + SplitText · Motion (Framer Motion) · Recharts · Zustand (persisted to localStorage) · NumberFlow · Lucide icons. Photography from Unsplash.
 
 ## Project structure
 

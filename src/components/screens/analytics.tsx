@@ -44,14 +44,14 @@ export function AnalyticsScreen() {
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-wrap items-center gap-2">
           <Segmented label="Date range" value={range} onChange={(v) => set("range", v === "90d" ? null : v)} options={RANGES.map((r) => ({ id: r.id, label: r.label }))} />
-          <select value={source} onChange={(e) => set("source", e.target.value === "all" ? null : e.target.value)} aria-label="Lead source" className="h-10 rounded-full border border-line bg-panel px-3.5 text-[13px] text-fg-2 focus:outline-none [&>option]:bg-panel">
+          <select value={source} onChange={(e) => set("source", e.target.value === "all" ? null : e.target.value)} aria-label="Lead source" className="h-10 rounded-lg border border-line bg-panel px-3.5 text-[13px] text-fg-2 focus:outline-none [&>option]:bg-panel">
             <option value="all">All sources</option>
             {SOURCES.map((x) => (
               <option key={x}>{x}</option>
             ))}
           </select>
           {(range !== "90d" || source !== "all") && (
-            <button onClick={() => router.replace(path, { scroll: false })} className="inline-flex h-10 items-center gap-1.5 rounded-full px-3 text-[13px] text-fg-3 transition hover:text-fg">
+            <button onClick={() => router.replace(path, { scroll: false })} className="inline-flex h-10 items-center gap-1.5 rounded-lg px-3 text-[13px] text-fg-3 transition hover:text-fg">
               <RotateCcw size={13} /> Reset
             </button>
           )}
@@ -110,7 +110,7 @@ export function AnalyticsScreen() {
                         </td>
                         <td className="py-2.5 text-right tabular">{x.leads}</td>
                         <td className="py-2.5 text-right tabular">{x.won}</td>
-                        <td className={cn("py-2.5 text-right tabular", best && "font-semibold text-lime")}>{pct(x.conversion, 0)}</td>
+                        <td className={cn("py-2.5 text-right tabular", best && "font-semibold text-lime-fg")}>{pct(x.conversion, 0)}</td>
                         <td className="py-2.5 text-right tabular text-fg-2">{rupees(x.revenue)}</td>
                       </tr>
                     );

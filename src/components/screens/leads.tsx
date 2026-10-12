@@ -101,14 +101,14 @@ export function LeadsScreen() {
         <div className="flex flex-1 flex-wrap items-center gap-2">
           <div className="relative min-w-[220px] flex-1 sm:max-w-xs">
             <Search size={15} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-fg-3" />
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, goal, city…" aria-label="Search leads" className="h-10 w-full rounded-full border border-line bg-panel pl-9 pr-9 text-[13.5px] placeholder:text-fg-3 focus:border-lime/50 focus:outline-none focus:ring-4 focus:ring-lime/10" />
+            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, goal, city…" aria-label="Search leads" className="h-10 w-full rounded-full border border-line bg-panel pl-9 pr-9 text-[13.5px] placeholder:text-fg-3 focus:border-lime-fg/50 focus:outline-none focus:ring-4 focus:ring-lime-fg/10" />
             {q && (
               <button onClick={() => setQ("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-fg-3 hover:text-fg" aria-label="Clear search">
                 <X size={14} />
               </button>
             )}
           </div>
-          <select value={source} onChange={(e) => setSource(e.target.value as Source | "all")} aria-label="Filter by source" className="h-10 rounded-full border border-line bg-panel px-3.5 text-[13px] text-fg-2 focus:outline-none [&>option]:bg-panel">
+          <select value={source} onChange={(e) => setSource(e.target.value as Source | "all")} aria-label="Filter by source" className="h-10 rounded-lg border border-line bg-panel px-3.5 text-[13px] text-fg-2 focus:outline-none [&>option]:bg-panel">
             <option value="all">All sources</option>
             {SOURCES.map((s) => (
               <option key={s}>{s}</option>
@@ -116,7 +116,7 @@ export function LeadsScreen() {
           </select>
           {view === "list" && (
             <>
-              <select value={stage} onChange={(e) => setStageFilter(e.target.value as Stage | "open" | "all")} aria-label="Filter by stage" className="h-10 rounded-full border border-line bg-panel px-3.5 text-[13px] text-fg-2 focus:outline-none [&>option]:bg-panel">
+              <select value={stage} onChange={(e) => setStageFilter(e.target.value as Stage | "open" | "all")} aria-label="Filter by stage" className="h-10 rounded-lg border border-line bg-panel px-3.5 text-[13px] text-fg-2 focus:outline-none [&>option]:bg-panel">
                 <option value="open">Open leads</option>
                 <option value="all">All stages</option>
                 {Object.entries(STAGE_LABEL).map(([k, v]) => (
@@ -213,7 +213,7 @@ function Board({ leads, onMove, onOpen }: { leads: Lead[]; onMove: (id: string, 
               onDragLeave={() => setOver((o) => (o === c.stage ? null : o))}
               onDrop={drop(c.stage)}
               aria-label={`${STAGE_LABEL[c.stage]} column`}
-              className={cn("flex min-h-[420px] flex-col rounded-3xl border bg-panel/50 p-2.5 transition-colors", over === c.stage ? "border-lime/50 bg-lime/[.04]" : "border-line")}
+              className={cn("flex min-h-[420px] flex-col rounded-2xl border bg-panel/50 p-2.5 transition-colors", over === c.stage ? "border-lime-fg/50 bg-lime/[.04]" : "border-line")}
             >
               <header className="flex items-center justify-between px-2 pb-2.5 pt-1.5">
                 <div className="flex items-center gap-2">
@@ -249,7 +249,7 @@ function Board({ leads, onMove, onOpen }: { leads: Lead[]; onMove: (id: string, 
             onDragOver={allow("lost")}
             onDragLeave={() => setOver(null)}
             onDrop={drop("lost")}
-            className={cn("fixed bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full border px-6 py-3.5 text-[13.5px] font-medium shadow-pop backdrop-blur", over === "lost" ? "border-bad/60 bg-bad/20 text-bad" : "border-line-2 bg-panel/95 text-fg-2")}
+            className={cn("fixed bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-lg border px-6 py-3.5 text-[13.5px] font-medium shadow-pop backdrop-blur", over === "lost" ? "border-bad/60 bg-bad/20 text-bad" : "border-line-2 bg-panel/95 text-fg-2")}
           >
             <X size={15} /> Drop here to mark as lost
           </motion.div>
@@ -282,7 +282,7 @@ function LeadCard({ lead, onOpen, onDragStart, onDragEnd }: { lead: Lead; onOpen
           <p className="line-clamp-2 text-[12.5px] leading-snug text-fg-3">{lead.goal}</p>
         </div>
         {lead.fitScore >= 85 && (
-          <span title={`Fit score ${lead.fitScore}`} className="text-lime">
+          <span title={`Fit score ${lead.fitScore}`} className="text-lime-fg">
             <Flame size={14} />
           </span>
         )}
@@ -474,7 +474,7 @@ function LeadDrawer({ id, onClose }: { id: string | null; onClose: () => void })
                 aria-pressed={lead.stage === s}
                 className={cn(
                   "rounded-xl border px-1.5 py-2 text-[11.5px] font-medium transition",
-                  lead.stage === s ? "border-lime bg-lime text-lime-ink" : i <= currentIdx ? "border-lime/30 bg-lime/10 text-lime" : "border-line bg-panel-2/60 text-fg-3 hover:border-line-2 hover:text-fg",
+                  lead.stage === s ? "border-lime-fg bg-lime text-lime-ink" : i <= currentIdx ? "border-lime-fg/30 bg-lime/10 text-lime-fg" : "border-line bg-panel-2/60 text-fg-3 hover:border-line-2 hover:text-fg",
                 )}
               >
                 {STAGE_LABEL[s]}
@@ -487,7 +487,7 @@ function LeadDrawer({ id, onClose }: { id: string | null; onClose: () => void })
             </button>
           )}
           {lead.stage === "lost" && (
-            <button onClick={() => changeStage("new")} className="mt-2 text-[12px] text-lime hover:underline">
+            <button onClick={() => changeStage("new")} className="mt-2 text-[12px] text-lime-fg hover:underline">
               Reopen lead
             </button>
           )}
@@ -525,13 +525,13 @@ function LeadDrawer({ id, onClose }: { id: string | null; onClose: () => void })
         {/* Quick actions */}
         <section className="grid grid-cols-3 gap-2">
           <Link href={`/app/follow-ups?lead=${lead.id}`} className={buttonClass({ variant: "secondary", size: "sm" }, "h-auto flex-col gap-1 rounded-2xl py-3")}>
-            <Sparkles size={16} className="text-lime" /> Draft follow-up
+            <Sparkles size={16} className="text-lime-fg" /> Draft follow-up
           </Link>
           <button onClick={() => openBookingForm({ leadId: lead.id })} className={buttonClass({ variant: "secondary", size: "sm" }, "h-auto flex-col gap-1 rounded-2xl py-3")}>
-            <CalendarPlus size={16} className="text-lime" /> Book a call
+            <CalendarPlus size={16} className="text-lime-fg" /> Book a call
           </button>
           <a href={`mailto:${lead.email}`} onClick={(e) => (e.preventDefault(), navigator.clipboard?.writeText(lead.email), toast({ tone: "success", title: "Email copied", body: lead.email }))} className={buttonClass({ variant: "secondary", size: "sm" }, "h-auto flex-col gap-1 rounded-2xl py-3")}>
-            <Mail size={16} className="text-lime" /> Copy email
+            <Mail size={16} className="text-lime-fg" /> Copy email
           </a>
         </section>
 
@@ -614,7 +614,7 @@ function LeadDrawer({ id, onClose }: { id: string | null; onClose: () => void })
             {[...lead.notes].reverse().map((n) => (
               <li key={n.id} className="relative flex gap-3">
                 <span className={cn("relative z-10 mt-0.5 grid h-[23px] w-[23px] shrink-0 place-items-center rounded-full border bg-panel", n.kind === "note" ? "border-info/40 text-info" : "border-line-2")}>
-                  {n.kind === "note" ? <MessageSquareText size={11} /> : <span className="h-1.5 w-1.5 rounded-full bg-lime" />}
+                  {n.kind === "note" ? <MessageSquareText size={11} /> : <span className="h-1.5 w-1.5 rounded-full bg-s1" />}
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className={cn("text-[13.5px] leading-snug", n.kind === "note" ? "text-fg" : "text-fg-2")}>{n.text}</p>

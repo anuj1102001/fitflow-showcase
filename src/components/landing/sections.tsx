@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useInView, useScroll, useTransform } from "motion/react";
-import { ArrowRight, AtSign, Check, ChevronDown, FileSpreadsheet, Lightbulb, Megaphone, MessageCircle, NotebookPen, Repeat, ShieldCheck, Sparkles, Store, UserCheck, Users, Wand2, BarChart3, Ban, Eye, HandHeart } from "lucide-react";
+import { ArrowRight, AtSign, Check, ChevronDown, FileSpreadsheet, Lightbulb, Megaphone, MessageCircle, NotebookPen, ShieldCheck, Sparkles, Users, Wand2, BarChart3, Ban, Eye, HandHeart } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { EASE, Reveal, Stagger, StaggerItem } from "@/components/motion/kit";
@@ -10,15 +10,12 @@ import { cn } from "@/components/ui/cn";
 import { Logo } from "@/components/ui/logo";
 import { img } from "@/lib/images";
 
-export function SectionIntro({ eyebrow, title, body, center = true, className }: { eyebrow: string; title: React.ReactNode; body?: React.ReactNode; center?: boolean; className?: string }) {
+export function SectionIntro({ eyebrow, title, body, center = false, className }: { eyebrow: string; title: React.ReactNode; body?: React.ReactNode; center?: boolean; className?: string }) {
   return (
-    <Reveal className={cn(center && "mx-auto text-center", "max-w-3xl", className)}>
-      <p className="eyebrow inline-flex items-center gap-2 text-lime">
-        <span className="h-px w-6 bg-lime/60" aria-hidden />
-        {eyebrow}
-      </p>
-      <h2 className="mt-4 text-balance text-[34px] font-semibold leading-[1.04] tracking-[-0.04em] sm:text-[48px]">{title}</h2>
-      {body && <p className={cn("mt-5 text-balance text-[16.5px] leading-relaxed text-fg-2 sm:text-[18px]", center && "mx-auto max-w-2xl")}>{body}</p>}
+    <Reveal className={cn(center ? "mx-auto max-w-3xl text-center" : "max-w-3xl", className)} y={16}>
+      <p className="text-[13px] font-medium text-fg-3">{eyebrow}</p>
+      <h2 className="mt-3 text-balance text-[32px] font-semibold leading-[1.08] tracking-[-0.035em] sm:text-[44px]">{title}</h2>
+      {body && <p className={cn("mt-4 text-balance text-[16.5px] leading-relaxed text-fg-2 sm:text-[17px]", center ? "mx-auto max-w-2xl" : "max-w-2xl")}>{body}</p>}
     </Reveal>
   );
 }
@@ -73,14 +70,14 @@ export function Problem() {
 
         {/* Scatter → order: scroll-linked */}
         <div ref={ref} className="relative mx-auto h-[460px] w-full max-w-[520px]">
-          <div className="absolute inset-0 overflow-hidden rounded-[32px] border border-line">
+          <div className="absolute inset-0 overflow-hidden rounded-2xl border border-line">
             <img src={img("coachingSession", 1100)} alt="A coach working with a client in the gym" className="h-full w-full object-cover opacity-35" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-b from-bg/40 via-bg/70 to-bg" />
           </div>
           {SCATTER.map((s, i) => (
             <ScatterCard key={s.label} s={s} i={i} progress={scrollYProgress} />
           ))}
-          <motion.div style={{ opacity: summaryOpacity, y: summaryY }} className="absolute inset-x-6 bottom-6 flex items-center gap-3 rounded-2xl border border-lime/40 bg-[#121410]/95 p-3.5 shadow-glow backdrop-blur">
+          <motion.div style={{ opacity: summaryOpacity, y: summaryY }} className="absolute inset-x-6 bottom-6 flex items-center gap-3 rounded-2xl border border-lime-fg/40 bg-panel p-3.5 backdrop-blur">
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-lime text-lime-ink">
               <Users size={17} />
             </span>
@@ -102,7 +99,7 @@ function ScatterCard({ s, i, progress }: { s: (typeof SCATTER)[number]; i: numbe
   const scale = useTransform(progress, [0, 0.8], [1, 0.96]);
   return (
     <motion.div style={{ x, y, rotate, scale }} className="absolute left-1/2 top-1/2 -ml-[150px] -mt-6 w-[300px]">
-      <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#16181b]/95 px-3.5 py-3 shadow-[0_20px_50px_-20px_rgba(0,0,0,.9)] backdrop-blur">
+      <div className="flex items-center gap-3 rounded-2xl border border-line bg-panel px-3.5 py-3 shadow-[0_20px_50px_-20px_rgba(0,0,0,.9)] backdrop-blur">
         <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-panel-2 text-fg-2">{s.icon}</span>
         <div className="min-w-0">
           <p className="text-[11px] text-fg-3">{s.label}</p>
@@ -113,54 +110,11 @@ function ScatterCard({ s, i, progress }: { s: (typeof SCATTER)[number]; i: numbe
   );
 }
 
-/* ------------------------------------------------------------------ workflow */
-
-const FLOW = [
-  { icon: <Store size={20} />, k: "Attract", t: "Share one storefront link", b: "A polished page with your programs, pricing and an enquiry form. Put it in your bio and every post." },
-  { icon: <Users size={20} />, k: "Capture", t: "Every enquiry lands in your pipeline", b: "Storefront, Instagram, WhatsApp or referral: each lead gets a source, a stage and a follow-up date." },
-  { icon: <Repeat size={20} />, k: "Follow up", t: "Personal messages in seconds", b: "AI drafts a follow-up from the lead's goal and stage. You edit, copy and send it yourself." },
-  { icon: <UserCheck size={20} />, k: "Convert & coach", t: "Clients, plans and check-ins", b: "A won lead becomes a client with a plan, progress metrics and weekly check-ins." },
-];
-
-export function Workflow() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 75%", "end 55%"] });
-  const line = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  return (
-    <section id="workflow" className="relative scroll-mt-20 py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionIntro eyebrow="How it works" title="From audience to paying client, in one flow." body="FITFLOW follows the path a follower takes to become a client, and gives you the right tool at each step." />
-        <div ref={ref} className="relative mt-16">
-          <div className="absolute left-[12.5%] top-[33px] hidden h-[2px] w-[75%] overflow-hidden rounded-full bg-line-2 lg:block" aria-hidden>
-            <motion.div className="h-full origin-left bg-lime shadow-[0_0_12px_rgb(var(--lime))]" style={{ scaleX: line }} />
-          </div>
-          <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {FLOW.map((f, i) => (
-              <Reveal key={f.k} delay={i * 90}>
-                <li className="relative flex h-full flex-col items-center text-center lg:px-2">
-                  <span className="relative z-10 grid h-[68px] w-[68px] place-items-center rounded-[22px] border border-line-2 bg-panel text-lime shadow-card">
-                    {f.icon}
-                    <span className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full bg-lime font-mono text-[11px] font-bold text-lime-ink">{i + 1}</span>
-                  </span>
-                  <p className="eyebrow mt-6">{f.k}</p>
-                  <h3 className="mt-2 text-[19px] font-semibold leading-snug">{f.t}</h3>
-                  <p className="mt-2 text-[14.5px] leading-relaxed text-fg-2">{f.b}</p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ------------------------------------------------------------------ AI */
 
 export function AISection() {
   return (
     <section id="ai" className="relative scroll-mt-20 overflow-hidden py-24 sm:py-32">
-      <div className="lime-glow pointer-events-none absolute -left-40 top-20 h-[500px] w-[500px] opacity-40" aria-hidden />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro eyebrow="AI capabilities" title={<>AI that handles the busywork, <span className="text-fg-3">not the coaching.</span></>} body="Three focused assistants, each tied to a real moment in a coach's week. Every output is an editable draft." />
         <div className="mt-14 grid gap-4 lg:grid-cols-3">
@@ -176,7 +130,7 @@ export function AISection() {
                 <p className="mt-2 text-[14.5px] leading-relaxed text-fg-2">{c.b}</p>
                 <div className="mt-6 space-y-1.5 rounded-2xl border border-line bg-panel-2/50 p-4 font-mono text-[12px]">
                   {c.demo.map((d, j) => (
-                    <p key={d} className={j === c.demo.length - 1 || d.startsWith("→") ? "text-lime" : "text-fg-3"}>
+                    <p key={d} className={j === c.demo.length - 1 || d.startsWith("→") ? "text-lime-fg" : "text-fg-3"}>
                       {d}
                     </p>
                   ))}
@@ -186,7 +140,7 @@ export function AISection() {
           ))}
         </div>
         <Reveal className="mt-4">
-          <div className="grid gap-4 rounded-3xl border border-line bg-panel/50 p-6 sm:grid-cols-2 sm:p-7 lg:grid-cols-4">
+          <div className="grid gap-4 rounded-2xl border border-line bg-panel/50 p-6 sm:grid-cols-2 sm:p-7 lg:grid-cols-4">
             {[
               { icon: <ShieldCheck size={18} />, t: "Claims check", b: "Flags guarantees, medical and “miracle” language before anything is published." },
               { icon: <Eye size={18} />, t: "Human in the loop", b: "Every output is a draft you can edit. Nothing is published or sent automatically." },
@@ -194,7 +148,7 @@ export function AISection() {
               { icon: <HandHeart size={18} />, t: "Minimal data", b: "Designed to share only what a draft needs: first name, goal and stage, never contact details." },
             ].map((g) => (
               <div key={g.t} className="flex gap-3">
-                <span className="mt-0.5 text-lime">{g.icon}</span>
+                <span className="mt-0.5 text-lime-fg">{g.icon}</span>
                 <div>
                   <p className="text-[14.5px] font-semibold">{g.t}</p>
                   <p className="mt-1 text-[13.5px] leading-relaxed text-fg-2">{g.b}</p>
@@ -222,17 +176,17 @@ export function Pricing() {
   return (
     <section id="pricing" className="relative scroll-mt-20 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionIntro eyebrow="Pricing concept" title="Simple plans that grow with you." body="Illustrative pricing to show how the product could be packaged. This is a portfolio prototype: nothing here is for sale." />
+        <SectionIntro center eyebrow="Pricing concept" title="Simple plans that grow with you." body="Illustrative pricing to show how the product could be packaged. This is a portfolio prototype: nothing here is for sale." />
         <div className="mt-8 flex justify-center">
           <div className="inline-flex items-center gap-1 rounded-full border border-line bg-panel p-1 text-[13px]" role="tablist" aria-label="Billing period">
             {["Monthly", "Yearly"].map((p) => {
               const on = (p === "Yearly") === yearly;
               return (
-                <button key={p} role="tab" aria-selected={on} onClick={() => setYearly(p === "Yearly")} className={cn("relative rounded-full px-4 py-1.5 font-medium transition-colors", on ? "text-lime-ink" : "text-fg-2 hover:text-fg")}>
+                <button key={p} role="tab" aria-selected={on} onClick={() => setYearly(p === "Yearly")} className={cn("relative rounded-md px-4 py-1.5 font-medium transition-colors", on ? "text-lime-ink" : "text-fg-2 hover:text-fg")}>
                   {on && <motion.span layoutId="billing" className="absolute inset-0 rounded-full bg-lime" transition={{ type: "spring", stiffness: 300, damping: 28 }} />}
                   <span className="relative">
                     {p}
-                    {p === "Yearly" && <span className={cn("ml-1.5 text-[11px]", on ? "text-lime-ink/70" : "text-lime")}>2 months free</span>}
+                    {p === "Yearly" && <span className={cn("ml-1.5 text-[11px]", on ? "text-lime-ink/70" : "text-lime-fg")}>2 months free</span>}
                   </span>
                 </button>
               );
@@ -245,8 +199,8 @@ export function Pricing() {
             const shown = yearly && monthly ? `₹${Math.round((monthly * 10) / 12).toLocaleString("en-IN")}` : p.price;
             return (
               <Reveal key={p.name} delay={i * 80}>
-                <article className={cn("relative flex h-full flex-col rounded-[28px] border p-7", p.featured ? "border-lime/50 bg-[linear-gradient(180deg,rgb(var(--lime)/.08),transparent_45%),rgb(var(--panel))] shadow-[0_30px_80px_-30px_rgb(var(--lime)/.35)]" : "border-line bg-panel")}>
-                  {p.featured && <span className="absolute -top-3 left-7 rounded-full bg-lime px-3 py-1 text-[11.5px] font-semibold text-lime-ink">Most popular</span>}
+                <article className={cn("relative flex h-full flex-col rounded-2xl border p-7", p.featured ? "border-fg/70 bg-panel shadow-pop" : "border-line bg-panel")}>
+                  {p.featured && <span className="absolute -top-3 left-7 rounded-md bg-lime px-3 py-1 text-[11.5px] font-semibold text-lime-ink">Most popular</span>}
                   <h3 className="text-[19px] font-semibold">{p.name}</h3>
                   <p className="mt-1 text-[14px] text-fg-3">{p.blurb}</p>
                   <p className="mt-6 flex items-baseline gap-1.5">
@@ -260,7 +214,7 @@ export function Pricing() {
                   <ul className="mt-6 flex-1 space-y-3 border-t border-line pt-6">
                     {p.features.map((f) => (
                       <li key={f} className="flex gap-2.5 text-[14.5px]">
-                        <Check size={17} className="mt-0.5 shrink-0 text-lime" />
+                        <Check size={17} className="mt-0.5 shrink-0 text-lime-fg" />
                         {f}
                       </li>
                     ))}
@@ -297,12 +251,12 @@ export function FaqSection() {
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[.8fr_1.2fr] lg:px-8">
         <SectionIntro center={false} eyebrow="FAQ" title="Questions, answered honestly." body={<>Something else? Read the <Link href="/case-study" className="link">case study</Link> for the design rationale and limitations.</>} />
         <Reveal>
-          <div className="divide-y divide-line rounded-[28px] border border-line bg-panel">
+          <div className="divide-y divide-line rounded-2xl border border-line bg-panel">
             {FAQ.map((f, i) => (
               <div key={f.q}>
                 <button onClick={() => setOpen(open === i ? null : i)} aria-expanded={open === i} className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left text-[16px] font-medium transition hover:text-fg">
                   {f.q}
-                  <ChevronDown size={18} className={cn("shrink-0 text-fg-3 transition-transform duration-300", open === i && "rotate-180 text-lime")} />
+                  <ChevronDown size={18} className={cn("shrink-0 text-fg-3 transition-transform duration-300", open === i && "rotate-180 text-lime-fg")} />
                 </button>
                 <AnimatePresence initial={false}>
                   {open === i && (
@@ -327,13 +281,12 @@ export function FinalCta() {
   const inView = useInView(ref, { once: true, margin: "-10%" });
   return (
     <section className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-      <motion.div ref={ref} initial={{ opacity: 0, y: 40, rotateX: 12 }} animate={inView ? { opacity: 1, y: 0, rotateX: 0 } : {}} transition={{ duration: 1, ease: EASE }} style={{ transformPerspective: 1600 }} className="relative mx-auto max-w-7xl overflow-hidden rounded-[36px] border border-line">
+      <motion.div ref={ref} initial={{ opacity: 0, y: 40, rotateX: 12 }} animate={inView ? { opacity: 1, y: 0, rotateX: 0 } : {}} transition={{ duration: 1, ease: EASE }} style={{ transformPerspective: 1600 }} className="relative mx-auto max-w-7xl overflow-hidden rounded-2xl border border-line">
         <img src={img("barbellBack", 1800)} alt="" className="absolute inset-0 h-full w-full object-cover object-[50%_35%] opacity-40" loading="lazy" />
         <div className="absolute inset-0 bg-[linear-gradient(100deg,rgb(var(--bg))_25%,rgb(var(--bg)/.7)_60%,rgb(var(--bg)/.3))]" />
-        <div className="lime-glow absolute -bottom-40 -left-20 h-[420px] w-[620px]" aria-hidden />
         <div className="relative px-6 py-16 sm:px-14 sm:py-24">
-          <p className="eyebrow text-lime">Try it now</p>
-          <h2 className="mt-4 max-w-2xl text-balance text-[38px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[60px]">See the whole workflow in 60 seconds.</h2>
+          <p className="text-[13px] font-medium text-fg-2">Try it now</p>
+          <h2 className="mt-4 max-w-2xl text-balance text-[38px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[52px]">See the whole workflow in 60 seconds.</h2>
           <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-fg-2">Build an offer with AI, drag a lead to Won, draft a follow-up and restyle a storefront. No sign-up needed.</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <Link href="/app" className={buttonClass({ size: "lg" }, "h-[52px] px-7")}>
@@ -361,8 +314,8 @@ export function Footer() {
         <div>
           <Logo />
           <p className="mt-4 max-w-xs text-[14px] leading-relaxed text-fg-3">A product design and front-end prototype: the business OS for fitness coaches. Fictional people, sample data, simulated AI.</p>
-          <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-dashed border-line-2 px-3 py-1 text-[12px] text-fg-3">
-            <Sparkles size={12} className="text-lime" /> Portfolio project · not a commercial service
+          <p className="mt-4 inline-flex items-center gap-2 rounded-md border border-dashed border-line-2 px-3 py-1 text-[12px] text-fg-3">
+            <Sparkles size={12} className="text-lime-fg" /> Portfolio project · not a commercial service
           </p>
         </div>
         {cols.map((c) => (

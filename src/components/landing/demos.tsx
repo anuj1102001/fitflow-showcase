@@ -27,7 +27,7 @@ export function Features() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro eyebrow="Features" title="Everything a coach needs to sell, in one place." body="Each tile below is live. Click around, or open the full demo for the real thing." />
         <div className="mt-14 grid gap-4 lg:grid-cols-6">
-          <Tile className="lg:col-span-4 lg:row-span-2" icon={<Wand2 size={18} />} title="AI Offer Builder" body="Pick a goal and format; get a clear, priced offer you can edit and publish." href="/app/offers?new=1">
+          <Tile className="lg:col-span-4" icon={<Wand2 size={18} />} title="AI Offer Builder" body="Pick a goal and format; get a clear, priced offer you can edit and publish." href="/app/offers?new=1">
             <OfferMini />
           </Tile>
           <Tile className="lg:col-span-2" icon={<Users size={18} />} title="Lead pipeline" body="Every enquiry, its source and next step." href="/app/leads">
@@ -36,10 +36,10 @@ export function Features() {
           <Tile className="lg:col-span-2" icon={<MessageCircle size={18} />} title="AI follow-ups" body="Personal drafts in your tone. You send them." href="/app/follow-ups">
             <FollowUpMini />
           </Tile>
-          <Tile className="lg:col-span-3" icon={<CalendarDays size={18} />} title="Bookings" body="Discovery calls, sessions and check-ins in one calendar." href="/app/bookings">
+          <Tile className="lg:col-span-2" icon={<CalendarDays size={18} />} title="Bookings" body="Discovery calls, sessions and check-ins in one calendar." href="/app/bookings">
             <BookingsMini />
           </Tile>
-          <Tile className="lg:col-span-3" icon={<HeartPulse size={18} />} title="Client progress" body="Plans, metrics and weekly check-ins that flag who's slipping." href="/app/clients">
+          <Tile className="lg:col-span-2" icon={<HeartPulse size={18} />} title="Client progress" body="Plans, metrics and weekly check-ins that flag who's slipping." href="/app/clients">
             <ClientsMini />
           </Tile>
         </div>
@@ -51,15 +51,15 @@ export function Features() {
 function Tile({ className, icon, title, body, href, children }: { className?: string; icon: React.ReactNode; title: string; body: string; href: string; children: React.ReactNode }) {
   return (
     <Reveal className={cn("min-w-0", className)}>
-      <TiltCard max={3} lift={3} className="h-full rounded-[28px]">
+      <TiltCard max={3} lift={3} className="h-full rounded-2xl">
         <article className="card panel-sheen flex h-full flex-col overflow-hidden p-6">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <span className="inline-grid h-9 w-9 place-items-center rounded-xl border border-line bg-panel-2 text-lime">{icon}</span>
+              <span className="inline-grid h-9 w-9 place-items-center rounded-xl border border-line bg-panel-2 text-lime-fg">{icon}</span>
               <h3 className="mt-4 text-[19px] font-semibold">{title}</h3>
               <p className="mt-1 text-[14px] leading-relaxed text-fg-2">{body}</p>
             </div>
-            <Link href={href} className="group grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line text-fg-3 transition hover:border-lime/50 hover:text-lime" aria-label={`Open ${title} in the demo`}>
+            <Link href={href} className="group grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line text-fg-3 transition hover:border-lime-fg/50 hover:text-lime-fg" aria-label={`Open ${title} in the demo`}>
               <ArrowRight size={15} className="transition group-hover:translate-x-0.5" />
             </Link>
           </div>
@@ -83,7 +83,7 @@ function OfferMini() {
           <p className="mb-2 text-[12px] font-medium text-fg-3">Goal</p>
           <div className="flex flex-wrap gap-1.5">
             {GOALS.map((x) => (
-              <button key={x.id} onClick={() => setGoal(x.id)} aria-pressed={goal === x.id} className={cn("rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition", goal === x.id ? "border-lime bg-lime/15 text-fg" : "border-line text-fg-2 hover:border-line-2")}>
+              <button key={x.id} onClick={() => setGoal(x.id)} aria-pressed={goal === x.id} className={cn("rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition", goal === x.id ? "border-lime-fg bg-lime/15 text-fg" : "border-line text-fg-2 hover:border-line-2")}>
                 {x.label}
               </button>
             ))}
@@ -93,20 +93,20 @@ function OfferMini() {
           <p className="mb-2 text-[12px] font-medium text-fg-3">Format</p>
           <div className="flex flex-wrap gap-1.5">
             {(["1:1 online coaching", "Small-group program", "Hybrid (online + in person)"] as OfferType[]).map((t) => (
-              <button key={t} onClick={() => setType(t)} aria-pressed={type === t} className={cn("rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition", type === t ? "border-lime bg-lime/15 text-fg" : "border-line text-fg-2 hover:border-line-2")}>
+              <button key={t} onClick={() => setType(t)} aria-pressed={type === t} className={cn("rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition", type === t ? "border-lime-fg bg-lime/15 text-fg" : "border-line text-fg-2 hover:border-line-2")}>
                 {t.replace(" (online + in person)", "")}
               </button>
             ))}
           </div>
         </div>
         <p className="rounded-2xl border border-line bg-panel-2/50 p-3.5 text-[12.5px] leading-relaxed text-fg-2">
-          <Sparkles size={13} className="mr-1.5 inline text-lime" />
+          <Sparkles size={13} className="mr-1.5 inline text-lime-fg" />
           Suggested price for {weeks} weeks: <span className="font-semibold text-fg">{rupees(g.low)} – {rupees(g.high)}</span>
         </p>
       </div>
       <AnimatePresence mode="wait">
-        <motion.div key={d.title} initial={{ opacity: 0, rotateY: -12, x: 16 }} animate={{ opacity: 1, rotateY: 0, x: 0 }} exit={{ opacity: 0, rotateY: 10, x: -12 }} transition={{ duration: 0.45, ease: EASE }} style={{ transformPerspective: 1000 }} className="flex flex-col rounded-[22px] border border-lime/30 bg-[#121410] p-5">
-          <span className="w-fit rounded-full border border-line px-2.5 py-1 text-[11px] text-fg-3">
+        <motion.div key={d.title} initial={{ opacity: 0, rotateY: -12, x: 16 }} animate={{ opacity: 1, rotateY: 0, x: 0 }} exit={{ opacity: 0, rotateY: 10, x: -12 }} transition={{ duration: 0.45, ease: EASE }} style={{ transformPerspective: 1000 }} className="flex flex-col rounded-xl border border-lime-fg/30 bg-panel p-5">
+          <span className="w-fit rounded-md border border-line px-2.5 py-1 text-[11px] text-fg-3">
             {type} · {weeks} wk
           </span>
           <p className="mt-3 font-display text-[21px] font-bold leading-tight">{d.title}</p>
@@ -114,7 +114,7 @@ function OfferMini() {
           <ul className="mt-4 space-y-2 border-t border-line pt-4">
             {d.benefits.slice(0, 3).map((b) => (
               <li key={b} className="flex gap-2 text-[12.5px]">
-                <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-lime" /> {b}
+                <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-lime-fg" /> {b}
               </li>
             ))}
           </ul>
@@ -156,7 +156,7 @@ function PipelineMini() {
           <div className="space-y-1.5">
             <AnimatePresence initial={false}>
               {cols[i]!.map((n) => (
-                <motion.div key={n} layout layoutId={`pm-${n}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.45, ease: EASE }} className={cn("flex items-center gap-1.5 rounded-lg border px-1.5 py-1.5", i === 2 ? "border-lime/30 bg-lime/[.07]" : "border-line bg-panel")}>
+                <motion.div key={n} layout layoutId={`pm-${n}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.45, ease: EASE }} className={cn("flex items-center gap-1.5 rounded-lg border px-1.5 py-1.5", i === 2 ? "border-lime-fg/30 bg-lime/[.07]" : "border-line bg-panel")}>
                   <Avatar name={n} size={18} />
                   <span className="truncate text-[11px] font-medium">{n}</span>
                 </motion.div>
@@ -192,13 +192,13 @@ function FollowUpMini() {
   return (
     <div ref={ref} className="flex h-full flex-col justify-end">
       <div className="flex items-center gap-2 text-[11.5px] text-fg-3">
-        <span className="rounded-full border border-line px-2 py-0.5">Nudge after proposal</span>
-        <span className="rounded-full border border-line px-2 py-0.5">Warm</span>
-        <span className="rounded-full border border-line px-2 py-0.5">WhatsApp</span>
+        <span className="rounded-md border border-line px-2 py-0.5">Nudge after proposal</span>
+        <span className="rounded-md border border-line px-2 py-0.5">Warm</span>
+        <span className="rounded-md border border-line px-2 py-0.5">WhatsApp</span>
       </div>
-      <div className="mt-3 min-h-[118px] rounded-2xl rounded-bl-md border border-line bg-[#14201a] p-3.5 text-[13px] leading-relaxed text-fg">
+      <div className="mt-3 min-h-[118px] rounded-2xl rounded-bl-md border border-line bg-panel-2 p-3.5 text-[13px] leading-relaxed text-fg">
         {FU.slice(0, n)}
-        {n < FU.length && <span className="ml-0.5 inline-block h-3.5 w-[2px] translate-y-0.5 animate-pulse bg-lime" />}
+        {n < FU.length && <span className="ml-0.5 inline-block h-3.5 w-[2px] translate-y-0.5 animate-pulse bg-s1" />}
       </div>
       <p className="mt-2 text-[11px] text-fg-3">Draft · never sent automatically</p>
     </div>
@@ -210,7 +210,7 @@ function BookingsMini() {
   const bookings = useDemo((s) => s.bookings);
   const leads = useDemo((s) => s.leads);
   const items = hydrated ? bookings.filter((b) => new Date(b.start).getTime() > Date.now() && b.status !== "cancelled").slice(0, 4) : [];
-  const color = { "Discovery call": "bg-lime", "Check-in": "bg-info", "Coaching session": "bg-violet", Assessment: "bg-warn" } as const;
+  const color = { "Discovery call": "bg-s1", "Check-in": "bg-info", "Coaching session": "bg-violet", Assessment: "bg-warn" } as const;
   return (
     <ul className="space-y-1.5">
       {!hydrated && [0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-11" />)}
@@ -272,7 +272,7 @@ export function AnalyticsPreview() {
           <ul className="mt-8 space-y-3 text-[15px]">
             {["Lead acquisition and revenue trends", "A cohort funnel from first message to client", "Conversion by source and by offer", "Filters that update every chart at once"].map((x) => (
               <li key={x} className="flex gap-3">
-                <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-lime" /> {x}
+                <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-lime-fg" /> {x}
               </li>
             ))}
           </ul>
@@ -316,7 +316,7 @@ export function AnalyticsPreview() {
                     </span>
                   </div>
                   <div className="mt-1 h-1.5 rounded-full bg-line">
-                    <motion.div className="h-full rounded-full bg-lime" initial={{ width: 0 }} whileInView={{ width: `${(x.leads / maxSrc) * 100}%` }} viewport={{ once: false }} transition={{ duration: 0.8, ease: EASE }} />
+                    <motion.div className="h-full rounded-full bg-s1" initial={{ width: 0 }} whileInView={{ width: `${(x.leads / maxSrc) * 100}%` }} viewport={{ once: false }} transition={{ duration: 0.8, ease: EASE }} />
                   </div>
                 </div>
               ))}
@@ -347,13 +347,12 @@ export function StorefrontShowcase() {
 
   return (
     <section id="storefronts" className="relative scroll-mt-20 overflow-hidden py-24 sm:py-32">
-      <div className="lime-glow pointer-events-none absolute right-[-200px] top-1/3 h-[600px] w-[700px] opacity-40" aria-hidden />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro eyebrow="Coaching storefronts" title="A page that sells while you coach." body="Every coach gets a fast, mobile-first storefront with programs, pricing, FAQs and an enquiry form that feeds the pipeline. Switch themes to see the same content restyled." />
         <div className="mt-10 flex flex-col items-center gap-4">
           <div className="flex flex-wrap justify-center gap-2" role="tablist" aria-label="Storefront theme">
             {(Object.keys(THEME_META) as StorefrontTheme[]).map((t) => (
-              <button key={t} role="tab" aria-selected={theme === t} onClick={() => setTheme(t)} className={cn("flex items-center gap-3 rounded-2xl border px-4 py-3 text-left transition", theme === t ? "border-lime/60 bg-lime/[.06]" : "border-line hover:border-line-2")}>
+              <button key={t} role="tab" aria-selected={theme === t} onClick={() => setTheme(t)} className={cn("flex items-center gap-3 rounded-2xl border px-4 py-3 text-left transition", theme === t ? "border-lime-fg/60 bg-lime/[.06]" : "border-line hover:border-line-2")}>
                 <span className="flex h-8 w-14 overflow-hidden rounded-lg" aria-hidden>
                   {THEME_META[t].swatches.map((c) => (
                     <span key={c} className="flex-1" style={{ background: c }} />
@@ -396,7 +395,7 @@ export function StorefrontShowcase() {
               </motion.div>
             </AnimatePresence>
           ) : (
-            <Skeleton className="h-full rounded-[28px]" />
+            <Skeleton className="h-full rounded-2xl" />
           )}
         </div>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">

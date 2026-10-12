@@ -56,7 +56,7 @@ export function StorefrontScreen() {
                   key={t}
                   onClick={() => update({ theme: t, heroImage: t === "bloom" && sf.heroImage === IMAGES.coachAarav ? IMAGES.coachMeera : t === "forge" && sf.heroImage === IMAGES.coachMeera ? IMAGES.coachAarav : sf.heroImage })}
                   aria-pressed={on}
-                  className={cn("relative overflow-hidden rounded-2xl border p-3 text-left transition", on ? "border-lime/60 bg-lime/[.06]" : "border-line hover:border-line-2")}
+                  className={cn("relative overflow-hidden rounded-2xl border p-3 text-left transition", on ? "border-lime-fg/60 bg-lime/[.06]" : "border-line hover:border-line-2")}
                 >
                   <div className="flex h-16 overflow-hidden rounded-xl" aria-hidden>
                     {m.swatches.map((c) => (
@@ -93,7 +93,7 @@ export function StorefrontScreen() {
               <p className="mb-2 pl-1 text-[13px] font-medium text-fg-2">Hero photo</p>
               <div className="grid grid-cols-5 gap-2">
                 {HEROES.map((h) => (
-                  <button key={h.id} onClick={() => update({ heroImage: h.src })} aria-pressed={sf.heroImage === h.src} aria-label={h.label} title={h.label} className={cn("relative aspect-square overflow-hidden rounded-xl border-2 transition", sf.heroImage === h.src ? "border-lime" : "border-transparent opacity-70 hover:opacity-100")}>
+                  <button key={h.id} onClick={() => update({ heroImage: h.src })} aria-pressed={sf.heroImage === h.src} aria-label={h.label} title={h.label} className={cn("relative aspect-square overflow-hidden rounded-xl border-2 transition", sf.heroImage === h.src ? "border-lime-fg" : "border-transparent opacity-70 hover:opacity-100")}>
                     <img src={h.src.replace("w=1400", "w=160")} alt="" className="h-full w-full object-cover" loading="lazy" />
                   </button>
                 ))}
@@ -122,7 +122,7 @@ export function StorefrontScreen() {
               const on = sf.offerIds.includes(o.id);
               const disabled = o.status !== "live";
               return (
-                <label key={o.id} className={cn("flex items-center gap-3 rounded-2xl border px-4 py-3 transition", disabled ? "border-dashed border-line opacity-60" : on ? "border-lime/40 bg-lime/[.04]" : "border-line hover:border-line-2")}>
+                <label key={o.id} className={cn("flex items-center gap-3 rounded-2xl border px-4 py-3 transition", disabled ? "border-dashed border-line opacity-60" : on ? "border-lime-fg/40 bg-lime/[.04]" : "border-line hover:border-line-2")}>
                   <input
                     type="checkbox"
                     disabled={disabled}
@@ -179,8 +179,7 @@ export function StorefrontScreen() {
           </div>
         </div>
 
-        <div className="relative overflow-hidden rounded-[28px] border border-line bg-[radial-gradient(ellipse_at_top,rgb(var(--lime)/.07),transparent_60%),rgb(var(--panel))] p-4 sm:p-6">
-          <div className="grid-lines pointer-events-none absolute inset-0 opacity-50 [mask-image:radial-gradient(ellipse_at_center,#000,transparent_75%)]" aria-hidden />
+        <div className="relative overflow-hidden rounded-2xl border border-line bg-[radial-gradient(ellipse_at_top,rgb(var(--lime)/.07),transparent_60%),rgb(var(--panel))] p-4 sm:p-6">
           <AnimatePresence mode="wait">
             {device === "desktop" && (
               <motion.div key="d" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35, ease: EASE }} className="relative">

@@ -7,16 +7,16 @@ import { num, pct, rupees, rupeesShort } from "@/lib/format";
 
 /** Chart palette: lime leads; the rest are tuned for the dark panel and distinguishable from each other. */
 export const SERIES = {
-  lime: "#c8f04a",
-  sky: "#8fd6ff",
-  peach: "#ffb38a",
-  violet: "#c9a6ff",
-  mint: "#7fe0b8",
-  muted: "#4a4e55",
+  lime: "rgb(var(--s-1))",
+  sky: "rgb(var(--s-2))",
+  peach: "rgb(var(--s-3))",
+  violet: "rgb(var(--s-4))",
+  mint: "rgb(var(--s-5))",
+  muted: "rgb(var(--line-2))",
 };
 export const SOURCE_COLOR: Record<string, string> = { Instagram: SERIES.lime, Storefront: SERIES.sky, Referral: SERIES.mint, YouTube: SERIES.peach, WhatsApp: SERIES.violet };
 
-const axis = { stroke: "rgb(128 132 125)", fontSize: 11, tickLine: false, axisLine: false } as const;
+const axis = { stroke: "rgb(var(--axis))", fontSize: 11, tickLine: false, axisLine: false } as const;
 
 type Fmt = "number" | "rupees" | "pct";
 const fmt = (v: number, f: Fmt) => (f === "rupees" ? rupees(v) : f === "pct" ? pct(v) : num(v));
@@ -49,15 +49,15 @@ export function TrendChart<T extends Record<string, unknown>>({ data, x, series,
           <defs>
             {series.map((s) => (
               <linearGradient key={s.key} id={`g-${s.key}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={s.color} stopOpacity={0.28} />
+                <stop offset="0%" stopColor={s.color} stopOpacity={0.22} />
                 <stop offset="100%" stopColor={s.color} stopOpacity={0} />
               </linearGradient>
             ))}
           </defs>
-          <CartesianGrid vertical={false} stroke="rgb(37 40 45)" strokeDasharray="3 4" />
+          <CartesianGrid vertical={false} stroke="rgb(var(--grid))" strokeDasharray="3 4" />
           <XAxis dataKey={x} {...axis} minTickGap={18} tickMargin={8} />
           <YAxis {...axis} width={48} allowDecimals={false} tickFormatter={(v: number) => (yFormat === "rupees" ? rupeesShort(v) : yFormat === "pct" ? pct(v, 0) : num(v))} />
-          <Tooltip content={<Tip formats={formats} />} cursor={{ stroke: "rgb(54 58 64)", strokeWidth: 1 }} />
+          <Tooltip content={<Tip formats={formats} />} cursor={{ stroke: "rgb(var(--line-2))", strokeWidth: 1 }} />
           {series.map((s) => (
             <Area key={s.key} type="monotone" dataKey={s.key} name={s.name} stroke={s.color} strokeWidth={2} strokeDasharray={s.dashed ? "4 4" : undefined} fill={s.dashed ? "transparent" : `url(#g-${s.key})`} isAnimationActive={!reduce} animationDuration={900} activeDot={{ r: 4, strokeWidth: 0, fill: s.color }} />
           ))}
@@ -74,10 +74,10 @@ export function BarsChart<T extends Record<string, unknown>>({ data, x, series, 
     <div style={{ height }} className="-ml-2">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }} barGap={4}>
-          <CartesianGrid vertical={false} stroke="rgb(37 40 45)" strokeDasharray="3 4" />
+          <CartesianGrid vertical={false} stroke="rgb(var(--grid))" strokeDasharray="3 4" />
           <XAxis dataKey={x} {...axis} tickMargin={8} />
           <YAxis {...axis} width={48} allowDecimals={false} domain={yMax ? [0, yMax] : undefined} ticks={yMax ? [0, yMax / 4, yMax / 2, (yMax * 3) / 4, yMax] : undefined} tickFormatter={(v: number) => (yFormat === "rupees" ? rupeesShort(v) : num(v))} />
-          <Tooltip content={<Tip formats={formats} />} cursor={{ fill: "rgb(255 255 255 / .03)" }} />
+          <Tooltip content={<Tip formats={formats} />} cursor={{ fill: "rgb(var(--fg) / .04)" }} />
           {series.map((s, i) => (
             <Bar key={s.key} dataKey={s.key} name={s.name} fill={s.color} radius={stacked && i < series.length - 1 ? 0 : [6, 6, 0, 0]} maxBarSize={36} stackId={stacked ? "a" : undefined} isAnimationActive={!reduce} animationDuration={800} />
           ))}
@@ -133,7 +133,7 @@ export function FunnelChart({ steps }: { steps: { step: string; count: number; r
             <div className="h-8 overflow-hidden rounded-xl bg-panel-2">
               <motion.div
                 className="h-full rounded-xl"
-                style={{ background: `linear-gradient(90deg, rgb(200 240 74 / ${1 - i * 0.14}), rgb(200 240 74 / ${0.75 - i * 0.12}))` }}
+                style={{ background: `rgb(var(--s-1) / ${1 - i * 0.15})` }}
                 initial={{ width: 0 }}
                 animate={{ width: `${Math.max(2, (s.count / max) * 100)}%` }}
                 transition={{ duration: 0.9, ease: EASE, delay: i * 0.08 }}

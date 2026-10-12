@@ -67,8 +67,7 @@ export function AssistantScreen() {
           {chat.length === 0 && !busy ? (
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE }} className="mx-auto max-w-2xl py-6 text-center sm:py-10">
               <div className="relative mx-auto grid h-16 w-16 place-items-center">
-                <div className="lime-glow absolute -inset-10" aria-hidden />
-                <motion.div className="relative grid h-16 w-16 place-items-center rounded-[22px] bg-lime text-lime-ink shadow-glow" animate={{ rotate: [0, -6, 6, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
+                <motion.div className="relative grid h-16 w-16 place-items-center rounded-xl bg-lime text-lime-ink" animate={{ rotate: [0, -6, 6, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
                   <Sparkles size={28} />
                 </motion.div>
               </div>
@@ -76,8 +75,8 @@ export function AssistantScreen() {
               <p className="mx-auto mt-2 max-w-md text-[14.5px] leading-relaxed text-fg-2">I read the same sample data as your dashboard: leads, sources, offers, clients and bookings. Try a question below.</p>
               <div className="mt-8 grid gap-2.5 text-left sm:grid-cols-2">
                 {SUGGESTED_PROMPTS.map((p, i) => (
-                  <motion.button key={p} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05, duration: 0.4, ease: EASE }} whileHover={{ y: -2 }} onClick={() => ask(p)} className="flex items-center gap-3 rounded-2xl border border-line bg-panel-2/40 p-3.5 text-left text-[13.5px] font-medium text-fg-2 transition-colors hover:border-lime/40 hover:text-fg">
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-line bg-panel text-lime">{PROMPT_ICON[i]}</span>
+                  <motion.button key={p} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05, duration: 0.4, ease: EASE }} whileHover={{ y: -2 }} onClick={() => ask(p)} className="flex items-center gap-3 rounded-2xl border border-line bg-panel-2/40 p-3.5 text-left text-[13.5px] font-medium text-fg-2 transition-colors hover:border-lime-fg/40 hover:text-fg">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-line bg-panel text-lime-fg">{PROMPT_ICON[i]}</span>
                     {p}
                   </motion.button>
                 ))}
@@ -93,7 +92,7 @@ export function AssistantScreen() {
                   <BotAvatar />
                   <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-md border border-line bg-panel-2/60 px-4 py-3.5">
                     {[0, 1, 2].map((i) => (
-                      <motion.span key={i} className="h-1.5 w-1.5 rounded-full bg-lime" animate={{ opacity: [0.25, 1, 0.25], y: [0, -3, 0] }} transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.15 }} />
+                      <motion.span key={i} className="h-1.5 w-1.5 rounded-full bg-s1" animate={{ opacity: [0.25, 1, 0.25], y: [0, -3, 0] }} transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.15 }} />
                     ))}
                   </div>
                 </div>
@@ -108,7 +107,7 @@ export function AssistantScreen() {
           {chat.length > 0 && (
             <div className="mx-auto mb-2.5 flex max-w-3xl gap-2 overflow-x-auto pb-1 scrollbar-none">
               {SUGGESTED_PROMPTS.map((p) => (
-                <button key={p} onClick={() => ask(p)} disabled={busy} className="shrink-0 rounded-full border border-line px-3 py-1.5 text-[12px] text-fg-2 transition hover:border-line-2 hover:text-fg disabled:opacity-50">
+                <button key={p} onClick={() => ask(p)} disabled={busy} className="shrink-0 rounded-md border border-line px-3 py-1.5 text-[12px] text-fg-2 transition hover:border-line-2 hover:text-fg disabled:opacity-50">
                   {p}
                 </button>
               ))}
@@ -119,7 +118,7 @@ export function AssistantScreen() {
               e.preventDefault();
               ask(input);
             }}
-            className="mx-auto flex max-w-3xl items-end gap-2 rounded-[22px] border border-line bg-panel-2/50 p-1.5 pl-4 transition focus-within:border-lime/50"
+            className="mx-auto flex max-w-3xl items-end gap-2 rounded-xl border border-line bg-panel-2/50 p-1.5 pl-4 transition focus-within:border-lime-fg/50"
           >
             <textarea
               value={input}
@@ -205,19 +204,19 @@ function Message({ m, live }: { m: ChatMessage; live?: boolean }) {
       <div className="min-w-0 max-w-[88%]">
         <div className="prose-chat rounded-2xl rounded-tl-md border border-line bg-panel-2/40 px-4 py-3.5 text-[14.5px] leading-relaxed text-fg-2">
           <Markdown text={m.text} />
-          {live && <span className="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 animate-pulse bg-lime" aria-hidden />}
+          {live && <span className="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 animate-pulse bg-s1" aria-hidden />}
         </div>
         <AnimatePresence>
           {!live && m.cards && m.cards.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="mt-2.5 flex flex-wrap gap-2">
               {m.cards.map((c) =>
                 c.href ? (
-                  <Link key={c.label} href={c.href} className="inline-flex items-center gap-2 rounded-full border border-line bg-panel px-3.5 py-1.5 text-[12.5px] transition hover:border-lime/40">
+                  <Link key={c.label} href={c.href} className="inline-flex items-center gap-2 rounded-md border border-line bg-panel px-3.5 py-1.5 text-[12.5px] transition hover:border-lime-fg/40">
                     <span className="text-fg-2">{c.label}</span>
-                    <span className="font-semibold text-lime">{c.value}</span>
+                    <span className="font-semibold text-lime-fg">{c.value}</span>
                   </Link>
                 ) : (
-                  <span key={c.label} className="rounded-full border border-line px-3.5 py-1.5 text-[12.5px]">
+                  <span key={c.label} className="rounded-md border border-line px-3.5 py-1.5 text-[12.5px]">
                     {c.label}: {c.value}
                   </span>
                 ),
@@ -236,10 +235,10 @@ function Markdown({ text }: { text: string }) {
   const out: ReactNode[] = [];
   blocks.forEach((line, i) => {
     if (!line.trim()) return out.push(<div key={i} className="h-2" />);
-    if (line.startsWith("> ")) return out.push(<blockquote key={i} className="my-1 border-l-2 border-lime/60 bg-panel/60 py-2 pl-3 pr-2 text-fg">{inline(line.slice(2))}</blockquote>);
-    if (line.startsWith("• ")) return out.push(<p key={i} className="flex gap-2 pl-1"><span className="text-lime">•</span><span>{inline(line.slice(2))}</span></p>);
+    if (line.startsWith("> ")) return out.push(<blockquote key={i} className="my-1 border-l-2 border-lime-fg/60 bg-panel/60 py-2 pl-3 pr-2 text-fg">{inline(line.slice(2))}</blockquote>);
+    if (line.startsWith("• ")) return out.push(<p key={i} className="flex gap-2 pl-1"><span className="text-lime-fg">•</span><span>{inline(line.slice(2))}</span></p>);
     const num = line.match(/^(\d+)\. (.*)$/);
-    if (num) return out.push(<p key={i} className="flex gap-2 pl-1"><span className="font-semibold tabular text-lime">{num[1]}.</span><span>{inline(num[2]!)}</span></p>);
+    if (num) return out.push(<p key={i} className="flex gap-2 pl-1"><span className="font-semibold tabular text-lime-fg">{num[1]}.</span><span>{inline(num[2]!)}</span></p>);
     out.push(<p key={i}>{inline(line)}</p>);
   });
   return <div className="space-y-1">{out}</div>;

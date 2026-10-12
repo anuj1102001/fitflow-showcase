@@ -14,7 +14,7 @@ import type { Booking, BookingKind, BookingStatus } from "@/lib/types";
 import { useUI } from "@/lib/ui-store";
 
 const KIND_STYLE: Record<BookingKind, { bar: string; bg: string; text: string; dot: string }> = {
-  "Discovery call": { bar: "bg-lime", bg: "bg-lime/[.12] hover:bg-lime/[.18]", text: "text-lime", dot: "bg-lime" },
+  "Discovery call": { bar: "bg-s1", bg: "bg-lime/[.12] hover:bg-lime/[.18]", text: "text-lime-fg", dot: "bg-s1" },
   "Check-in": { bar: "bg-info", bg: "bg-info/[.12] hover:bg-info/[.18]", text: "text-info", dot: "bg-info" },
   "Coaching session": { bar: "bg-violet", bg: "bg-violet/[.13] hover:bg-violet/[.2]", text: "text-violet", dot: "bg-violet" },
   Assessment: { bar: "bg-warn", bg: "bg-warn/[.12] hover:bg-warn/[.18]", text: "text-warn", dot: "bg-warn" },
@@ -64,7 +64,7 @@ export function BookingsScreen() {
             <button onClick={() => setWeek(addDays(week, -7))} className="grid h-8 w-8 place-items-center rounded-full text-fg-2 transition hover:bg-panel-2 hover:text-fg" aria-label="Previous week">
               <ChevronLeft size={16} />
             </button>
-            <button onClick={() => setWeek(mondayOf(new Date()))} disabled={thisWeek} className="h-8 rounded-full px-3 text-[13px] font-medium text-fg-2 transition hover:bg-panel-2 hover:text-fg disabled:text-fg-3 disabled:hover:bg-transparent">
+            <button onClick={() => setWeek(mondayOf(new Date()))} disabled={thisWeek} className="h-8 rounded-lg px-3 text-[13px] font-medium text-fg-2 transition hover:bg-panel-2 hover:text-fg disabled:text-fg-3 disabled:hover:bg-transparent">
               Today
             </button>
             <button onClick={() => setWeek(addDays(week, 7))} className="grid h-8 w-8 place-items-center rounded-full text-fg-2 transition hover:bg-panel-2 hover:text-fg" aria-label="Next week">
@@ -277,16 +277,16 @@ function Agenda({ bookings, name, onOpen, onStatus }: { bookings: Booking[]; nam
                   <Badge tone={STATUS_TONE[b.status]}>{b.status}</Badge>
                   {past && b.status === "confirmed" && (
                     <>
-                      <button onClick={() => onStatus(b, "completed")} className="rounded-full px-2.5 py-1 text-[12px] font-medium text-ok hover:bg-ok/10">
+                      <button onClick={() => onStatus(b, "completed")} className="rounded-md px-2.5 py-1 text-[12px] font-medium text-ok hover:bg-ok/10">
                         Completed
                       </button>
-                      <button onClick={() => onStatus(b, "no-show")} className="rounded-full px-2.5 py-1 text-[12px] font-medium text-bad hover:bg-bad/10">
+                      <button onClick={() => onStatus(b, "no-show")} className="rounded-md px-2.5 py-1 text-[12px] font-medium text-bad hover:bg-bad/10">
                         No-show
                       </button>
                     </>
                   )}
                   {!past && b.status === "pending" && (
-                    <button onClick={() => onStatus(b, "confirmed")} className="rounded-full px-2.5 py-1 text-[12px] font-medium text-lime hover:bg-lime/10">
+                    <button onClick={() => onStatus(b, "confirmed")} className="rounded-md px-2.5 py-1 text-[12px] font-medium text-lime-fg hover:bg-lime/10">
                       Confirm
                     </button>
                   )}

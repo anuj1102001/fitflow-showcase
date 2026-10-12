@@ -32,17 +32,17 @@ export function ScaledFrame({ designWidth, children, className, label, height }:
 
 export function BrowserFrame({ url, children, className, height = 520 }: { url: string; children: ReactNode; className?: string; height?: number }) {
   return (
-    <div className={cn("overflow-hidden rounded-2xl border border-white/10 bg-[#16181b] shadow-[0_40px_90px_-30px_rgba(0,0,0,.85)]", className)}>
-      <div className="flex h-9 items-center gap-3 border-b border-white/[.06] bg-[#1b1d21] px-3.5">
+    <div className={cn("overflow-hidden rounded-2xl border border-line bg-panel shadow-[0_1px_2px_rgb(0_0_0/.06),0_30px_70px_-30px_rgb(0_0_0/calc(.3*var(--sh-a)))]", className)}>
+      <div className="flex h-9 items-center gap-3 border-b border-line bg-panel px-3.5">
         <div className="flex gap-1.5" aria-hidden>
           <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]/80" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]/80" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]/80" />
         </div>
-        <div className="mx-auto flex h-6 max-w-[60%] flex-1 items-center justify-center gap-1.5 truncate rounded-md bg-black/30 px-3 text-[11px] text-[#9a9e97]">
+        <div className="mx-auto flex h-6 max-w-[60%] flex-1 items-center justify-center gap-1.5 truncate rounded-md bg-panel-2 px-3 text-[11px] text-fg-3">
           <Lock size={10} /> <span className="truncate">{url}</span>
         </div>
-        <RotateCw size={12} className="text-[#6b6f68]" aria-hidden />
+        <RotateCw size={12} className="text-fg-3" aria-hidden />
       </div>
       <ScaledFrame designWidth={1280} label={`Desktop preview of ${url}`} height={height}>
         {children}
@@ -53,9 +53,9 @@ export function BrowserFrame({ url, children, className, height = 520 }: { url: 
 
 export function PhoneFrame({ children, className, height = 640, width = 320 }: { children: ReactNode; className?: string; height?: number; width?: number }) {
   return (
-    <div className={cn("relative shrink-0 rounded-[46px] border border-white/10 bg-[#0e0f11] p-[10px] shadow-[0_40px_90px_-30px_rgba(0,0,0,.9),inset_0_0_0_1px_rgba(255,255,255,.04)]", className)} style={{ width, height }}>
+    <div className={cn("relative shrink-0 rounded-[46px] border border-line bg-[#0e0f11] p-[10px] shadow-[0_30px_70px_-30px_rgb(0_0_0/calc(.35*var(--sh-a))),inset_0_0_0_1px_rgba(255,255,255,.05)]", className)} style={{ width, height }}>
       <div className="absolute left-1/2 top-[18px] z-30 h-[22px] w-[92px] -translate-x-1/2 rounded-full bg-black" aria-hidden />
-      <div className="h-full overflow-hidden rounded-[36px]">
+      <div className="h-full overflow-hidden rounded-2xl">
         <ScaledFrame designWidth={375} label="Mobile preview" className="h-full">
           {children}
         </ScaledFrame>

@@ -11,6 +11,7 @@ import { cn } from "@/components/ui/cn";
 import { Avatar, Kbd, Menu, MenuItem, Skeleton } from "@/components/ui/kit";
 import { LogoMark, Logo } from "@/components/ui/logo";
 import { useToast } from "@/components/ui/toast";
+import { ThemeFlip, ThemeToggle } from "@/components/theme-toggle";
 import { ago } from "@/lib/format";
 import { COACH } from "@/lib/seed";
 import { useDemo, useHydrated } from "@/lib/store";
@@ -110,7 +111,7 @@ function DemoStrip() {
   const router = useRouter();
   return (
     <div className="relative z-[60] flex h-9 items-center justify-center gap-3 border-b border-line bg-[linear-gradient(90deg,rgb(var(--lime)/.08),transparent_30%,transparent_70%,rgb(var(--lime)/.08))] px-4 text-[12px] text-fg-2">
-      <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-lime" aria-hidden />
+      <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-s1" aria-hidden />
       <span className="truncate">
         <span className="font-medium text-fg">Interactive prototype</span>
         <span className="hidden sm:inline"> · Fictional coach and sample data · Your changes are saved in this browser only</span>
@@ -122,7 +123,7 @@ function DemoStrip() {
           router.push("/app");
           toast({ tone: "success", title: "Demo reset", body: "Fresh sample data loaded." });
         }}
-        className="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 font-medium text-fg-2 transition hover:bg-panel-2 hover:text-fg"
+        className="inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-0.5 font-medium text-fg-2 transition hover:bg-panel-2 hover:text-fg"
       >
         <RotateCcw size={12} /> Reset
       </button>
@@ -164,10 +165,10 @@ function Sidebar({ collapsed, onToggle, path }: { collapsed: boolean; onToggle?:
                       className={cn("group relative flex h-10 items-center gap-3 rounded-xl text-[14px] font-medium transition-colors", collapsed ? "justify-center" : "px-3", on ? "text-fg" : "text-fg-3 hover:bg-panel-2/60 hover:text-fg")}
                     >
                       {on && <motion.span layoutId="nav-active" className="absolute inset-0 rounded-xl border border-line-2 bg-panel-2" transition={SPRING} />}
-                      {on && <motion.span layoutId="nav-bar" className="absolute -left-3 top-2 h-6 w-[3px] rounded-r-full bg-lime" transition={SPRING} />}
-                      <Icon size={18} className={cn("relative shrink-0", on && "text-lime")} />
+                      {on && <motion.span layoutId="nav-bar" className="absolute -left-3 top-2 h-6 w-[3px] rounded-r-full bg-s1" transition={SPRING} />}
+                      <Icon size={18} className={cn("relative shrink-0", on && "text-lime-fg")} />
                       {!collapsed && <span className="relative flex-1 truncate">{n.label}</span>}
-                      {!collapsed && n.href === "/app/leads" && active > 0 && <span className="relative rounded-full bg-lime px-1.5 text-[11px] font-semibold text-lime-ink">{active}</span>}
+                      {!collapsed && n.href === "/app/leads" && active > 0 && <span className="relative rounded-md bg-lime px-1.5 text-[11px] font-semibold text-lime-ink">{active}</span>}
                     </Link>
                   </li>
                 );
@@ -209,7 +210,7 @@ function Topbar({ title, blurb }: { title: string; blurb?: string }) {
           <h1 className="truncate text-[19px] font-semibold leading-tight">{title}</h1>
           {blurb && <p className="hidden truncate text-[12.5px] text-fg-3 md:block">{blurb}</p>}
         </div>
-        <button onClick={() => setPalette(true)} className="hidden h-10 w-64 items-center gap-2.5 rounded-full border border-line bg-panel px-4 text-[13px] text-fg-3 transition hover:border-line-2 md:flex" aria-label="Search (Ctrl K)">
+        <button onClick={() => setPalette(true)} className="hidden h-10 w-64 items-center gap-2.5 rounded-lg border border-line bg-panel px-4 text-[13px] text-fg-3 transition hover:border-line-2 md:flex" aria-label="Search (Ctrl K)">
           <Search size={15} />
           <span className="flex-1 text-left">Search leads, pages…</span>
           <Kbd>⌘K</Kbd>
@@ -235,6 +236,7 @@ function Topbar({ title, blurb }: { title: string; blurb?: string }) {
             </>
           )}
         </Menu>
+        <ThemeFlip className="hidden sm:inline-grid" />
         <Notifications />
         <Menu
           label="Account"
@@ -250,6 +252,11 @@ function Topbar({ title, blurb }: { title: string; blurb?: string }) {
               <div className="px-3 pb-2 pt-1.5">
                 <p className="text-[13.5px] font-semibold">{COACH.name}</p>
                 <p className="text-[12px] text-fg-3">Fictional demo account</p>
+              </div>
+              <div className="my-1 h-px bg-line" />
+              <div className="flex items-center justify-between px-2.5 py-1.5">
+                <span className="text-[13px] text-fg-2">Appearance</span>
+                <ThemeToggle size="sm" />
               </div>
               <div className="my-1 h-px bg-line" />
               <MenuItem icon={<ExternalLink size={15} />} onClick={() => (close(), window.open("/s/aarav", "_blank"))}>View my storefront</MenuItem>
@@ -292,7 +299,7 @@ function Notifications() {
           <div className="flex items-center justify-between px-3 pb-2 pt-1.5">
             <p className="text-[13.5px] font-semibold">Notifications</p>
             {unread > 0 && (
-              <button onClick={markAllRead} className="text-[12px] font-medium text-lime hover:underline">
+              <button onClick={markAllRead} className="text-[12px] font-medium text-lime-fg hover:underline">
                 Mark all read
               </button>
             )}
@@ -309,7 +316,7 @@ function Notifications() {
                   }}
                   className="flex w-full gap-3 rounded-xl px-3 py-2.5 text-left transition hover:bg-panel-2"
                 >
-                  <span className={cn("mt-1.5 h-2 w-2 shrink-0 rounded-full", n.read ? "bg-line-2" : "bg-lime")} aria-hidden />
+                  <span className={cn("mt-1.5 h-2 w-2 shrink-0 rounded-full", n.read ? "bg-line-2" : "bg-s1")} aria-hidden />
                   <span className="min-w-0 flex-1">
                     <span className={cn("block truncate text-[13.5px]", n.read ? "text-fg-2" : "font-semibold text-fg")}>{n.title}</span>
                     <span className="block truncate text-[12.5px] text-fg-3">{n.body}</span>
@@ -330,12 +337,12 @@ function ShellSkeleton() {
     <div className="space-y-5" aria-busy="true" aria-label="Loading demo">
       <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
         {[0, 1, 2, 3].map((i) => (
-          <Skeleton key={i} className="h-[118px] rounded-3xl" />
+          <Skeleton key={i} className="h-[118px] rounded-2xl" />
         ))}
       </div>
       <div className="grid gap-4 xl:grid-cols-3">
-        <Skeleton className="h-[340px] rounded-3xl xl:col-span-2" />
-        <Skeleton className="h-[340px] rounded-3xl" />
+        <Skeleton className="h-[340px] rounded-2xl xl:col-span-2" />
+        <Skeleton className="h-[340px] rounded-2xl" />
       </div>
     </div>
   );

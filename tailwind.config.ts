@@ -26,6 +26,7 @@ export default {
         "lime-ink": v("lime-ink"),
         "lime-fg": v("lime-fg"),
         chart: v("chart"),
+        s1: v("s-1"),
         ok: v("ok"),
         warn: v("warn"),
         bad: v("bad"),
@@ -34,16 +35,16 @@ export default {
       },
       fontFamily: {
         sans: ["var(--font-geist)", "ui-sans-serif", "system-ui", "sans-serif"],
-        display: ["var(--font-bricolage)", "var(--font-geist)", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-geist)", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
       },
       fontSize: { "2xs": ["11px", { lineHeight: "14px" }] },
       borderRadius: { "4xl": "2rem" },
       boxShadow: {
-        card: "0 1px 0 rgb(var(--hl) / var(--hl-a)) inset, 0 1px 2px rgb(0 0 0 / calc(.06 * var(--sh-a))), 0 16px 40px -24px rgb(0 0 0 / calc(.35 * var(--sh-a)))",
+        card: "0 1px 0 rgb(var(--hl) / var(--hl-a)) inset, 0 1px 2px rgb(0 0 0 / calc(.05 * var(--sh-a)))",
         pop: "0 24px 60px -20px rgb(0 0 0 / calc(.5 * var(--sh-a))), 0 0 0 1px rgb(var(--line) / 1)",
-        glow: "0 0 0 1px rgb(var(--lime) / .5), 0 8px 30px -6px rgb(var(--lime) / .45)",
-        ring: "0 0 0 4px rgb(var(--lime) / .18)",
+        glow: "0 0 0 1px rgb(var(--line-2))",
+        ring: "0 0 0 3px rgb(var(--fg) / .08)",
       },
       transitionTimingFunction: { soft: "cubic-bezier(.22,.8,.24,1)" },
       keyframes: {

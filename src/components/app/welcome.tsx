@@ -54,17 +54,15 @@ export function Welcome() {
               exit={{ opacity: 0, y: 12, scale: 0.98 }}
               transition={{ duration: 0.5, ease: EASE }}
               style={{ transformPerspective: 1200 }}
-              className="relative w-full max-w-md overflow-hidden rounded-[28px] border border-line bg-panel shadow-pop"
+              className="relative w-full max-w-md overflow-hidden rounded-2xl border border-line bg-panel shadow-pop"
             >
               <div className="relative h-28 overflow-hidden border-b border-line">
-                <div className="grid-lines absolute inset-0 [mask-image:linear-gradient(to_bottom,#000,transparent)]" />
-                <div className="lime-glow absolute -top-16 left-1/2 h-48 w-80 -translate-x-1/2" />
                 <p className="eyebrow absolute bottom-4 left-6">Welcome to the demo · {step + 1}/{STEPS.length}</p>
               </div>
               <div className="p-6">
                 <AnimatePresence mode="wait">
                   <motion.div key={step} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ duration: 0.25, ease: EASE }}>
-                    <div className="mb-4 grid h-12 w-12 place-items-center rounded-2xl border border-line bg-panel-2 text-lime">{s.icon}</div>
+                    <div className="mb-4 grid h-12 w-12 place-items-center rounded-2xl border border-line bg-panel-2 text-lime-fg">{s.icon}</div>
                     <h2 id="welcome-title" className="text-[21px] font-semibold">
                       {s.title}
                     </h2>
@@ -74,7 +72,7 @@ export function Welcome() {
                 <div className="mt-6 flex items-center justify-between">
                   <div className="flex gap-1.5" aria-hidden>
                     {STEPS.map((_, i) => (
-                      <span key={i} className={cn("h-1.5 rounded-full transition-all duration-300", i === step ? "w-6 bg-lime" : "w-1.5 bg-line-2")} />
+                      <span key={i} className={cn("h-1.5 rounded-full transition-all duration-300", i === step ? "w-6 bg-s1" : "w-1.5 bg-line-2")} />
                     ))}
                   </div>
                   <div className="flex gap-2">

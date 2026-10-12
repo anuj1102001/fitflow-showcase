@@ -55,8 +55,6 @@ function OfferList({ onNew, onEdit }: { onNew: () => void; onEdit: (id: string) 
   return (
     <div className="space-y-5">
       <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE }} className="card relative overflow-hidden p-6 sm:p-8">
-        <div className="grid-lines absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_right,#000,transparent_70%)]" aria-hidden />
-        <div className="lime-glow absolute -right-24 -top-24 h-72 w-72" aria-hidden />
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="max-w-xl">
             <Badge tone="lime">
@@ -142,9 +140,9 @@ function OfferList({ onNew, onEdit }: { onNew: () => void; onEdit: (id: string) 
               </motion.article>
             );
           })}
-          <button onClick={onNew} className="group grid min-h-[280px] place-items-center rounded-3xl border border-dashed border-line-2 text-fg-3 transition hover:border-lime/50 hover:text-fg">
+          <button onClick={onNew} className="group grid min-h-[280px] place-items-center rounded-2xl border border-dashed border-line-2 text-fg-3 transition hover:border-lime-fg/50 hover:text-fg">
             <span className="flex flex-col items-center gap-2 text-[14px] font-medium">
-              <span className="grid h-11 w-11 place-items-center rounded-2xl border border-line bg-panel transition group-hover:border-lime/40 group-hover:text-lime">
+              <span className="grid h-11 w-11 place-items-center rounded-2xl border border-line bg-panel transition group-hover:border-lime-fg/40 group-hover:text-lime-fg">
                 <Plus size={20} />
               </span>
               New offer with AI
@@ -246,7 +244,7 @@ function Builder({ editId, onExit }: { editId: string | null; onExit: () => void
               <button
                 disabled={i > step && !draft}
                 onClick={() => setStep(i)}
-                className={cn("flex items-center gap-2 rounded-full border px-3 py-1.5 text-[13px] font-medium transition disabled:cursor-not-allowed disabled:opacity-50", active ? "border-lime/50 bg-lime/10 text-fg" : done ? "border-line bg-panel text-fg-2 hover:border-line-2" : "border-line text-fg-3")}
+                className={cn("flex items-center gap-2 rounded-md border px-3 py-1.5 text-[13px] font-medium transition disabled:cursor-not-allowed disabled:opacity-50", active ? "border-lime-fg/50 bg-lime/10 text-fg" : done ? "border-line bg-panel text-fg-2 hover:border-line-2" : "border-line text-fg-3")}
                 aria-current={active ? "step" : undefined}
               >
                 <span className={cn("grid h-5 w-5 place-items-center rounded-full text-[11px] font-semibold", done ? "bg-lime text-lime-ink" : active ? "bg-fg text-bg" : "bg-panel-2 text-fg-3")}>{done ? <Check size={12} /> : i + 1}</span>
@@ -417,7 +415,7 @@ function Builder({ editId, onExit }: { editId: string | null; onExit: () => void
                       </AnimatePresence>
                     </ul>
                     {draft.benefits.length < 6 && (
-                      <button onClick={() => setDraft({ ...draft, benefits: [...draft.benefits, ""] })} className="mt-2 inline-flex items-center gap-1.5 pl-6 text-[13px] font-medium text-lime hover:underline">
+                      <button onClick={() => setDraft({ ...draft, benefits: [...draft.benefits, ""] })} className="mt-2 inline-flex items-center gap-1.5 pl-6 text-[13px] font-medium text-lime-fg hover:underline">
                         <Plus size={14} /> Add benefit
                       </button>
                     )}
@@ -467,20 +465,19 @@ function Builder({ editId, onExit }: { editId: string | null; onExit: () => void
           {previewOffer && !generating ? (
             preview === "card" ? (
               <motion.div initial={{ opacity: 0, rotateY: -18, y: 20 }} animate={{ opacity: 1, rotateY: 0, y: 0 }} transition={{ duration: 0.8, ease: EASE }} style={{ transformPerspective: 1400 }}>
-                <TiltCard max={5} className="rounded-[28px]">
+                <TiltCard max={5} className="rounded-2xl">
                   <OfferCardThemed offer={previewOffer} theme={storefront.theme} highlight />
                 </TiltCard>
               </motion.div>
             ) : (
-              <div className="h-[600px] overflow-hidden rounded-[28px] border border-line">
+              <div className="h-[600px] overflow-hidden rounded-2xl border border-line">
                 <div className="h-full overflow-y-auto">
                   <StorefrontView sf={storefront} offers={[previewOffer]} preview />
                 </div>
               </div>
             )
           ) : (
-            <div className="relative grid h-[440px] place-items-center overflow-hidden rounded-[28px] border border-dashed border-line-2 p-8 text-center">
-              <div className="dots dots-fade absolute inset-0" aria-hidden />
+            <div className="relative grid h-[440px] place-items-center overflow-hidden rounded-2xl border border-dashed border-line-2 p-8 text-center">
               <div className="relative">
                 <SkeletonOffer animate={generating} />
                 <p className="mt-5 text-[13.5px] text-fg-3">{generating ? "Drafting your offer…" : "Your offer preview appears here once it's generated."}</p>
@@ -511,9 +508,9 @@ function ChoiceCard({ selected, onClick, icon, title, body, compact }: { selecte
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       aria-pressed={selected}
-      className={cn("relative flex items-start gap-3 rounded-2xl border p-4 text-left transition-colors", compact && "items-center py-3.5", selected ? "border-lime/60 bg-lime/[.07]" : "border-line bg-panel-2/40 hover:border-line-2 hover:bg-panel-2")}
+      className={cn("relative flex items-start gap-3 rounded-2xl border p-4 text-left transition-colors", compact && "items-center py-3.5", selected ? "border-lime-fg/60 bg-lime/[.07]" : "border-line bg-panel-2/40 hover:border-line-2 hover:bg-panel-2")}
     >
-      {icon && <span className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-xl border transition-colors", selected ? "border-lime/40 bg-lime text-lime-ink" : "border-line bg-panel text-fg-2")}>{icon}</span>}
+      {icon && <span className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-xl border transition-colors", selected ? "border-lime-fg/40 bg-lime text-lime-ink" : "border-line bg-panel text-fg-2")}>{icon}</span>}
       <span className="min-w-0 flex-1">
         <span className="block text-[14.5px] font-semibold">{title}</span>
         {body && <span className="mt-0.5 block text-[13px] leading-snug text-fg-3">{body}</span>}
@@ -538,15 +535,15 @@ function PriceGuide({ low, high, price, verdict, onUse }: { low: number; high: n
     <div className="mt-6 rounded-2xl border border-line bg-panel-2/40 p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="flex items-center gap-2 text-[13.5px] font-semibold">
-          <Sparkles size={14} className="text-lime" /> Suggested range: {rupees(low)} – {rupees(high)}
+          <Sparkles size={14} className="text-lime-fg" /> Suggested range: {rupees(low)} – {rupees(high)}
         </p>
-        <button onClick={() => onUse(mid)} className="text-[12.5px] font-medium text-lime hover:underline">
+        <button onClick={() => onUse(mid)} className="text-[12.5px] font-medium text-lime-fg hover:underline">
           Use {rupees(mid)}
         </button>
       </div>
       <div className="relative mt-5 h-2 rounded-full bg-line">
         <div className="absolute inset-y-0 rounded-full bg-lime/40" style={{ left: pos(low), right: `calc(100% - ${pos(high)})` }} />
-        {price > 0 && <motion.div className="absolute -top-1.5 h-5 w-5 -translate-x-1/2 rounded-full border-2 border-bg bg-lime shadow-glow" animate={{ left: pos(price) }} transition={SPRING} aria-hidden />}
+        {price > 0 && <motion.div className="absolute -top-1.5 h-5 w-5 -translate-x-1/2 rounded-full border-2 border-bg bg-lime" animate={{ left: pos(price) }} transition={SPRING} aria-hidden />}
       </div>
       <p className="mt-4 text-[13px] leading-relaxed text-fg-2">
         {verdict === "below"
@@ -588,8 +585,8 @@ function Generating() {
           const active = k === i;
           return (
             <motion.li key={s} initial={{ opacity: 0, x: -8 }} animate={{ opacity: k <= i ? 1 : 0.35, x: 0 }} transition={{ delay: k * 0.08 }} className="flex items-center gap-3 text-[14px]">
-              <span className={cn("grid h-6 w-6 place-items-center rounded-full border transition-colors", done ? "border-lime bg-lime text-lime-ink" : active ? "border-lime/60" : "border-line-2")}>
-                {done ? <Check size={13} strokeWidth={3} /> : active ? <span className="h-2 w-2 animate-pulse-dot rounded-full bg-lime" /> : null}
+              <span className={cn("grid h-6 w-6 place-items-center rounded-full border transition-colors", done ? "border-lime-fg bg-lime text-lime-ink" : active ? "border-lime-fg/60" : "border-line-2")}>
+                {done ? <Check size={13} strokeWidth={3} /> : active ? <span className="h-2 w-2 animate-pulse-dot rounded-full bg-s1" /> : null}
               </span>
               <span className={done ? "text-fg" : active ? "text-fg-2" : "text-fg-3"}>{s}</span>
             </motion.li>
@@ -602,7 +599,7 @@ function Generating() {
 
 function SkeletonOffer({ animate }: { animate: boolean }) {
   return (
-    <div className={cn("mx-auto w-64 space-y-3 rounded-3xl border border-line bg-panel p-5 text-left", animate && "animate-pulse")}>
+    <div className={cn("mx-auto w-64 space-y-3 rounded-2xl border border-line bg-panel p-5 text-left", animate && "animate-pulse")}>
       <div className="h-3 w-20 rounded-full bg-line-2" />
       <div className="h-5 w-48 rounded-full bg-line-2" />
       <div className="h-3 w-full rounded-full bg-line" />

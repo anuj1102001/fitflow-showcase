@@ -1,6 +1,7 @@
 import { AnalyticsPreview, Features, StorefrontShowcase } from "@/components/landing/demos";
 import { Hero, LandingNav } from "@/components/landing/hero";
-import { AISection, FaqSection, FinalCta, Footer, Pricing, Problem, Workflow } from "@/components/landing/sections";
+import { AISection, FaqSection, FinalCta, Footer, Pricing, Problem } from "@/components/landing/sections";
+import { Workflow } from "@/components/landing/workflow";
 
 export default function Home() {
   return (

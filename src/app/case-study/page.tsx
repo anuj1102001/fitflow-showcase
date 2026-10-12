@@ -10,8 +10,10 @@ export const metadata: Metadata = {
 };
 
 const SHOTS = [
-  { src: "/screens/landing.jpg", cap: "Landing page: a layered 3D product composition that settles flat as you scroll." },
+  { src: "/screens/landing.jpg", cap: "Landing page (light): editorial hero with a product shot that settles flat as you scroll." },
+  { src: "/screens/landing-dark.jpg", cap: "The same page in dark mode. Every surface, text and chart colour is a token with a Light and Dark value." },
   { src: "/screens/overview.jpg", cap: "Overview: KPIs, trend, AI insights and the day's work on one screen." },
+  { src: "/screens/overview-dark.jpg", cap: "Overview in dark mode." },
   { src: "/screens/leads.jpg", cap: "Lead CRM: drag-and-drop pipeline with source, value and follow-up urgency on every card." },
   { src: "/screens/offer-builder.jpg", cap: "AI Offer Builder: five guided steps, then an editable draft with a live preview." },
   { src: "/screens/storefront-builder.jpg", cap: "Storefront builder: theme, content and sections, previewed on desktop and phone in 3D." },
@@ -41,7 +43,7 @@ const DECISIONS = [
     b: "Every KPI and chart is derived from one dataset through shared functions, metric definitions are shown next to the numbers, rates show “–” rather than 0% when there's no data, and anything sample is labelled as such.",
   },
   {
-    t: "CSS 3D over WebGL",
+    t: "CSS 3D + GSAP over WebGL",
     b: "The brief asked for depth and 3D. A WebGL scene would add ~600 KB and still need a fallback. Layered CSS transforms with spring-driven parallax give the same sense of depth, stay crisp for text, and degrade to flat layouts with reduced motion.",
   },
 ];
@@ -70,16 +72,16 @@ export default function CaseStudy() {
       </header>
 
       <main id="main" className="mx-auto max-w-5xl px-4 pb-24 pt-14 sm:px-6 sm:pt-20">
-        <p className="eyebrow text-lime">Case study · product design & front-end</p>
+        <p className="eyebrow">Case study · product design & front-end</p>
         <h1 className="mt-4 text-balance text-[40px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[60px]">FITFLOW AI: a business OS for fitness coaches</h1>
         <p className="mt-6 max-w-3xl text-[18px] leading-relaxed text-fg-2">
           An interactive SaaS prototype that helps independent fitness coaches turn an online audience into paying clients: offers, a storefront, a lead pipeline, AI-drafted follow-ups, bookings, client tracking and analytics in one workspace.
         </p>
-        <dl className="mt-10 grid gap-4 rounded-3xl border border-line bg-panel p-6 sm:grid-cols-4">
+        <dl className="mt-10 grid gap-4 rounded-2xl border border-line bg-panel p-6 sm:grid-cols-4">
           {[
             ["Role", "Product strategy, UX, UI, front-end"],
             ["Scope", "Landing page, 9-screen app, 2 storefronts"],
-            ["Stack", "Next.js, TypeScript, Tailwind, Motion, Recharts"],
+            ["Stack", "Figma, Next.js, TypeScript, Tailwind, GSAP, Motion"],
             ["Type", "Portfolio prototype with sample data"],
           ].map(([k, v]) => (
             <div key={k}>
@@ -169,14 +171,14 @@ export default function CaseStudy() {
         </Section>
 
         <Section n="07" title="UX problems addressed">
-          <div className="overflow-hidden rounded-3xl border border-line">
+          <div className="overflow-hidden rounded-2xl border border-line">
             {UX.map(([p, s], i) => (
               <div key={p} className={`grid gap-2 p-5 sm:grid-cols-2 sm:gap-6 ${i ? "border-t border-line" : ""}`}>
                 <p className="flex gap-2 text-[14.5px] text-fg-2">
                   <X size={16} className="mt-0.5 shrink-0 text-bad" /> {p}
                 </p>
                 <p className="flex gap-2 text-[14.5px]">
-                  <Check size={16} className="mt-0.5 shrink-0 text-lime" /> {s}
+                  <Check size={16} className="mt-0.5 shrink-0 text-lime-fg" /> {s}
                 </p>
               </div>
             ))}
@@ -211,17 +213,26 @@ export default function CaseStudy() {
               <p>Labels and eyebrows.</p>
             </Card>
             <Card title="Components">Buttons (4 variants × 4 sizes), inputs with inline validation, segmented controls with a shared sliding indicator, badges by tone, drawers, menus, dialogs, toasts, command palette, empty states and skeletons.</Card>
-            <Card title="Motion">One easing curve and one spring preset. Entrances stagger, tabs slide, numbers count, charts draw in; everything respects “reduce motion”. 3D is reserved for showcase moments (hero, storefront previews, offer preview).</Card>
+            <Card title="Motion">Motion (Framer) for UI micro-interactions: one easing curve, one spring. GSAP for scroll choreography: a SplitText headline reveal and a pinned, scrubbed “How it works” sequence. Everything respects “reduce motion”.</Card>
           </div>
         </Section>
 
-        <Section n="09" title="Build">
+        <Section n="09" title="Figma file">
+          <p>
+            The design system and key screens live in a Figma file that mirrors the code: colour variables with Light and Dark values (bound to every fill and stroke), a text-style ramp, spacing and radius variables, elevation styles, components with variants (Button, Badge, Text field, Nav item, Stat tile, Lead card) and screens built from those components in both themes.
+          </p>
+          <a href="https://www.figma.com/design/tplM1llRbk13QxwC9bzAxU" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-[10px] border border-line bg-panel px-4 py-2.5 text-[14px] font-semibold text-fg transition hover:border-line-2">
+            Open the Figma file <ArrowRight size={15} />
+          </a>
+        </Section>
+
+        <Section n="10" title="Build">
           <p>
             Next.js App Router with TypeScript and Tailwind. All state lives in a small Zustand store persisted to localStorage, seeded by a deterministic generator (twelve months of leads, clients and bookings, dated relative to today). Analytics are pure functions shared by the dashboard, analytics page and assistant. AI features are deterministic templates over that data, so the demo runs offline at no cost. Charts use Recharts; animation uses Motion.
           </p>
         </Section>
 
-        <Section n="10" title="Limitations">
+        <Section n="11" title="Limitations">
           <ul className="space-y-2.5">
             {[
               "No backend: no accounts, real data, email or payments. Everything is fictional and stays in the browser.",
@@ -238,7 +249,7 @@ export default function CaseStudy() {
           </ul>
         </Section>
 
-        <Section n="11" title="What I'd validate next">
+        <Section n="12" title="What I'd validate next">
           <ol className="space-y-2.5 text-[15px] text-fg-2">
             <li>1. Five interviews with coaches who sell online, focused on how enquiries and follow-ups are handled today.</li>
             <li>2. A task-based test of the enquiry-to-client flow on a phone, measuring time to first follow-up.</li>
@@ -247,7 +258,7 @@ export default function CaseStudy() {
           </ol>
         </Section>
 
-        <div className="mt-20 flex flex-col items-start gap-3 rounded-3xl border border-lime/30 bg-[linear-gradient(135deg,rgb(var(--lime)/.08),transparent)] p-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-20 flex flex-col items-start gap-3 rounded-2xl border border-line bg-panel p-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-[20px] font-semibold">See it for yourself</p>
             <p className="mt-1 text-fg-2">Every screen above is live and clickable.</p>
@@ -269,7 +280,7 @@ export default function CaseStudy() {
 function Section({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
   return (
     <section className="mt-20">
-      <p className="font-mono text-[12px] text-lime">{n}</p>
+      <p className="font-mono text-[12px] text-lime-fg">{n}</p>
       <h2 className="mt-2 text-[28px] font-semibold tracking-[-0.03em] sm:text-[34px]">{title}</h2>
       <div className="mt-6 space-y-5 text-[16px] leading-relaxed text-fg-2 [&_strong]:text-fg">{children}</div>
     </section>
@@ -277,7 +288,7 @@ function Section({ n, title, children }: { n: string; title: string; children: R
 }
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-3xl border border-line bg-panel p-6">
+    <div className="rounded-2xl border border-line bg-panel p-6">
       <p className="text-[16px] font-semibold text-fg">{title}</p>
       <div className="mt-2 text-[14.5px] leading-relaxed text-fg-2">{children}</div>
     </div>

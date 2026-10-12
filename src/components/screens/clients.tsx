@@ -71,7 +71,7 @@ export function ClientsScreen() {
           <DemoTag>Fictional clients</DemoTag>
           <div className="relative w-full md:w-60">
             <Search size={14} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-fg-3" />
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search clients…" aria-label="Search clients" className="h-10 w-full rounded-full border border-line bg-panel pl-9 pr-3 text-[13.5px] placeholder:text-fg-3 focus:border-lime/50 focus:outline-none" />
+            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search clients…" aria-label="Search clients" className="h-10 w-full rounded-full border border-line bg-panel pl-9 pr-3 text-[13.5px] placeholder:text-fg-3 focus:border-lime-fg/50 focus:outline-none" />
           </div>
         </div>
       </div>
@@ -90,7 +90,7 @@ export function ClientsScreen() {
                   <button
                     onClick={() => router.replace(`/app/clients?client=${c.id}`, { scroll: false })}
                     aria-current={c.id === selectedId}
-                    className={cn("flex w-full items-center gap-3 rounded-2xl border p-3.5 text-left transition", c.id === selectedId ? "border-lime/40 bg-panel shadow-card" : "border-line bg-panel/50 hover:border-line-2 hover:bg-panel")}
+                    className={cn("flex w-full items-center gap-3 rounded-2xl border p-3.5 text-left transition", c.id === selectedId ? "border-lime-fg/40 bg-panel shadow-card" : "border-line bg-panel/50 hover:border-line-2 hover:bg-panel")}
                   >
                     <div className="relative">
                       <ProgressRing value={elapsed} size={46} stroke={3} label={`${Math.round(elapsed * 100)}% through program`} />
@@ -150,7 +150,6 @@ function ClientDetail({ client, name, goal, program, weeks }: { client: Client; 
   return (
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.35, ease: EASE }} className="min-w-0 space-y-5">
       <section className="card relative overflow-hidden p-5 sm:p-6">
-        <div className="lime-glow pointer-events-none absolute -right-20 -top-24 h-64 w-64 opacity-50" aria-hidden />
         <div className="relative flex flex-wrap items-start gap-4">
           <Avatar name={name} size={56} />
           <div className="min-w-0 flex-1">
@@ -164,7 +163,7 @@ function ClientDetail({ client, name, goal, program, weeks }: { client: Client; 
           </div>
           <label className="flex items-center gap-2">
             <span className="sr-only">Status</span>
-            <select value={client.status} onChange={(e) => (setStatus(client.id, e.target.value as ClientStatus), toast({ tone: "success", title: "Status updated" }))} className="h-9 rounded-full border border-line bg-panel-2 px-3 text-[13px] focus:outline-none [&>option]:bg-panel">
+            <select value={client.status} onChange={(e) => (setStatus(client.id, e.target.value as ClientStatus), toast({ tone: "success", title: "Status updated" }))} className="h-9 rounded-lg border border-line bg-panel-2 px-3 text-[13px] focus:outline-none [&>option]:bg-panel">
               {Object.entries(STATUS).map(([k, v]) => (
                 <option key={k} value={k}>
                   {v.label}
@@ -232,11 +231,11 @@ function ClientDetail({ client, name, goal, program, weeks }: { client: Client; 
         <Panel title="Coaching plan">
           <ol className="space-y-2.5">
             {client.plan.map((p, i) => (
-              <li key={p} className={cn("flex gap-3 rounded-2xl border p-3.5 text-[13.5px]", i === phase ? "border-lime/40 bg-lime/[.05]" : "border-line", i < phase && "opacity-60")}>
+              <li key={p} className={cn("flex gap-3 rounded-2xl border p-3.5 text-[13.5px]", i === phase ? "border-lime-fg/40 bg-lime/[.05]" : "border-line", i < phase && "opacity-60")}>
                 <span className={cn("grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11.5px] font-semibold", i < phase ? "bg-ok/20 text-ok" : i === phase ? "bg-lime text-lime-ink" : "bg-panel-2 text-fg-3")}>{i + 1}</span>
                 <span className="leading-snug">
                   {p}
-                  {i === phase && <span className="ml-2 text-[11.5px] font-medium text-lime">Current phase</span>}
+                  {i === phase && <span className="ml-2 text-[11.5px] font-medium text-lime-fg">Current phase</span>}
                 </span>
               </li>
             ))}
@@ -257,7 +256,7 @@ function ClientDetail({ client, name, goal, program, weeks }: { client: Client; 
               <p className="mb-2 text-[13px] font-medium text-fg-2">How did the week feel?</p>
               <div className="flex gap-2" role="radiogroup" aria-label="Mood">
                 {MOODS.map((m) => (
-                  <button key={m.v} type="button" role="radio" aria-checked={mood === m.v} aria-label={m.label} onClick={() => setMood(m.v)} className={cn("grid h-10 flex-1 place-items-center rounded-xl border transition", mood === m.v ? "border-lime bg-lime/15 text-lime" : "border-line text-fg-3 hover:border-line-2 hover:text-fg")}>
+                  <button key={m.v} type="button" role="radio" aria-checked={mood === m.v} aria-label={m.label} onClick={() => setMood(m.v)} className={cn("grid h-10 flex-1 place-items-center rounded-xl border transition", mood === m.v ? "border-lime-fg bg-lime/15 text-lime-fg" : "border-line text-fg-3 hover:border-line-2 hover:text-fg")}>
                     {m.icon}
                   </button>
                 ))}
