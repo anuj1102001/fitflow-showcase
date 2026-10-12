@@ -114,7 +114,8 @@ async function scrollBy(dy, ms) {
           const k = Math.min(1, (t - t0) / ms);
           const e = k < 0.5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2;
           scrollTo(0, y0 + dy * e);
-          k < 1 ? requestAnimationFrame(tick) : done();
+          if (k < 1) requestAnimationFrame(tick);
+          else done();
         };
         requestAnimationFrame(tick);
       }),
