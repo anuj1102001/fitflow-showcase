@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Code2, X } from "lucide-react";
 import Link from "next/link";
 import { buttonClass } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
@@ -79,7 +79,7 @@ export default function CaseStudy() {
         </p>
         <dl className="mt-10 grid gap-4 rounded-2xl border border-line bg-panel p-6 sm:grid-cols-4">
           {[
-            ["Role", "Product strategy, UX, UI, front-end"],
+            ["Role", "Product owner & design lead"],
             ["Scope", "Landing page, 9-screen app, 2 storefronts"],
             ["Stack", "Figma, Next.js, TypeScript, Tailwind, GSAP, Motion"],
             ["Type", "Portfolio prototype with sample data"],
@@ -90,6 +90,26 @@ export default function CaseStudy() {
             </div>
           ))}
         </dl>
+
+        <div className="mt-6 rounded-2xl border border-line bg-panel-2/50 p-6">
+          <p className="text-[16px] font-semibold">My role</p>
+          <p className="mt-2 text-[15px] leading-relaxed text-fg-2">
+            I owned the product. I chose the niche (independent fitness coaches who sell programs online), defined the scope and the eight features, and set the constraints: no payments or real data, everything labelled as sample, and AI that drafts but never acts. I art-directed the design over several review rounds, including scrapping a first pass that looked template-made in favour of a quieter, Figma-first system with light and dark themes.
+          </p>
+          <p className="mt-3 text-[15px] leading-relaxed text-fg-2">
+            I built it with Claude Code, an AI coding agent, as my pair. I set the direction and reviewed every iteration; the agent wrote most of the code, the Figma file and the tests. I&apos;m happy to walk through any decision on this page.
+          </p>
+        </div>
+
+        <figure className="mt-10">
+          <video src="/walkthrough.mp4" poster="/screens/landing.jpg" controls playsInline preload="none" className="w-full rounded-2xl border border-line bg-panel" />
+          <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-3 text-[14px] text-fg-3">
+            <span>A silent, captioned walkthrough of the main flows.</span>
+            <a href="https://github.com/anuj1102001/fitflow-showcase" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-medium text-fg hover:underline">
+              <Code2 size={15} /> View the code on GitHub
+            </a>
+          </figcaption>
+        </figure>
 
         <Section n="01" title="The problem">
           <p>
@@ -186,31 +206,36 @@ export default function CaseStudy() {
         </Section>
 
         <Section n="08" title="Design system">
-          <p>Dark charcoal surfaces, one electric-lime accent used sparingly for action and progress, and a strict text hierarchy. Every colour is a token, so storefront themes are token swaps.</p>
+          <p>Warm-neutral surfaces in light mode, charcoal in dark, hairline borders, a three-step text hierarchy and one lime accent kept for primary actions and selection. Every colour is a token with a Light and a Dark value, so a theme switch (or a storefront theme) is a token swap.</p>
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
             {[
-              ["bg", "#0A0B0D"],
-              ["panel", "#121417"],
-              ["panel-2", "#1A1C20"],
-              ["line", "#25282D"],
-              ["fg", "#F2F3EE"],
-              ["lime", "#C8F04A"],
-            ].map(([n, c]) => (
+              ["bg", "#F6F6F3", "#0A0B0D"],
+              ["panel", "#FFFFFF", "#121417"],
+              ["panel-2", "#F1F1ED", "#1A1C20"],
+              ["line", "#E4E4DE", "#25282D"],
+              ["fg", "#141512", "#F2F3EE"],
+              ["lime", "#C8F04A", "#C8F04A"],
+            ].map(([n, l, d]) => (
               <div key={n}>
-                <div className="h-16 rounded-2xl border border-line" style={{ background: c }} />
+                <div className="flex h-16 overflow-hidden rounded-2xl border border-line">
+                  <div className="flex-1" style={{ background: l }} />
+                  <div className="flex-1" style={{ background: d }} />
+                </div>
                 <p className="mt-2 text-[13px] font-medium">{n}</p>
-                <p className="font-mono text-[11.5px] text-fg-3">{c}</p>
+                <p className="font-mono text-[11.5px] text-fg-3">
+                  {l} / {d}
+                </p>
               </div>
             ))}
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             <Card title="Type">
-              <p className="font-display text-[26px] font-semibold tracking-[-0.03em]">Bricolage Grotesque</p>
-              <p className="mt-1">Display and numbers.</p>
-              <p className="mt-3 text-[17px]">Geist</p>
-              <p>UI and body text.</p>
-              <p className="mt-3 font-mono text-[13px]">GEIST MONO</p>
-              <p>Labels and eyebrows.</p>
+              <p className="text-[26px] font-semibold tracking-[-0.03em]">Geist</p>
+              <p className="mt-1">Everything from display to captions, with tabular numbers.</p>
+              <p className="mt-3 font-mono text-[13px]">Geist Mono</p>
+              <p>Code-like labels.</p>
+              <p className="mt-3 text-[17px]" style={{ fontFamily: "var(--font-fraunces)" }}>Fraunces</p>
+              <p>Only the Bloom storefront theme.</p>
             </Card>
             <Card title="Components">Buttons (4 variants × 4 sizes), inputs with inline validation, segmented controls with a shared sliding indicator, badges by tone, drawers, menus, dialogs, toasts, command palette, empty states and skeletons.</Card>
             <Card title="Motion">Motion (Framer) for UI micro-interactions: one easing curve, one spring. GSAP for scroll choreography: a SplitText headline reveal and a pinned, scrubbed “How it works” sequence. Everything respects “reduce motion”.</Card>
@@ -228,7 +253,7 @@ export default function CaseStudy() {
 
         <Section n="10" title="Build">
           <p>
-            Next.js App Router with TypeScript and Tailwind. All state lives in a small Zustand store persisted to localStorage, seeded by a deterministic generator (twelve months of leads, clients and bookings, dated relative to today). Analytics are pure functions shared by the dashboard, analytics page and assistant. AI features are deterministic templates over that data, so the demo runs offline at no cost. Charts use Recharts; animation uses Motion.
+            Next.js App Router with TypeScript and Tailwind. All state lives in a small Zustand store persisted to localStorage, seeded by a deterministic generator (twelve months of leads, clients and bookings, dated relative to today). Analytics are pure functions shared by the dashboard, analytics page and assistant. AI features are deterministic templates over that data, so the demo runs offline at no cost. Charts use Recharts. Motion handles UI micro-interactions and GSAP (ScrollTrigger, SplitText) the scroll choreography. The theme is applied before first paint and switches instantly.
           </p>
         </Section>
 
@@ -267,9 +292,9 @@ export default function CaseStudy() {
             <Link href="/app" className={buttonClass({})}>
               Open the demo <ArrowRight size={15} />
             </Link>
-            <Link href="/" className={buttonClass({ variant: "secondary" })}>
-              Landing page
-            </Link>
+            <a href="https://github.com/anuj1102001/fitflow-showcase" target="_blank" rel="noreferrer" className={buttonClass({ variant: "secondary" })}>
+              <Code2 size={15} /> Code
+            </a>
           </div>
         </div>
       </main>

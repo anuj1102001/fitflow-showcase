@@ -4,17 +4,26 @@ An interactive SaaS product prototype that helps independent fitness coaches tur
 
 > **Portfolio project.** Fictional coach, sample data, simulated AI. There is no backend, no accounts, no payments and no messages are ever sent. Everything runs in the browser.
 
+**Live demo: [fitflow-showcase.vercel.app](https://fitflow-showcase.vercel.app)** · [Case study](https://fitflow-showcase.vercel.app/case-study) · [Figma file](https://www.figma.com/design/tplM1llRbk13QxwC9bzAxU) · [Walkthrough video (75 s)](https://fitflow-showcase.vercel.app/walkthrough.mp4)
+
 ![Landing page](public/screens/landing.jpg)
+
+## My role
+
+I owned the product: I chose the niche (independent fitness coaches who sell programs online), defined the scope and features, set the constraints (no payments or real data, everything labelled as sample, AI that drafts but never acts) and art-directed the design over several review rounds, including replacing a first pass that looked template-made with a quieter, Figma-first system with light and dark themes.
+
+I built it with [Claude Code](https://claude.com/claude-code), an AI coding agent, as my pair. I set direction and reviewed every iteration; the agent wrote most of the code, the Figma file and the tests.
 
 ## Try it
 
 | | |
 |---|---|
-| Landing page | `/` |
-| Live demo (dashboard) | `/app` |
-| Coach storefront, “Forge” theme | `/s/aarav` |
-| Coach storefront, “Bloom” theme | `/s/meera` |
-| Case study | `/case-study` |
+| Landing page | [fitflow-showcase.vercel.app](https://fitflow-showcase.vercel.app) |
+| Live demo (dashboard) | [/app](https://fitflow-showcase.vercel.app/app) |
+| Coach storefront, “Forge” theme | [/s/aarav](https://fitflow-showcase.vercel.app/s/aarav) |
+| Coach storefront, “Bloom” theme | [/s/meera](https://fitflow-showcase.vercel.app/s/meera) |
+| Case study | [/case-study](https://fitflow-showcase.vercel.app/case-study) |
+| Walkthrough video | [walkthrough.mp4](https://fitflow-showcase.vercel.app/walkthrough.mp4) (silent, captioned) |
 | Figma file | [FITFLOW AI — Product Design](https://www.figma.com/design/tplM1llRbk13QxwC9bzAxU) |
 
 Things worth clicking: drag a lead across the pipeline, create an offer with the AI builder and publish it, send an enquiry from Aarav's storefront and watch it arrive as a lead, restyle the storefront and see the 3D preview update, ask the assistant “What should I improve this week?”. Press <kbd>Ctrl/⌘ K</kbd> anywhere in the app.
