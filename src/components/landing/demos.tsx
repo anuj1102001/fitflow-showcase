@@ -10,6 +10,7 @@ import { BrowserFrame, PhoneFrame } from "@/components/storefront/frames";
 import { StorefrontView, THEME_META } from "@/components/storefront/view";
 import { buttonClass } from "@/components/ui/button";
 import { cn } from "@/components/ui/cn";
+import { LiquidButton } from "@/components/ui/liquid-button";
 import { Avatar, DemoTag, ProgressRing, Segmented, Skeleton } from "@/components/ui/kit";
 import { draftOffer, GOALS, priceGuide, type GoalId } from "@/lib/ai";
 import { bySource, kpis, RANGES, series, type RangeId } from "@/lib/analytics";
@@ -399,12 +400,12 @@ export function StorefrontShowcase() {
           )}
         </div>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link href={theme === "forge" ? "/s/aarav" : "/s/meera"} className={buttonClass({})}>
+          <LiquidButton href={theme === "forge" ? "/s/aarav" : "/s/meera"}>
             <ExternalLink size={15} /> Open {theme === "forge" ? "Aarav's" : "Meera's"} storefront
-          </Link>
-          <Link href="/app/storefront" className={buttonClass({ variant: "secondary" })}>
+          </LiquidButton>
+          <LiquidButton href="/app/storefront" variant="secondary">
             Customise it in the builder
-          </Link>
+          </LiquidButton>
         </div>
         <p className="mt-4 text-center text-[12.5px] text-fg-3">The previews are real pages: scroll inside them. Fictional coaches; photos from Unsplash.</p>
       </div>
