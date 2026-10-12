@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { EASE, Reveal, Stagger, StaggerItem } from "@/components/motion/kit";
 import { buttonClass } from "@/components/ui/button";
+import { LiquidButton } from "@/components/ui/liquid-button";
 import { cn } from "@/components/ui/cn";
 import { Logo } from "@/components/ui/logo";
 import { img } from "@/lib/images";
@@ -289,12 +290,12 @@ export function FinalCta() {
           <h2 className="mt-4 max-w-2xl text-balance text-[38px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[52px]">See the whole workflow in 60 seconds.</h2>
           <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-fg-2">Build an offer with AI, drag a lead to Won, draft a follow-up and restyle a storefront. No sign-up needed.</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Link href="/app" className={buttonClass({ size: "lg" }, "h-[52px] px-7")}>
+            <LiquidButton href="/app">
               Open the live demo <ArrowRight size={17} />
-            </Link>
-            <Link href="/case-study" className={buttonClass({ variant: "secondary", size: "lg" }, "h-[52px] px-7")}>
+            </LiquidButton>
+            <LiquidButton href="/case-study" variant="secondary">
               <BarChart3 size={16} /> Read the case study
-            </Link>
+            </LiquidButton>
           </div>
         </div>
       </motion.div>

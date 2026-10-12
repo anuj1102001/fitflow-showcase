@@ -9,6 +9,7 @@ import { SplitText } from "gsap/SplitText";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { EASE, SPRING } from "@/components/motion/kit";
 import { buttonClass } from "@/components/ui/button";
+import { LiquidButton } from "@/components/ui/liquid-button";
 import { cn } from "@/components/ui/cn";
 import { Avatar } from "@/components/ui/kit";
 import { Logo } from "@/components/ui/logo";
@@ -54,9 +55,9 @@ export function LandingNav() {
           <Link href="/case-study" className={buttonClass({ variant: "ghost", size: "sm" }, "hidden md:inline-flex")}>
             Case study
           </Link>
-          <Link href="/app" className={buttonClass({ size: "sm" })}>
+          <LiquidButton href="/app" size="sm">
             Live demo <ArrowRight size={14} />
-          </Link>
+          </LiquidButton>
           <button onClick={() => setOpen(!open)} className="icon-btn h-9 w-9 lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}>
             {open ? <X size={17} /> : <Menu size={17} />}
           </button>
@@ -122,12 +123,12 @@ export function Hero() {
               FITFLOW packages your coaching into clear offers, gives you a storefront that sells, and keeps every lead, follow-up and client in one calm workspace. AI drafts the busywork; you stay in control.
             </motion.p>
             <motion.div {...fade(0.25)} className="mt-7 flex flex-col gap-2.5 sm:flex-row">
-              <Link href="/app" className={buttonClass({ size: "lg" }, "group")}>
+              <LiquidButton href="/app">
                 Explore the live demo <ArrowRight size={16} className="transition group-hover:translate-x-0.5" />
-              </Link>
-              <Link href="/s/aarav" className={buttonClass({ variant: "secondary", size: "lg" })}>
+              </LiquidButton>
+              <LiquidButton href="/s/aarav" variant="secondary">
                 See a coach storefront
-              </Link>
+              </LiquidButton>
             </motion.div>
             <motion.ul {...fade(0.35)} className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-fg-3">
               {["No sign-up", "Fictional coach & sample data", "Runs in your browser"].map((x) => (
