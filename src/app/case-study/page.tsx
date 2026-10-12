@@ -94,10 +94,13 @@ export default function CaseStudy() {
         <div className="mt-6 rounded-2xl border border-line bg-panel-2/50 p-6">
           <p className="text-[16px] font-semibold">My role</p>
           <p className="mt-2 text-[15px] leading-relaxed text-fg-2">
-            I owned the product. I chose the niche (independent fitness coaches who sell programs online), defined the scope and the eight features, and set the constraints: no payments or real data, everything labelled as sample, and AI that drafts but never acts. I art-directed the design over several review rounds, including scrapping a first pass that looked template-made in favour of a quieter, Figma-first system with light and dark themes.
+            I picked the problem and the users: fitness coaches who sell coaching online. A lot of them run their whole business from Instagram DMs, WhatsApp and spreadsheets, so leads and follow-ups get lost. I decided what FITFLOW should do and what it shouldn&apos;t: no payments, no real data, everything clearly marked as sample, and the AI only writes drafts, it never sends anything on its own.
           </p>
           <p className="mt-3 text-[15px] leading-relaxed text-fg-2">
-            I built it with Claude Code, an AI coding agent, as my pair. I set the direction and reviewed every iteration; the agent wrote most of the code, the Figma file and the tests. I&apos;m happy to walk through any decision on this page.
+            I reviewed every version of the design. When the first version looked too much like an AI-made template, I pushed it toward a cleaner, Figma-based product design, added light and dark mode, and asked for proper scroll animations with GSAP.
+          </p>
+          <p className="mt-3 text-[15px] leading-relaxed text-fg-2">
+            I built it with Claude Code, an AI coding agent. I gave the direction and checked every step; the agent wrote most of the code, the Figma file and the tests. Ask me about any decision on this page and I&apos;ll walk you through it.
           </p>
         </div>
 

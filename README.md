@@ -10,9 +10,11 @@ An interactive SaaS product prototype that helps independent fitness coaches tur
 
 ## My role
 
-I owned the product: I chose the niche (independent fitness coaches who sell programs online), defined the scope and features, set the constraints (no payments or real data, everything labelled as sample, AI that drafts but never acts) and art-directed the design over several review rounds, including replacing a first pass that looked template-made with a quieter, Figma-first system with light and dark themes.
+I picked the problem and the users: fitness coaches who sell coaching online. A lot of them run their whole business from Instagram DMs, WhatsApp and spreadsheets, so leads and follow-ups get lost. I decided what FITFLOW should do and what it shouldn't: no payments, no real data, everything clearly marked as sample, and the AI only writes drafts, it never sends anything on its own.
 
-I built it with [Claude Code](https://claude.com/claude-code), an AI coding agent, as my pair. I set direction and reviewed every iteration; the agent wrote most of the code, the Figma file and the tests.
+I reviewed every version of the design. When the first version looked too much like an AI-made template, I pushed it toward a cleaner, Figma-based product design, added light and dark mode, and asked for proper scroll animations with GSAP.
+
+I built it with [Claude Code](https://claude.com/claude-code), an AI coding agent. I gave the direction and checked every step; the agent wrote most of the code, the Figma file and the tests. Ask me about any decision on this page and I'll walk you through it.
 
 ## Try it
 
