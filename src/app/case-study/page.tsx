@@ -104,7 +104,7 @@ export default function CaseStudy() {
         <figure className="mt-10">
           <video src="/walkthrough.mp4" poster="/screens/landing.jpg" controls playsInline preload="none" className="w-full rounded-2xl border border-line bg-panel" />
           <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-3 text-[14px] text-fg-3">
-            <span>A silent, captioned walkthrough of the main flows.</span>
+            <span>A narrated walkthrough of the main flows (1:45, synthetic voice).</span>
             <a href="https://github.com/anuj1102001/fitflow-showcase" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-medium text-fg hover:underline">
               <Code2 size={15} /> View the code on GitHub
             </a>

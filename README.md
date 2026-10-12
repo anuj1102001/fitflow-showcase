@@ -4,7 +4,7 @@ An interactive SaaS product prototype that helps independent fitness coaches tur
 
 > **Portfolio project.** Fictional coach, sample data, simulated AI. There is no backend, no accounts, no payments and no messages are ever sent. Everything runs in the browser.
 
-**Live demo: [fitflow-showcase.vercel.app](https://fitflow-showcase.vercel.app)** · [Case study](https://fitflow-showcase.vercel.app/case-study) · [Figma file](https://www.figma.com/design/tplM1llRbk13QxwC9bzAxU) · [Walkthrough video (75 s)](https://fitflow-showcase.vercel.app/walkthrough.mp4)
+**Live demo: [fitflow-showcase.vercel.app](https://fitflow-showcase.vercel.app)** · [Case study](https://fitflow-showcase.vercel.app/case-study) · [Figma file](https://www.figma.com/design/tplM1llRbk13QxwC9bzAxU) · [Narrated walkthrough (1:45)](https://fitflow-showcase.vercel.app/walkthrough.mp4)
 
 ![Landing page](public/screens/landing.jpg)
 
@@ -23,7 +23,7 @@ I built it with [Claude Code](https://claude.com/claude-code), an AI coding agen
 | Coach storefront, “Forge” theme | [/s/aarav](https://fitflow-showcase.vercel.app/s/aarav) |
 | Coach storefront, “Bloom” theme | [/s/meera](https://fitflow-showcase.vercel.app/s/meera) |
 | Case study | [/case-study](https://fitflow-showcase.vercel.app/case-study) |
-| Walkthrough video | [walkthrough.mp4](https://fitflow-showcase.vercel.app/walkthrough.mp4) (silent, captioned) |
+| Walkthrough video | [walkthrough.mp4](https://fitflow-showcase.vercel.app/walkthrough.mp4) (narrated, captioned) |
 | Figma file | [FITFLOW AI — Product Design](https://www.figma.com/design/tplM1llRbk13QxwC9bzAxU) |
 
 Things worth clicking: drag a lead across the pipeline, create an offer with the AI builder and publish it, send an enquiry from Aarav's storefront and watch it arrive as a lead, restyle the storefront and see the 3D preview update, ask the assistant “What should I improve this week?”. Press <kbd>Ctrl/⌘ K</kbd> anywhere in the app.
@@ -76,6 +76,7 @@ src/lib/analytics.ts     pure metric functions shared by all screens
 src/lib/ai.ts            simulated AI: offer drafts, follow-ups, assistant answers, claims check
 tests/                   unit tests (logic) and an interaction test (browser)
 scripts/screenshots.mjs  regenerates public/screens
+scripts/walkthrough.mjs  records public/walkthrough.mp4 (narration: scripts/narration.json, voiceover.mjs)
 ```
 
 ## Run locally
@@ -90,7 +91,11 @@ npm run check        # typecheck + lint + unit tests
 npm run build        # production build (all routes are static)
 npm run test:e2e     # interaction test against a running server (needs Chrome; set CHROME_PATH)
 node scripts/screenshots.mjs   # refresh portfolio screenshots
+node scripts/voiceover.mjs     # narration clips (needs Python + edge-tts, and ffmpeg via FFMPEG_PATH)
+node scripts/walkthrough.mjs   # record the narrated walkthrough against a running build
 ```
+
+The walkthrough voice is synthetic (Microsoft Edge neural voice “Andrew” via edge-tts).
 
 No environment variables or API keys are needed.
 

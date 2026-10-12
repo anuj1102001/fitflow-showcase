@@ -1,0 +1,66 @@
+{
+  "voice": "en-US-AndrewNeural",
+  "rate": "+4%",
+  "scenes": [
+    {
+      "id": "intro",
+      "caption": "FITFLOW AI: a business OS for fitness coaches (interactive prototype)",
+      "text": "This is FITFLOW AI: an interactive product prototype of a business operating system for independent fitness coaches who sell their coaching online."
+    },
+    {
+      "id": "theme",
+      "caption": "Light and dark themes, switched instantly",
+      "text": "Every screen comes in light and dark mode, and the switch is instant."
+    },
+    {
+      "id": "workflow",
+      "caption": "Scroll-driven “How it works” (GSAP ScrollTrigger)",
+      "text": "As you scroll, the How it works section pins in place and steps through the coach's journey: attract, capture, follow up, and convert."
+    },
+    {
+      "id": "overview",
+      "caption": "The live demo: KPIs, trends and AI insights from sample data",
+      "text": "Here's the live demo. The overview pulls key numbers, trends and AI insights from one sample dataset, so every figure on every screen agrees."
+    },
+    {
+      "id": "leads",
+      "caption": "Lead pipeline: every enquiry has a source, stage and follow-up date",
+      "text": "Every enquiry lands in a pipeline, with its source, stage, value and next follow-up date. Opening a lead shows its details and full history."
+    },
+    {
+      "id": "followups",
+      "caption": "AI drafts the follow-up. The coach edits it and sends it themselves.",
+      "text": "For follow-ups, the AI drafts a personal message from the lead's goal and stage. The coach edits it and sends it themselves. Nothing is ever sent automatically."
+    },
+    {
+      "id": "offer",
+      "caption": "AI Offer Builder: five guided steps to an editable, claims-checked offer",
+      "text": "The offer builder walks the coach through a few quick choices: the goal, the audience, the format, and a price, with guidance on what's typical. Then it drafts a complete offer, with a title, what's included and who it's for, and checks it for risky health claims. Everything stays editable."
+    },
+    {
+      "id": "builder",
+      "caption": "Storefront builder with live desktop and phone previews",
+      "text": "The storefront builder restyles the coach's public page, with live desktop and phone previews."
+    },
+    {
+      "id": "storefront",
+      "caption": "The coach's public page: enquiries land straight in the pipeline",
+      "text": "This is the page followers actually see. When someone sends an enquiry here, it shows up in the pipeline as a new lead."
+    },
+    {
+      "id": "assistant",
+      "caption": "Assistant answers questions from the same data as the charts",
+      "text": "The assistant answers business questions using the same numbers as the charts, like which lead source is converting best."
+    },
+    {
+      "id": "dark",
+      "caption": "Every screen works in both themes",
+      "text": "And all of it works in dark mode too."
+    },
+    {
+      "id": "case",
+      "caption": "Case study, Figma file and code: links in the description",
+      "text": "The case study covers the problem, the design decisions and the Figma design system. The live demo, the Figma file and the code are all linked in the description."
+    }
+  ]
+}

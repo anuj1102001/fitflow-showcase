@@ -1,13 +1,17 @@
 // Records the silent, captioned product walkthrough to public/walkthrough.mp4.
 // Needs a running build (npm run build && npx next start -p 3200) and ffmpeg (set FFMPEG_PATH).
+// With narration clips from scripts/voiceover.mjs, each scene lasts at least as long as its line and the voiceover is mixed in.
 // node scripts/walkthrough.mjs [baseUrl]
 import { execFileSync } from "node:child_process";
-import { mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import puppeteer from "puppeteer-core";
 
 const BASE = process.argv[2] ?? "http://localhost:3200";
 const FFMPEG = process.env.FFMPEG_PATH ?? "ffmpeg";
 const FRAMES = ".walkthrough-frames";
+const AUDIO = ".walkthrough-audio";
+const { scenes } = JSON.parse(readFileSync("scripts/narration.json", "utf8"));
+const durations = existsSync(`${AUDIO}/durations.json`) ? JSON.parse(readFileSync(`${AUDIO}/durations.json`, "utf8")) : {};
 const OUT = "public/walkthrough.mp4";
 const W = 1440;
 const H = 900;
@@ -66,7 +70,7 @@ const caption = (t) =>
     const c = document.getElementById("wt-cap");
     if (c) c.textContent = t;
   }, t);
-async function moveTo(x, y, steps = 28) {
+async function moveTo(x, y, steps = 20) {
   const [x0, y0] = mouse;
   for (let i = 1; i <= steps; i++) {
     const k = i / steps;
@@ -79,11 +83,13 @@ async function moveTo(x, y, steps = 28) {
 /** Moves the cursor to an element (by CSS selector or visible text) and clicks it. */
 async function clickOn(target, sel = "button, a, [role=tab], [role=radio], [role=button]") {
   let box = null;
+  const t0 = Date.now() / 1000;
   for (let i = 0; i < 15 && !box; i++) {
     if (i) await sleep(200); // the target may still be animating in
     box = await find(target, sel);
   }
   if (!box) throw new Error(`walkthrough: nothing to click for "${target}"`);
+  if (process.env.WT_DEBUG) console.log("  click", target, `${(Date.now() / 1000 - t0).toFixed(1)}s to find`);
   await moveTo(box.x, box.y);
   await sleep(180);
   await page.mouse.click(box.x, box.y);
@@ -124,7 +130,9 @@ async function scrollBy(dy, ms) {
   );
 }
 const go = async (path) => {
+  const t0 = Date.now();
   await page.goto(BASE + path, { waitUntil: "load" });
+  if (process.env.WT_DEBUG) console.log("  go", path, `${((Date.now() - t0) / 1000).toFixed(1)}s`);
   await sleep(500);
 };
 
@@ -144,106 +152,115 @@ rmSync(FRAMES, { recursive: true, force: true });
 mkdirSync(FRAMES);
 const frames = [];
 const cdp = await page.createCDPSession();
-cdp.on("Page.screencastFrame", ({ data, metadata, sessionId }) => {
+cdp.on("Page.screencastFrame", ({ data, sessionId }) => {
   const file = `${FRAMES}/${String(frames.length).padStart(5, "0")}.jpg`;
   writeFileSync(file, Buffer.from(data, "base64"));
-  frames.push({ file, t: metadata.timestamp });
+  frames.push({ file, wall: Date.now() / 1000 }); // wall clock, the same clock the scene timings use
   cdp.send("Page.screencastFrameAck", { sessionId }).catch(() => {});
 });
 await cdp.send("Page.startScreencast", { format: "jpeg", quality: 90, maxWidth: W, maxHeight: H });
+while (!frames.length) await sleep(20);
+
+/** Shows the scene's caption, runs its actions, then holds until its narration has finished. */
+const starts = {};
+async function scene(id, actions) {
+  const sc = scenes.find((x) => x.id === id);
+  starts[id] = Date.now() / 1000 - frames[0].wall;
+  await caption(sc.caption);
+  await actions();
+  console.log(`${id.padEnd(10)} start ${starts[id].toFixed(1)}s  actions ${(Date.now() / 1000 - frames[0].wall - starts[id]).toFixed(1)}s  voice ${(durations[id] ?? 0).toFixed(1)}s`);
+  const left = starts[id] + (durations[id] ?? 0) + 0.45 - (Date.now() / 1000 - frames[0].wall);
+  if (left > 0) await sleep(left * 1000);
+}
 
 // 1. Landing
-await caption("FITFLOW AI: a business OS for fitness coaches (interactive prototype)");
-await sleep(3600);
-await caption("Light and dark themes, switched instantly");
-await clickOn("css:[aria-label='Dark theme']");
-await sleep(1500);
-await clickOn("css:[aria-label='Light theme']");
-await sleep(1100);
-await caption("Scroll-driven “How it works” (GSAP ScrollTrigger)");
-const wf = await page.evaluate(() => document.getElementById("workflow").getBoundingClientRect().top + 70);
-await scrollBy(wf, 1800);
-await sleep(400);
-await scrollBy(H * 2.5, 6500);
-await sleep(700);
+await scene("intro", () => sleep(2400));
+await scene("theme", async () => {
+  await clickOn("css:[aria-label='Dark theme']");
+  await sleep(1500);
+  await clickOn("css:[aria-label='Light theme']");
+});
+await scene("workflow", async () => {
+  const wf = await page.evaluate(() => document.getElementById("workflow").getBoundingClientRect().top + 70);
+  await scrollBy(wf, 1600);
+  await scrollBy(H * 2.5, 6200);
+});
 
-// 2. App: overview
-await caption("The live demo: KPIs, trends and AI insights from sample data");
-await go("/app");
-await sleep(600);
-await moveTo(760, 640);
-await sleep(2600);
-
-// 3. Leads
-await caption("Lead pipeline: every enquiry has a source, stage and follow-up date");
-await clickOn("Leads", "nav a, aside a");
-await sleep(1800);
-await clickOn("css:[draggable][aria-label$='Open details']");
-await sleep(2600);
-await page.keyboard.press("Escape");
-await sleep(500);
-
-// 4. Follow-ups
-await caption("AI drafts the follow-up. The coach edits it and sends it themselves.");
-await clickOn("Follow-ups", "nav a, aside a");
+// 2. App
+await scene("overview", async () => {
+  await go("/app");
+  await sleep(600);
+  await moveTo(760, 640);
+  await sleep(1200);
+  await moveTo(560, 600);
+});
+await scene("leads", async () => {
+  await clickOn("Leads", "nav a, aside a");
+  await sleep(1800);
+  await clickOn("css:[draggable][aria-label$='Open details']");
+  await sleep(2600);
+});
+await scene("followups", async () => {
+  await page.keyboard.press("Escape");
+  await sleep(300);
+  await clickOn("Follow-ups", "nav a, aside a");
+  await sleep(1200);
+  await clickOn("Draft message");
+});
+await scene("offer", async () => {
+  await go("/app/offers?new=1");
+  for (const t of ["Build strength", "Continue", "Busy desk workers", "Continue", "1:1 online coaching", "Continue"]) {
+    await clickOn(t);
+    await sleep(380);
+  }
+  await clickOn("css:#price");
+  await page.click("#price", { clickCount: 3 });
+  await page.keyboard.type("14999", { delay: 60 });
+  await sleep(300);
+  await clickOn("Continue");
+  await clickOn("Generate offer");
+  await page.waitForSelector("#o-title", { timeout: 15000 });
+});
+await scene("builder", async () => {
+  await go("/app/storefront");
+  await sleep(1200);
+  await clickOn("Bloom");
+  await sleep(2000);
+  await clickOn("Forge");
+});
+await scene("storefront", async () => {
+  await go("/s/aarav");
+  await sleep(1200);
+  await scrollBy(1300, 3200);
+});
+await scene("assistant", async () => {
+  await go("/app/assistant");
+  await sleep(600);
+  await clickOn("Which lead source is performing best?");
+});
+await scene("dark", () => clickOn("css:[aria-label='Switch to dark mode']"));
+await scene("case", async () => {
+  await go("/case-study");
+  await sleep(1000);
+  await scrollBy(1100, 3000);
+});
 await sleep(1200);
-await clickOn("Draft message");
-await sleep(3400);
 
-// 5. Offer builder
-await caption("AI Offer Builder: five guided steps to an editable, claims-checked offer");
-await go("/app/offers?new=1");
-for (const t of ["Build strength", "Continue", "Busy desk workers", "Continue", "1:1 online coaching", "Continue"]) {
-  await clickOn(t);
-  await sleep(420);
-}
-await clickOn("css:#price");
-await page.click("#price", { clickCount: 3 });
-await page.keyboard.type("14999", { delay: 70 });
-await sleep(400);
-await clickOn("Continue");
-await clickOn("Generate offer");
-await page.waitForSelector("#o-title", { timeout: 15000 });
-await sleep(3200);
-
-// 6. Storefront
-await caption("Storefront builder with live desktop and phone previews");
-await go("/app/storefront");
-await sleep(1500);
-await clickOn("Bloom");
-await sleep(2200);
-await clickOn("Forge");
-await sleep(1600);
-await caption("The coach's public page: enquiries land straight in the pipeline");
-await go("/s/aarav");
-await sleep(1500);
-await scrollBy(1300, 3200);
-await sleep(900);
-
-// 7. Assistant
-await caption("Assistant answers questions from the same data as the charts");
-await go("/app/assistant");
-await sleep(800);
-await clickOn("Which lead source is performing best?");
-await sleep(4200);
-
-// 8. Dark mode in the app, then the case study
-await caption("Every screen works in both themes");
-await clickOn("css:[aria-label='Switch to dark mode']");
-await sleep(2000);
-await caption("Case study, Figma file and code: links in the description");
-await go("/case-study");
-await sleep(1200);
-await scrollBy(1100, 3000);
-await sleep(1500);
-
+const stopped = Date.now() / 1000;
 await cdp.send("Page.stopScreencast");
 await browser.close();
 
 const name = (f) => f.file.slice(FRAMES.length + 1);
-const list = frames.map((f, i) => `file '${name(f)}'\nduration ${((frames[i + 1]?.t ?? f.t + 1.5) - f.t).toFixed(3)}`);
+const list = frames.map((f, i) => `file '${name(f)}'\nduration ${((frames[i + 1]?.wall ?? stopped) - f.wall).toFixed(3)}`);
 writeFileSync(`${FRAMES}/list.txt`, `${list.join("\n")}\nfile '${name(frames.at(-1))}'\n`);
+
+// Voiceover: each clip starts when its scene starts.
+const clips = scenes.filter((x) => durations[x.id] && existsSync(`${AUDIO}/${x.id}.mp3`));
+const audioIn = clips.flatMap((x) => ["-i", `${AUDIO}/${x.id}.mp3`]);
+const mix = clips.length
+  ? ["-filter_complex", `${clips.map((x, i) => `[${i + 1}:a]adelay=${Math.round(starts[x.id] * 1000)}:all=1[a${i}]`).join(";")};${clips.map((_, i) => `[a${i}]`).join("")}amix=inputs=${clips.length}:normalize=0[aout]`, "-map", "0:v", "-map", "[aout]", "-c:a", "aac", "-b:a", "128k"]
+  : ["-an"];
 // H.264 MP4 plays everywhere (Safari included) and streams with faststart.
-execFileSync(FFMPEG, ["-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", `${FRAMES}/list.txt`, "-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-crf", "26", "-preset", "slow", "-movflags", "+faststart", "-an", OUT]);
-rmSync(FRAMES, { recursive: true, force: true });
-console.log("saved", OUT);
+execFileSync(FFMPEG, ["-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", `${FRAMES}/list.txt`, ...audioIn, ...mix, "-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-crf", "26", "-preset", "slow", "-movflags", "+faststart", OUT]);
+if (!process.env.WT_DEBUG) rmSync(FRAMES, { recursive: true, force: true });
+console.log("saved", OUT, clips.length ? `with ${clips.length} narration clips` : "(silent)");
