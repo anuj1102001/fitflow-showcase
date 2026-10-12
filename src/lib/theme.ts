@@ -30,9 +30,14 @@ export function setPref(p: ThemePref) {
     localStorage.setItem(THEME_KEY, p);
   } catch {}
   const root = document.documentElement;
-  root.classList.add("theming");
+  // Swap instantly. Transitions are suspended for one frame so nothing fades in late
+  // (elements with their own colour transitions would otherwise change one by one).
+  const stop = document.createElement("style");
+  stop.textContent = "*,*::before,*::after{transition:none!important}";
+  document.head.appendChild(stop);
   root.classList.toggle("dark", resolve(p) === "dark");
-  window.setTimeout(() => root.classList.remove("theming"), 320);
+  void getComputedStyle(document.body).color; // apply the new colours while transitions are off
+  requestAnimationFrame(() => requestAnimationFrame(() => stop.remove()));
   listeners.forEach((l) => l());
 }
 
