@@ -1,0 +1,45 @@
+{
+  "name": "fitflow-ai-showcase",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FITFLOW AI: an interactive SaaS product prototype for fitness coaches (portfolio project, frontend only, sample data).",
+  "engines": {
+    "node": ">=18.18"
+  },
+  "scripts": {
+    "dev": "next dev --turbopack -p 3200",
+    "build": "next build",
+    "start": "next start -p 3200",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "node --import tsx --test tests/logic.test.ts",
+    "test:e2e": "node tests/e2e.mjs",
+    "check": "npm run typecheck && npm run lint && npm test"
+  },
+  "dependencies": {
+    "@number-flow/react": "^0.6.2",
+    "lucide-react": "^1.52.0",
+    "motion": "^12.43.0",
+    "next": "^15.5.27",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "recharts": "^2.15.4",
+    "tailwind-merge": "^2.6.1",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@types/node": "^20.19.43",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "autoprefixer": "^10.6.1",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.4",
+    "postcss": "^8.5.29",
+    "puppeteer-core": "^23.11.1",
+    "tailwindcss": "3.4",
+    "tsx": "^4.23.15",
+    "typescript": "5.9"
+  }
+}

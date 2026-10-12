@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FITFLOW colour tokens (dark interface). Storefront themes define their own scoped tokens. */
+@layer base {
+  :root {
+    color-scheme: dark;
+    --bg: 10 11 13;
+    --panel: 18 20 23;
+    --panel-2: 26 28 32;
+    --line: 37 40 45;
+    --line-2: 54 58 64;
+    --fg: 242 243 238;
+    --fg-2: 171 175 168;
+    --fg-3: 128 132 125;
+    --lime: 200 240 74;
+    --lime-ink: 12 14 6;
+    --lime-fg: 200 240 74;
+    --chart: 125 163 31; /* validated (dataviz checks) against --panel */
+    --ok: 88 214 152;
+    --warn: 245 186 70;
+    --bad: 255 112 108;
+    --info: 116 170 255;
+    --violet: 172 146 255;
+    --hl: 255 255 255;
+    --hl-a: 0.04;
+    --sh-a: 2;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    letter-spacing: -0.025em;
+  }
+  ::selection {
+    @apply bg-lime text-lime-ink;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-lime ring-offset-2 ring-offset-bg;
+  }
+  button,
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-3xl border border-line bg-panel shadow-card;
+  }
+  .card-2 {
+    @apply rounded-2xl border border-line bg-panel-2;
+  }
+  .eyebrow {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-fg-3;
+  }
+  .icon-btn {
+    @apply inline-grid h-10 w-10 shrink-0 place-items-center rounded-full border border-line bg-panel text-fg-2 transition hover:border-line-2 hover:text-fg;
+  }
+  .link {
+    @apply font-medium text-lime-fg underline-offset-4 hover:underline;
+  }
+  /* Subtle dotted motif used behind hero areas and empty states. */
+  .dots {
+    background-image: radial-gradient(rgb(var(--fg) / 0.09) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .dots-fade {
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .skeleton {
+    @apply relative overflow-hidden rounded-xl bg-panel-2;
+  }
+  .skeleton::after {
+    content: "";
+    @apply absolute inset-0 -translate-x-full animate-shimmer;
+    background: linear-gradient(90deg, transparent, rgb(var(--fg) / 0.05), transparent);
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer components {
+  /* Hairline grid used behind the hero and section intros. */
+  .grid-lines {
+    background-image: linear-gradient(rgb(var(--fg) / 0.045) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--fg) / 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .lime-glow {
+    background: radial-gradient(closest-side, rgb(var(--lime) / 0.22), transparent);
+  }
+  .text-gradient {
+    background: linear-gradient(180deg, rgb(var(--fg)) 30%, rgb(var(--fg) / 0.55));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .panel-sheen {
+    background-image: linear-gradient(180deg, rgb(255 255 255 / 0.035), transparent 40%);
+  }
+  /* Storefront themes set --sf-display; headings follow it. */
+  .sf-root :is(h1, h2, h3) {
+    font-family: var(--sf-display);
+  }
+  .prose-chat strong {
+    @apply font-semibold text-fg;
+  }
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
