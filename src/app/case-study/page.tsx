@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ArrowLeft, ArrowRight, Check, Code2, X } from "lucide-react";
 import Link from "next/link";
 import { buttonClass } from "@/components/ui/button";
+import { LiquidButton } from "@/components/ui/liquid-button";
 import { Logo } from "@/components/ui/logo";
 
 export const metadata: Metadata = {
@@ -65,9 +66,9 @@ export default function CaseStudy() {
           <Link href="/" className="inline-flex items-center gap-2 text-[14px] text-fg-2 transition hover:text-fg">
             <ArrowLeft size={15} /> <Logo compact />
           </Link>
-          <Link href="/app" className={buttonClass({ size: "sm" })}>
+          <LiquidButton href="/app" size="sm">
             Open live demo <ArrowRight size={14} />
-          </Link>
+          </LiquidButton>
         </div>
       </header>
 
@@ -292,9 +293,9 @@ export default function CaseStudy() {
             <p className="mt-1 text-fg-2">Every screen above is live and clickable.</p>
           </div>
           <div className="flex gap-2">
-            <Link href="/app" className={buttonClass({})}>
+            <LiquidButton href="/app">
               Open the demo <ArrowRight size={15} />
-            </Link>
+            </LiquidButton>
             <a href="https://github.com/anuj1102001/fitflow-showcase" target="_blank" rel="noreferrer" className={buttonClass({ variant: "secondary" })}>
               <Code2 size={15} /> Code
             </a>

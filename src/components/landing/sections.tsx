@@ -220,9 +220,15 @@ export function Pricing() {
                       </li>
                     ))}
                   </ul>
-                  <Link href="/app" className={buttonClass({ variant: p.featured ? "primary" : "secondary" }, "mt-8 w-full")}>
-                    Try it in the demo
-                  </Link>
+                  {p.featured ? (
+                    <LiquidButton href="/app" className="mt-8 w-full">
+                      Try it in the demo
+                    </LiquidButton>
+                  ) : (
+                    <Link href="/app" className={buttonClass({ variant: "secondary" }, "mt-8 w-full")}>
+                      Try it in the demo
+                    </Link>
+                  )}
                 </article>
               </Reveal>
             );
