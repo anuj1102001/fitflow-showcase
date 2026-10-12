@@ -143,11 +143,19 @@ function Sidebar({ collapsed, onToggle, path }: { collapsed: boolean; onToggle?:
           {collapsed ? <LogoMark /> : <Logo />}
         </Link>
         {onToggle && !collapsed && (
-          <button onClick={onToggle} className="grid h-8 w-8 place-items-center rounded-lg text-fg-3 transition hover:bg-panel-2 hover:text-fg" aria-label="Collapse sidebar">
+          <button onClick={onToggle} className="grid h-8 w-8 place-items-center rounded-lg text-fg-3 transition hover:bg-panel-2 hover:text-fg" aria-label="Collapse sidebar" title="Collapse sidebar">
             <ChevronsLeft size={16} />
           </button>
         )}
       </div>
+      {onToggle && collapsed && (
+        // Expand sits right under the logo, where the collapse arrow was, so the control never moves far.
+        <div className="px-3 pb-1">
+          <button onClick={onToggle} className="mx-auto grid h-9 w-10 place-items-center rounded-xl border border-line text-fg-2 transition hover:border-line-2 hover:bg-panel-2 hover:text-fg" aria-label="Expand sidebar" title="Expand sidebar">
+            <ChevronsLeft size={16} className="rotate-180" />
+          </button>
+        </div>
+      )}
       <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-3" aria-label="App">
         {NAV.map((g) => (
           <div key={g.group}>
@@ -179,9 +187,9 @@ function Sidebar({ collapsed, onToggle, path }: { collapsed: boolean; onToggle?:
       </nav>
       <div className="border-t border-line p-3">
         {collapsed ? (
-          <button onClick={onToggle} className="mx-auto grid h-10 w-10 place-items-center rounded-xl text-fg-3 transition hover:bg-panel-2 hover:text-fg" aria-label="Expand sidebar">
-            <ChevronsLeft size={16} className="rotate-180" />
-          </button>
+          <Link href="/s/aarav" target="_blank" title="View storefront" aria-label="View storefront" className="mx-auto grid w-fit place-items-center rounded-full transition hover:opacity-80">
+            <Avatar name={COACH.name} src={COACH.avatar} size={36} />
+          </Link>
         ) : (
           <Link href="/s/aarav" target="_blank" className="flex items-center gap-3 rounded-2xl border border-line bg-panel-2/50 p-3 transition hover:border-line-2">
             <Avatar name={COACH.name} src={COACH.avatar} size={36} />
