@@ -1,4 +1,4 @@
-import { BarChart3, Bot, CalendarDays, HeartPulse, LayoutDashboard, MessageSquareText, Sparkles, Store, Users, type LucideIcon } from "lucide-react";
+import { BarChart3, BicepsFlexed, CalendarDays, HeartPulse, LayoutDashboard, MessageSquareText, Sparkles, Store, Users, type LucideIcon } from "lucide-react";
 
 export type NavItem = { href: string; label: string; icon: LucideIcon; blurb: string };
 
@@ -21,7 +21,7 @@ export const NAV: { group: string; items: NavItem[] }[] = [
       { href: "/app/analytics", label: "Analytics", icon: BarChart3, blurb: "Lead flow, conversion and revenue trends" },
     ],
   },
-  { group: "AI", items: [{ href: "/app/assistant", label: "Assistant", icon: Bot, blurb: "Ask questions about your business" }] },
+  { group: "AI", items: [{ href: "/app/assistant", label: "Assistant", icon: BicepsFlexed, blurb: "Ask questions about your business" }] },
 ];
 
 export const ALL_NAV = NAV.flatMap((g) => g.items);

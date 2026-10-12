@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUp, BarChart3, Bot, CalendarCheck, Eraser, HeartPulse, Info, MessageSquareText, Sparkles, TrendingUp, Wand2 } from "lucide-react";
+import { ArrowUp, BarChart3, BicepsFlexed, CalendarCheck, Eraser, HeartPulse, Info, MessageSquareText, Sparkles, TrendingUp, Wand2 } from "lucide-react";
 import Link from "next/link";
 import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import { EASE } from "@/components/motion/kit";
@@ -89,7 +89,7 @@ export function AssistantScreen() {
               ))}
               {thinking && (
                 <div className="flex gap-3" role="status" aria-label="Assistant is thinking">
-                  <BotAvatar />
+                  <AssistantAvatar />
                   <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-md border border-line bg-panel-2/60 px-4 py-3.5">
                     {[0, 1, 2].map((i) => (
                       <motion.span key={i} className="h-1.5 w-1.5 rounded-full bg-s1" animate={{ opacity: [0.25, 1, 0.25], y: [0, -3, 0] }} transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.15 }} />
@@ -182,10 +182,10 @@ export function AssistantScreen() {
   );
 }
 
-function BotAvatar() {
+function AssistantAvatar() {
   return (
     <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-lime text-lime-ink">
-      <Bot size={16} />
+      <BicepsFlexed size={17} />
     </span>
   );
 }
@@ -200,7 +200,7 @@ function Message({ m, live }: { m: ChatMessage; live?: boolean }) {
     );
   return (
     <div className="flex gap-3">
-      <BotAvatar />
+      <AssistantAvatar />
       <div className="min-w-0 max-w-[88%]">
         <div className="prose-chat rounded-2xl rounded-tl-md border border-line bg-panel-2/40 px-4 py-3.5 text-[14.5px] leading-relaxed text-fg-2">
           <Markdown text={m.text} />

@@ -25,20 +25,27 @@ async function step(name, fn) {
 const assert = (c, m) => {
   if (!c) throw new Error(m);
 };
+// Polls for a condition instead of sleeping a fixed time, so slower machines don't fail on animations.
+const waitFor = async (fn, ms = 4000) => {
+  for (const end = Date.now() + ms; Date.now() < end; await sleep(100)) if (await fn()) return true;
+  return false;
+};
 const clickText = async (text, sel = "button, a, [role=tab], [role=option]") => {
-  const ok = await page.evaluate(
-    (t, s) => {
-      const el = [...document.querySelectorAll(s)].find((e) => e.textContent.replace(/\s+/g, " ").trim().includes(t) && e.offsetParent !== null);
-      if (el) el.click();
-      return !!el;
-    },
-    text,
-    sel,
-  );
-  assert(ok, `no clickable "${text}"`);
+  const click = () =>
+    page.evaluate(
+      (t, s) => {
+        const el = [...document.querySelectorAll(s)].find((e) => e.textContent.replace(/\s+/g, " ").trim().includes(t) && e.offsetParent !== null);
+        if (el) el.click();
+        return !!el;
+      },
+      text,
+      sel,
+    );
+  assert(await waitFor(click), `no clickable "${text}"`);
   await sleep(350);
 };
 const typeInto = async (sel, text) => {
+  await page.waitForSelector(sel, { visible: true, timeout: 5000 });
   await page.click(sel, { clickCount: 3 });
   await page.type(sel, text);
 };
@@ -53,8 +60,7 @@ await step("welcome tour shows and can be completed", async () => {
   assert(await bodyHas("You're signed in as Aarav Mehta"), "tour missing");
   for (let i = 0; i < 3; i++) await clickText("Next");
   await clickText("Start exploring");
-  await sleep(500);
-  assert(!(await bodyHas("Welcome to the demo")), "tour still visible");
+  assert(await waitFor(async () => !(await bodyHas("Welcome to the demo"))), "tour still visible");
 });
 
 await step("add lead validates and creates a lead", async () => {
