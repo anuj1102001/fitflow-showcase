@@ -8,7 +8,6 @@ import { SERIES, TrendChart } from "@/components/charts";
 import { EASE, Reveal, SPRING, TiltCard } from "@/components/motion/kit";
 import { BrowserFrame, PhoneFrame } from "@/components/storefront/frames";
 import { StorefrontView, THEME_META } from "@/components/storefront/view";
-import { buttonClass } from "@/components/ui/button";
 import { cn } from "@/components/ui/cn";
 import { LiquidButton } from "@/components/ui/liquid-button";
 import { Avatar, DemoTag, ProgressRing, Segmented, Skeleton } from "@/components/ui/kit";
@@ -277,9 +276,9 @@ export function AnalyticsPreview() {
               </li>
             ))}
           </ul>
-          <Link href="/app/analytics" className={buttonClass({ variant: "secondary" }, "mt-8")}>
+          <LiquidButton href="/app/analytics" className="mt-8">
             Open full analytics <ArrowRight size={15} />
-          </Link>
+          </LiquidButton>
         </div>
         <Reveal>
           <div className="card relative overflow-hidden p-5 sm:p-7">
