@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowLeft, ArrowRight, Check, Code2, X } from "lucide-react";
 import Link from "next/link";
-import { buttonClass } from "@/components/ui/button";
 import { LiquidButton } from "@/components/ui/liquid-button";
 import { Logo } from "@/components/ui/logo";
 
@@ -250,9 +249,9 @@ export default function CaseStudy() {
           <p>
             The design system and key screens live in a Figma file that mirrors the code: colour variables with Light and Dark values (bound to every fill and stroke), a text-style ramp, spacing and radius variables, elevation styles, components with variants (Button, Badge, Text field, Nav item, Stat tile, Lead card) and screens built from those components in both themes.
           </p>
-          <a href="https://www.figma.com/design/tplM1llRbk13QxwC9bzAxU" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-[10px] border border-line bg-panel px-4 py-2.5 text-[14px] font-semibold text-fg transition hover:border-line-2">
+          <LiquidButton href="https://www.figma.com/design/tplM1llRbk13QxwC9bzAxU" target="_blank" variant="secondary">
             Open the Figma file <ArrowRight size={15} />
-          </a>
+          </LiquidButton>
         </Section>
 
         <Section n="10" title="Build">
@@ -296,9 +295,9 @@ export default function CaseStudy() {
             <LiquidButton href="/app">
               Open the demo <ArrowRight size={15} />
             </LiquidButton>
-            <a href="https://github.com/anuj1102001/fitflow-showcase" target="_blank" rel="noreferrer" className={buttonClass({ variant: "secondary" })}>
+            <LiquidButton href="https://github.com/anuj1102001/fitflow-showcase" target="_blank" variant="secondary">
               <Code2 size={15} /> Code
-            </a>
+            </LiquidButton>
           </div>
         </div>
       </main>

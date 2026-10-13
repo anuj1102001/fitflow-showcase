@@ -78,6 +78,7 @@ export function LiquidButton({ href, children, variant = "primary", size = "md",
     <Link
       href={href}
       target={target}
+      rel={target === "_blank" ? "noreferrer" : undefined}
       onClick={onClick}
       onMouseEnter={() => ((hover.current = true), setSpeed(1.2))}
       onMouseLeave={() => ((hover.current = false), setSpeed(0.6), setPressed(false))}
