@@ -3,14 +3,15 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Animated green "neural noise" behind the landing hero. The shaders are the ones from
- * rahil1202's NeuralNoiseCursor on 21st.dev (layered rotated sine noise that bends toward the
- * pointer), with the palette held at its opening green rather than drifting with page scroll.
+ * Animated green "neural noise" behind the whole landing page, hero to footer: one fixed canvas,
+ * one animation that never restarts. The shaders are the ones from rahil1202's NeuralNoiseCursor
+ * on 21st.dev (layered rotated sine noise that bends toward the pointer), with the palette held at
+ * its opening green rather than drifting with page scroll.
  *
- * Differences from the original, for a hero rather than a full-page demo:
- * - the canvas fades out over the first screen of scrolling and stops drawing once it's gone;
- * - it renders below device resolution (the noise is soft, so this is invisible) to stay light on laptops and phones;
- * - with reduced motion it draws a single still frame; without WebGL it simply isn't shown.
+ * Tuned to run all the time without hurting the page:
+ * - full strength in the hero, settling to `restOpacity` below it so body text stays readable;
+ * - rendered below device resolution and capped at 30 fps (the noise is soft and slow, so neither shows);
+ * - pauses while the tab is hidden; a single still frame with reduced motion; hidden without WebGL.
  */
 const VERTEX = `
   precision mediump float;
@@ -81,7 +82,7 @@ const FRAGMENT = `
   }
 `;
 
-export function NeuralNoise({ opacity = 0.95, pointerStrength = 1, timeScale = 1 }: { opacity?: number; pointerStrength?: number; timeScale?: number }) {
+export function NeuralNoise({ opacity = 0.95, restOpacity = 0.55, pointerStrength = 1, timeScale = 1 }: { opacity?: number; restOpacity?: number; pointerStrength?: number; timeScale?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -132,11 +133,11 @@ export function NeuralNoise({ opacity = 0.95, pointerStrength = 1, timeScale = 1
     const pointer = { x: innerWidth * 0.5, y: innerHeight * 0.5, tx: innerWidth * 0.5, ty: innerHeight * 0.5 };
     const start = performance.now();
     let raf = 0;
-    let visible = true;
+    let last = 0;
 
     const resize = () => {
       // Below device resolution: smaller on phones, never above 1x.
-      const scale = Math.min(devicePixelRatio || 1, 1) * (innerWidth < 768 ? 0.6 : 0.75);
+      const scale = Math.min(devicePixelRatio || 1, 1) * (innerWidth < 768 ? 0.5 : 0.6);
       canvas.width = Math.floor(innerWidth * scale);
       canvas.height = Math.floor(innerHeight * scale);
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -151,19 +152,21 @@ export function NeuralNoise({ opacity = 0.95, pointerStrength = 1, timeScale = 1
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
     const loop = (now: number) => {
-      draw(now);
       raf = requestAnimationFrame(loop);
+      if (now - last < 32) return; // ~30 fps
+      last = now;
+      draw(now);
     };
-    // Fade out over the first screen of scrolling; stop drawing once it can't be seen.
+    // Full strength in the hero, easing down to a calmer level for the rest of the page
+    // (calmer still on the light theme, where bright strands compete more with grey body text).
+    const root = document.documentElement;
     const onScroll = () => {
-      const k = Math.max(0, 1 - scrollY / (innerHeight * 0.85));
-      canvas.style.opacity = String(opacity * k);
-      const nowVisible = k > 0;
-      if (nowVisible === visible || still) return;
-      visible = nowVisible;
-      if (visible) raf = requestAnimationFrame(loop);
-      else cancelAnimationFrame(raf);
+      const rest = root.classList.contains("dark") ? restOpacity : restOpacity * 0.7;
+      const k = Math.min(1, scrollY / (innerHeight * 0.85));
+      canvas.style.opacity = String(opacity + (rest - opacity) * k);
     };
+    const themeWatch = new MutationObserver(onScroll);
+    themeWatch.observe(root, { attributes: true, attributeFilter: ["class"] });
     const setTarget = (x: number, y: number) => ((pointer.tx = x), (pointer.ty = y));
     const onPointer = (e: PointerEvent) => setTarget(e.clientX, e.clientY);
     const onTouch = (e: TouchEvent) => e.targetTouches[0] && setTarget(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
@@ -175,10 +178,11 @@ export function NeuralNoise({ opacity = 0.95, pointerStrength = 1, timeScale = 1
     resize();
     onScroll();
     if (still) draw(start + 4000);
-    else if (visible) raf = requestAnimationFrame(loop);
+    else raf = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(raf);
+      themeWatch.disconnect();
       removeEventListener("resize", resize);
       removeEventListener("pointermove", onPointer);
       removeEventListener("touchmove", onTouch);
@@ -188,7 +192,7 @@ export function NeuralNoise({ opacity = 0.95, pointerStrength = 1, timeScale = 1
       gl.deleteShader(vs);
       gl.deleteShader(fs);
     };
-  }, [opacity, pointerStrength, timeScale]);
+  }, [opacity, restOpacity, pointerStrength, timeScale]);
 
-  return <canvas ref={canvasRef} aria-hidden className="pointer-events-none fixed inset-0 z-0 h-full w-full" style={{ opacity }} />;
+  return <canvas ref={canvasRef} aria-hidden className="pointer-events-none fixed inset-0 -z-10 h-full w-full" style={{ opacity }} />;
 }

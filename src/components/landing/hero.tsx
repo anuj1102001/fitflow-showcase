@@ -10,7 +10,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { EASE, SPRING } from "@/components/motion/kit";
 import { buttonClass } from "@/components/ui/button";
 import { LiquidButton } from "@/components/ui/liquid-button";
-import { NeuralNoise } from "./neural-noise";
 import { cn } from "@/components/ui/cn";
 import { Avatar } from "@/components/ui/kit";
 import { Logo } from "@/components/ui/logo";
@@ -104,7 +103,6 @@ export function Hero() {
   const fade = (d: number) => ({ initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, ease: EASE, delay: d } });
   return (
     <section ref={ref} className="relative overflow-hidden pb-12 pt-28 sm:pt-32 lg:pb-24 lg:pt-36">
-      <NeuralNoise />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="relative isolate lg:col-span-7">

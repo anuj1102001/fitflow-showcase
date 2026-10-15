@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 
 /** Theme preference: an explicit choice, or follow the operating system. Stored in localStorage. */
 export type ThemePref = "light" | "dark" | "system";
@@ -25,20 +26,54 @@ export function resolve(p: ThemePref): "light" | "dark" {
   return typeof matchMedia !== "undefined" && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-export function setPref(p: ThemePref) {
+type Origin = { x: number; y: number };
+
+/**
+ * Switch theme. With an origin (the toggle's position), the new theme spreads out from it as a
+ * soft-edged wave (View Transitions API: one composited animation, so nothing lags or changes out
+ * of step). Reduced motion gets a short crossfade; browsers without View Transitions get a quick
+ * colour fade. The choice is saved and applied before first paint on the next visit.
+ */
+export function setPref(p: ThemePref, origin?: Origin) {
   try {
     localStorage.setItem(THEME_KEY, p);
   } catch {}
   const root = document.documentElement;
-  // Swap instantly. Transitions are suspended for one frame so nothing fades in late
-  // (elements with their own colour transitions would otherwise change one by one).
-  const stop = document.createElement("style");
-  stop.textContent = "*,*::before,*::after{transition:none!important}";
-  document.head.appendChild(stop);
-  root.classList.toggle("dark", resolve(p) === "dark");
-  void getComputedStyle(document.body).color; // apply the new colours while transitions are off
-  requestAnimationFrame(() => requestAnimationFrame(() => stop.remove()));
-  listeners.forEach((l) => l());
+  const dark = resolve(p) === "dark";
+  const notify = () => flushSync(() => listeners.forEach((l) => l()));
+  if (root.classList.contains("dark") === dark) return notify(); // e.g. System → Dark while already dark
+
+  // Apply the new theme in one step; transitions are held off so the "after" picture is final.
+  const swap = () => {
+    const stop = document.createElement("style");
+    stop.textContent = "*,*::before,*::after{transition:none!important}";
+    document.head.appendChild(stop);
+    root.classList.toggle("dark", dark);
+    notify();
+    void getComputedStyle(document.body).color;
+    requestAnimationFrame(() => requestAnimationFrame(() => stop.remove()));
+  };
+
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const doc = document as Document & { startViewTransition?: (cb: () => void) => { ready: Promise<void>; finished: Promise<void> } };
+  if (!doc.startViewTransition) {
+    // Fallback: a short coordinated colour fade.
+    if (reduce) return swap();
+    root.classList.add("theme-fade");
+    root.classList.toggle("dark", dark);
+    notify();
+    window.setTimeout(() => root.classList.remove("theme-fade"), 450);
+    return;
+  }
+
+  const { x, y } = origin ?? { x: innerWidth / 2, y: 0 };
+  const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + 120;
+  root.style.setProperty("--vt-x", `${x}px`);
+  root.style.setProperty("--vt-y", `${y}px`);
+  root.style.setProperty("--vt-end", `${end}px`);
+  root.dataset.themeTransition = reduce ? "fade" : "wave";
+  const t = doc.startViewTransition(swap);
+  t.finished.finally(() => delete root.dataset.themeTransition);
 }
 
 /** Current preference and resolved theme; re-renders on change and when the OS theme flips. */

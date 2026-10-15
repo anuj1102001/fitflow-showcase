@@ -183,3 +183,37 @@
     opacity: 0;
   }
 }
+
+/* ---- Theme switch: the new theme spreads from the toggle as a soft-edged wave ---- */
+@property --ff-wave {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@keyframes ff-wave {
+  from {
+    --ff-wave: 0px;
+  }
+  to {
+    --ff-wave: var(--vt-end);
+  }
+}
+html[data-theme-transition="wave"]::view-transition-old(root) {
+  animation: none;
+}
+html[data-theme-transition="wave"]::view-transition-new(root) {
+  animation: ff-wave 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+  -webkit-mask-image: radial-gradient(circle at var(--vt-x) var(--vt-y), #000 calc(var(--ff-wave) - 110px), transparent var(--ff-wave));
+  mask-image: radial-gradient(circle at var(--vt-x) var(--vt-y), #000 calc(var(--ff-wave) - 110px), transparent var(--ff-wave));
+}
+html[data-theme-transition="fade"]::view-transition-old(root),
+html[data-theme-transition="fade"]::view-transition-new(root) {
+  animation-duration: 0.18s;
+}
+/* Fallback without View Transitions */
+html.theme-fade,
+html.theme-fade *,
+html.theme-fade *::before,
+html.theme-fade *::after {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, fill 0.4s ease, stroke 0.4s ease, box-shadow 0.4s ease !important;
+}
