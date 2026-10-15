@@ -14,7 +14,7 @@ export const SERIES = {
   mint: "rgb(var(--s-5))",
   muted: "rgb(var(--line-2))",
 };
-export const SOURCE_COLOR: Record<string, string> = { Instagram: SERIES.lime, Storefront: SERIES.sky, Referral: SERIES.mint, YouTube: SERIES.peach, WhatsApp: SERIES.violet };
+export const SOURCE_COLOR: Record<string, string> = { Instagram: SERIES.lime, Website: SERIES.sky, Referral: SERIES.mint, YouTube: SERIES.peach, WhatsApp: SERIES.violet };
 
 const axis = { stroke: "rgb(var(--axis))", fontSize: 11, tickLine: false, axisLine: false } as const;
 

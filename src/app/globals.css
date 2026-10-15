@@ -4,7 +4,7 @@
 
 /*
  * FITFLOW design tokens. Mirrors the "Color" variable collection in the Figma file (modes: Light, Dark).
- * Light is defined on :root; html.dark swaps the values. Storefront themes define their own scoped tokens.
+ * Light is defined on :root; html.dark swaps the values.
  */
 @layer base {
   :root {
@@ -154,7 +154,7 @@
     padding: 0.14em 0.04em 0.1em;
     margin: -0.14em -0.04em -0.1em;
   }
-  /* Storefront themes set --sf-display; headings follow it. */
+  /* Offer cards set --sf-display; headings follow it. */
   .sf-root :is(h1, h2, h3) {
     font-family: var(--sf-display);
   }

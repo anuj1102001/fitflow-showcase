@@ -1,6 +1,7 @@
 import { addDays, DAY, startOfDay } from "./format";
 import { IMAGES } from "./images";
-import type { Booking, BookingKind, CheckIn, Client, Draft, Lead, Metric, Note, Notification, Offer, Source, Stage, Storefront } from "./types";
+import { sequenceById, stepDue, type Enrollment, type SequenceId } from "./sequences";
+import type { Booking, BookingKind, CheckIn, Client, Draft, Lead, Metric, Note, Notification, Offer, Source, Stage } from "./types";
 
 /**
  * Deterministic sample data for the prototype. One fictional coach (Aarav Mehta) with twelve months of
@@ -135,7 +136,7 @@ export const SEED_OFFERS: Offer[] = [
   },
 ];
 
-const CONVERSION: Record<Source, number> = { Referral: 0.42, Storefront: 0.31, WhatsApp: 0.22, YouTube: 0.18, Instagram: 0.15 };
+const CONVERSION: Record<Source, number> = { Referral: 0.42, Website: 0.31, WhatsApp: 0.22, YouTube: 0.18, Instagram: 0.15 };
 
 const HUMAN_NOTES = [
   "Works late on weekdays; prefers morning sessions.",
@@ -157,7 +158,7 @@ export type SeedState = {
   bookings: Booking[];
   drafts: Draft[];
   notifications: Notification[];
-  storefront: Storefront;
+  enrollments: Enrollment[];
 };
 
 export const DEFAULT_SEED = 99;
@@ -200,7 +201,7 @@ export function generateSeed(nowMs = Date.now(), seed = DEFAULT_SEED): SeedState
       if (created.getTime() > nowMs) created.setTime(nowMs - r.int(5, 300) * 60_000);
       const source = r.weighted<Source>([
         ["Instagram", 0.5 - 0.18 * growth],
-        ["Storefront", 0.06 + 0.26 * growth],
+        ["Website", 0.06 + 0.26 * growth],
         ["Referral", 0.14],
         ["YouTube", 0.14 - 0.04 * growth],
         ["WhatsApp", 0.1],
@@ -300,7 +301,7 @@ export function generateSeed(nowMs = Date.now(), seed = DEFAULT_SEED): SeedState
         wonAt: wonAt ? iso(wonAt) : undefined,
         lostAt: lostAt ? iso(lostAt) : undefined,
         lostReason,
-        fitScore: Math.min(97, Math.round(48 + r.next() * 40 + (source === "Referral" ? 8 : source === "Storefront" ? 5 : 0))),
+        fitScore: Math.min(97, Math.round(48 + r.next() * 40 + (source === "Referral" ? 8 : source === "Website" ? 5 : 0))),
         notes,
       });
     }
@@ -418,35 +419,62 @@ export function generateSeed(nowMs = Date.now(), seed = DEFAULT_SEED): SeedState
     },
   ];
 
-  return { leads, offers, clients, bookings, drafts, notifications, storefront: defaultStorefront(offers) };
+  const enrollments = seedEnrollments(leads, clients, nowMs, r);
+  return { leads, offers, clients, bookings, drafts, notifications, enrollments };
 }
 
-export function defaultStorefront(offers: Offer[]): Storefront {
-  return {
-    slug: "aarav",
-    coachName: COACH.name,
-    role: COACH.role,
-    city: COACH.city,
-    headline: "Get strong, lose the fat, keep your desk job.",
-    bio: "I coach busy professionals in Bengaluru and online to lift with confidence. No crash diets, no 2-hour workouts: just progressive training, simple nutrition and a coach who checks in every week.",
-    theme: "forge",
-    heroImage: IMAGES.coachAarav,
-    offerIds: offers.filter((o) => o.status === "live").map((o) => o.id),
-    showTestimonials: true,
-    showFaq: true,
-    ctaLabel: "Book a free discovery call",
-    stats: [
-      { label: "Years coaching", value: "7" },
-      { label: "Sessions a week", value: "3–4" },
-      { label: "Check-in", value: "Weekly" },
-    ],
-  };
+/**
+ * Puts open leads into the sequence that fits their stage, with the coach a little behind on some of
+ * them, so the Today queue has realistic work in it. Also pauses a few that replied and starts one
+ * client rescue. Keeps each lead's nextFollowUp in step with its sequence.
+ */
+function seedEnrollments(leads: Lead[], clients: Client[], nowMs: number, r: ReturnType<typeof rng>): Enrollment[] {
+  const today = startOfDay(nowMs).getTime();
+  const out: Enrollment[] = [];
+  const open = leads.filter((l) => ["new", "contacted", "proposal"].includes(l.stage));
+  open.forEach((lead, i) => {
+    const quiet = nowMs - new Date(lead.lastContactAt ?? lead.createdAt).getTime();
+    const id: SequenceId = lead.stage === "proposal" ? "proposal" : lead.stage === "contacted" && quiet > 7 * DAY ? "win-back" : "new-enquiry";
+    const seq = sequenceById(id);
+    const startedAt = id === "proposal" || id === "win-back" ? (lead.lastContactAt ?? lead.createdAt) : lead.createdAt;
+    const e: Enrollment = { id: "en_" + lead.id, sequenceId: id, leadId: lead.id, startedAt, step: 0, status: "active", log: [] };
+    // The coach has sent every step that was due more than `lag` days ago.
+    const lag = lead.stage === "new" ? 99 : r.int(0, 2);
+    while (e.step < seq.steps.length) {
+      const due = stepDue(e, e.step)!.getTime();
+      if (due > today - lag * DAY) break;
+      e.log.push({ step: e.step, at: new Date(due + r.int(9, 20) * 3_600_000).toISOString(), channel: seq.steps[e.step]!.channel });
+      e.step++;
+    }
+    if (e.log.length && (lead.stage === "proposal" ? i % 2 === 0 : i % 4 === 1)) {
+      // They replied partway through, a day after a step: the sequence stopped there. Only very recent
+      // replies still need an answer today.
+      const k = Math.max(1, Math.ceil(e.log.length / 2));
+      e.log = e.log.slice(0, k);
+      e.step = k;
+      e.status = "paused";
+      e.reason = "Replied";
+      e.pausedAt = new Date(Math.min(nowMs - 3_600_000, new Date(e.log[k - 1]!.at).getTime() + DAY)).toISOString();
+    } else if (e.step >= seq.steps.length) {
+      e.status = "done";
+      e.reason = "All steps sent";
+    }
+    const freshReply = e.reason === "Replied" && nowMs - new Date(e.pausedAt!).getTime() < 3 * DAY;
+    const next = e.status === "active" ? stepDue(e, e.step) : freshReply ? new Date(today) : e.reason === "Replied" ? addDays(new Date(today), 1 + (i % 5)) : null;
+    lead.nextFollowUp = next ? next.toISOString() : lead.nextFollowUp;
+    if (e.log.length) lead.lastContactAt = e.log[e.log.length - 1]!.at;
+    out.push(e);
+  });
+  const risk = clients.find((c) => c.status === "at-risk");
+  if (risk) out.push({ id: "en_rescue_" + risk.id, sequenceId: "client-rescue", leadId: risk.leadId, startedAt: new Date(today - 3 * DAY).toISOString(), step: 1, status: "active", log: [{ step: 0, at: new Date(today - 3 * DAY + 10 * 3_600_000).toISOString(), channel: "WhatsApp" }] });
+  return out;
 }
+
 
 function sourceNote(s: Source) {
   return {
     Instagram: "Lead created from an Instagram DM",
-    Storefront: "Enquiry submitted on your storefront",
+    Website: "Enquiry submitted through the form on your website",
     Referral: "Referred by an existing client",
     YouTube: "Came from a YouTube video description link",
     WhatsApp: "Messaged on WhatsApp Business",

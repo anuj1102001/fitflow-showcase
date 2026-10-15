@@ -14,12 +14,16 @@ import { Avatar, Badge, DemoTag, Panel, Segmented } from "@/components/ui/kit";
 import { insights, kpis, METRICS, pipelineValue, RANGES, series, type RangeId } from "@/lib/analytics";
 import { ago, dateLong, firstName, pct, relDay, rupees, startOfDay, time } from "@/lib/format";
 import { COACH } from "@/lib/seed";
+import { IMAGES } from "@/lib/images";
+import { buildQueue } from "@/lib/sequences";
+import { TodayQueue } from "./today";
 import { useDemo } from "@/lib/store";
 import { STAGE_LABEL } from "@/lib/types";
 import { useUI } from "@/lib/ui-store";
 
 export function OverviewScreen() {
-  const { leads, clients, offers, bookings, drafts, storefront } = useDemo();
+  const { leads, clients, offers, bookings, drafts, enrollments } = useDemo();
+  const queue = useMemo(() => buildQueue({ leads, clients, enrollments }), [leads, clients, enrollments]);
   const openBookingForm = useUI((s) => s.openBookingForm);
   const [range, setRange] = useState<RangeId>("30d");
   const [metric, setMetric] = useState<"leads" | "revenue">("leads");
@@ -47,7 +51,7 @@ export function OverviewScreen() {
   return (
     <div className="space-y-5">
       <ProfileHero
-        photo={storefront.heroImage}
+        photo={IMAGES.coachAarav}
         avatar={COACH.avatar}
         initials={COACH.name.split(" ").map((w) => w[0]).join("")}
         aside={
@@ -62,9 +66,11 @@ export function OverviewScreen() {
           {greeting}, {firstName(COACH.name)}.
         </h2>
         <p className="mt-4 text-[15px] leading-relaxed text-white/85 sm:text-[16px]">
-          {todays.length ? `${todays.length} session${todays.length > 1 ? "s" : ""} today` : "No sessions today"} · {ins.overdue.length} overdue follow-up{ins.overdue.length === 1 ? "" : "s"} · {rupees(pipelineValue(leads))} in open pipeline
+          {queue.length} {queue.length === 1 ? "person" : "people"} to follow up today · {todays.length ? `${todays.length} session${todays.length > 1 ? "s" : ""}` : "no sessions"} · {rupees(pipelineValue(leads))} in open pipeline
         </p>
       </ProfileHero>
+
+      <TodayQueue />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatTile index={0} label="Total leads" icon={<Users size={14} />} value={k.cur.leads} delta={k.delta.leads} spark={s.map((b) => b.leads)} info={METRICS.leads} />

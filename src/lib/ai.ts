@@ -124,19 +124,26 @@ export function claimCheck(text: string) {
 
 /* ------------------------------------------------------------------ follow-ups */
 
-export const FOLLOW_UP_GOALS = ["Reply to a new enquiry", "Book a discovery call", "Nudge after a proposal", "Re-engage a quiet lead", "Thank them after a call"] as const;
+export const FOLLOW_UP_GOALS = ["Reply to a new enquiry", "Book a discovery call", "Share something useful", "Nudge after a proposal", "Re-engage a quiet lead", "Thank them after a call"] as const;
+/** Goals for people who are already clients: retention, not sales. */
+export const CLIENT_GOALS = ["Check in after a tough week", "Offer a lighter week", "Book a reset call", "Celebrate a win"] as const;
+export type ClientGoal = (typeof CLIENT_GOALS)[number];
 export const TONES = ["Warm", "Professional", "Energetic"] as const;
 export const CHANNELS = ["WhatsApp", "Instagram DM", "Email"] as const;
 export type FollowUpGoal = (typeof FOLLOW_UP_GOALS)[number];
 export type Tone = (typeof TONES)[number];
 export type Channel = (typeof CHANNELS)[number];
 
-export function draftFollowUp(lead: Lead, offer: Offer | undefined, goal: FollowUpGoal, tone: Tone, channel: Channel, variant = 0) {
-  const name = firstName(lead.name);
-  // Goals are written in the lead's voice ("Lose the belly fat I've had…"); turn them into "your goal to …".
+/** The lead's goal, written in their voice ("Lose the belly fat I've had…"), turned into "your goal to …". */
+export function goalPhrase(lead: Pick<Lead, "goal">) {
   const raw = lead.goal.charAt(0).toLowerCase() + lead.goal.slice(1);
   const you = raw.replace(/\bI've\b/g, "you've").replace(/\bI'm\b/g, "you're").replace(/\bmy\b/g, "your").replace(/\bI\b/g, "you");
-  const g = /^(lose|get|do|run|gain|feel|deadlift|drop|train|fix|build|move|improve)\b/.test(you) ? `your goal to ${you}` : `your goal (“${lead.goal}”)`;
+  return /^(lose|get|do|run|gain|feel|deadlift|drop|train|fix|build|move|improve)\b/.test(you) ? `your goal to ${you}` : `your goal (“${lead.goal}”)`;
+}
+
+export function draftFollowUp(lead: Lead, offer: Offer | undefined, goal: FollowUpGoal, tone: Tone, channel: Channel, variant = 0) {
+  const name = firstName(lead.name);
+  const g = goalPhrase(lead);
   const program = offer?.title ?? "my coaching program";
   const hi = { Warm: `Hi ${name}!`, Professional: `Hi ${name},`, Energetic: `Hey ${name}! 👋` }[tone];
   const v = Math.abs(variant) % 2;
@@ -144,6 +151,10 @@ export function draftFollowUp(lead: Lead, offer: Offer | undefined, goal: Follow
     "Reply to a new enquiry": [
       `Thanks for reaching out about ${g}. It's something I help people with a lot. Could you tell me a little about your current routine and what's got in the way so far? Then I can suggest the right next step.`,
       `Great to hear from you! I'd love to help with ${g}. First, I want to understand where you're starting from. What does a typical week of training (or not training!) look like for you right now?`,
+    ],
+    "Share something useful": [
+      `No pressure to decide anything yet. One thing that helps almost everyone working on ${g}: three short strength sessions a week beat one long one. Want me to send the simple routine I give new clients?`,
+      `Quick tip while you think it over: for ${g}, consistency matters more than intensity. Even 25 minutes, three times a week, adds up fast. Shall I share a starter plan you can try this week?`,
     ],
     "Book a discovery call": [
       `Would a quick 20-minute call this week work? We'll talk through ${g} and I'll tell you honestly whether ${program} is the right fit. I have slots on Thursday evening or Saturday morning.`,
@@ -169,6 +180,7 @@ export function draftFollowUp(lead: Lead, offer: Offer | undefined, goal: Follow
     const subject = {
       "Reply to a new enquiry": "Your coaching enquiry",
       "Book a discovery call": "Quick call about your goals?",
+      "Share something useful": "One thing that helps with your goal",
       "Nudge after a proposal": `Any questions about ${program}?`,
       "Re-engage a quiet lead": "Still thinking about your fitness goal?",
       "Thank them after a call": "Thanks for today, plus next steps",
@@ -178,6 +190,37 @@ export function draftFollowUp(lead: Lead, offer: Offer | undefined, goal: Follow
     text = text.replace(/ Would a quick 20-minute call/, " Fancy a quick 20-min call");
   }
   return text;
+}
+
+/** Retention messages for existing clients, built from their latest check-in. */
+export function draftClientMessage(lead: Lead, client: Client, offer: Offer | undefined, goal: ClientGoal, tone: Tone, channel: Channel, variant = 0) {
+  const name = firstName(lead.name);
+  const last = client.checkIns[0];
+  const week = last ? `last week's check-in (${last.adherence}% of sessions)` : "your last few weeks";
+  const program = offer?.title ?? "your program";
+  const hi = { Warm: `Hi ${name}!`, Professional: `Hi ${name},`, Energetic: `Hey ${name}! 👋` }[tone];
+  const v = Math.abs(variant) % 2;
+  const body: Record<ClientGoal, [string, string]> = {
+    "Check in after a tough week": [
+      `Saw ${week}. Weeks like that happen to everyone, so no guilt. What got in the way? If it was work or travel, we can plan around it rather than push through.`,
+      `Just looking at ${week}. I'd rather hear what's going on than guess. Was it time, energy or motivation? Tell me and we'll adjust the plan together.`,
+    ],
+    "Offer a lighter week": [
+      `Based on ${week}, let's make this week lighter: two 30-minute sessions instead of four, and just hit your protein target. Small wins first, then we build back up. Sound good?`,
+      `How about a reset week? Two short sessions and a daily walk, nothing more. The goal is momentum, not perfection. Want me to send the lighter plan?`,
+    ],
+    "Book a reset call": [
+      `Could we do a 15-minute call this week? I want to make sure ${program} still fits your life right now, and tweak it if it doesn't. Thursday evening or Saturday morning?`,
+      `Let's grab 15 minutes to reset. We'll look at what's working, what isn't, and set a realistic plan for the next two weeks. When suits you?`,
+    ],
+    "Celebrate a win": [
+      `Had to message: ${week} was brilliant. That consistency is exactly what moves the needle. Proud of you. What felt different this week?`,
+      `Big week! You showed up, and it shows. Keep this rhythm going and the next check-in will be even better.`,
+    ],
+  };
+  const sign = { Warm: "Cheers,\nAarav", Professional: "Best regards,\nAarav Mehta", Energetic: "Let's go! 💪\nAarav" }[tone];
+  if (channel === "Email") return `Subject: ${goal === "Celebrate a win" ? "Great week!" : "Checking in on your plan"}\n\n${hi}\n\n${body[goal][v]}\n\n${sign}`;
+  return `${hi} ${body[goal][v]}`;
 }
 
 /* ------------------------------------------------------------------ assistant */
@@ -207,7 +250,7 @@ export function answer(question: string, data: { leads: Lead[]; clients: Client[
       text:
         `Over the last 90 days:\n\n${lines}\n\n` +
         (best && vol && best.source !== vol.source
-          ? `**${vol.source}** brings the most leads, but **${best.source}** converts best at ${pct(best.conversion, 0)}. Each ${best.source} lead is worth roughly ${(best.conversion! / Math.max(0.01, vol.conversion ?? 0.01)).toFixed(1)}× an ${vol.source} lead.\n\n**Suggestion:** keep ${vol.source} for reach, but put the storefront link in every post and ask your happiest clients for one referral each this month.`
+          ? `**${vol.source}** brings the most leads, but **${best.source}** converts best at ${pct(best.conversion, 0)}. Each ${best.source} lead is worth roughly ${(best.conversion! / Math.max(0.01, vol.conversion ?? 0.01)).toFixed(1)}× an ${vol.source} lead.\n\n**Suggestion:** keep ${vol.source} for reach, but enrol every new enquiry in the New enquiry sequence and ask your happiest clients for one referral each this month.`
           : `**${best?.source ?? "Referral"}** leads the way on both volume and conversion. Keep doing what's working there.`),
       cards: rows.slice(0, 3).map((s) => ({ label: s.source, value: `${pct(s.conversion, 0)} conv.`, href: `/app/analytics?source=${s.source}` })),
     };
@@ -240,7 +283,7 @@ export function answer(question: string, data: { leads: Lead[]; clients: Client[
         (best && worst && best.id !== worst.id
           ? `**${worst.title}** converts lowest. Three things to try:\n1. Lead with the outcome in the title, not the format.\n2. Add a payment option split over two months to lower the first step.\n3. Add one concrete detail to the description (e.g. "3 sessions a week, 45 minutes each").\n\n`
           : "") +
-        (draft ? `You also have **${draft.title}** sitting in drafts. Publishing it gives storefront visitors another way in.` : "Open the AI Offer Builder to test a new angle in a couple of minutes."),
+        (draft ? `You also have **${draft.title}** sitting in drafts. Publishing it gives new leads another option to choose from.` : "Open the AI Offer Builder to test a new angle in a couple of minutes."),
       cards: [{ label: "Open Offer Builder", value: "→", href: "/app/offers" }],
     };
   }
@@ -262,7 +305,7 @@ export function answer(question: string, data: { leads: Lead[]; clients: Client[
     const l = ins.lastMonth;
     const ch = (a: number, b: number) => (b ? `${a >= b ? "+" : ""}${Math.round(((a - b) / b) * 100)}%` : "n/a");
     return {
-      text: `**${t.label}** (so far) vs **${l.label}**:\n\n• Leads: ${t.leads} vs ${l.leads} (${ch(t.leads, l.leads)})\n• Clients won: ${t.won} vs ${l.won}\n• Sample revenue: ${rupees(t.revenue)} vs ${rupees(l.revenue)}\n\nThe month isn't over, so compare pace rather than totals. ${t.leads >= l.leads * 0.6 ? "You're on track to match or beat last month on leads." : "Lead flow is slower than last month. A storefront post or story this week would help."}`,
+      text: `**${t.label}** (so far) vs **${l.label}**:\n\n• Leads: ${t.leads} vs ${l.leads} (${ch(t.leads, l.leads)})\n• Clients won: ${t.won} vs ${l.won}\n• Sample revenue: ${rupees(t.revenue)} vs ${rupees(l.revenue)}\n\nThe month isn't over, so compare pace rather than totals. ${t.leads >= l.leads * 0.6 ? "You're on track to match or beat last month on leads." : "Lead flow is slower than last month. A story this week, plus clearing the Today queue, would help."}`,
       cards: [{ label: "Open analytics", value: "→", href: "/app/analytics?range=12m" }],
     };
   }

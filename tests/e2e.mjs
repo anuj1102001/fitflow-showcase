@@ -106,25 +106,34 @@ await step("offer builder: guided steps → generate → publish", async () => {
   await page.waitForFunction((t) => document.querySelector("#o-title")?.value && document.querySelector("#o-title").value !== t, { timeout: 15000 }, title);
   const title2 = await page.$eval("#o-title", (e) => e.value);
   assert(title2 !== title, "regenerate gave same title");
-  await clickText("Publish to storefront");
+  await clickText("Publish offer");
   await sleep(600);
   assert(await bodyHas(title2), "published offer not listed");
 });
 
-await step("storefront enquiry becomes a lead with a notification", async () => {
-  await go("/s/aarav");
-  await page.evaluate(() => document.querySelector("#sf-enquire")?.scrollIntoView());
-  await typeInto("input[aria-label=Name]", "Enquiry Tester");
-  await typeInto("input[aria-label=Email]", "enquiry@example.com");
-  await page.click("input[type=checkbox]");
-  await clickText("Send enquiry", "button[type=submit]");
-  await sleep(1500);
-  assert(await bodyHas("Thanks, Enquiry!"), "no success state");
-  await go("/app/leads?view=list");
-  assert(await bodyHas("Enquiry Tester"), "lead not in CRM");
-  await page.click("[aria-label^=Notifications]");
-  await sleep(300);
-  assert(await bodyHas("New lead: Enquiry Tester"), "no notification");
+await step("today queue opens a sequence step that explains itself and logging advances it", async () => {
+  await go("/app");
+  assert(await bodyHas("Today's follow-ups"), "no Today queue");
+  const href = await page.evaluate(() => [...document.querySelectorAll("#today a")].find((a) => a.textContent.trim() === "Draft" && a.href.includes("enrollment="))?.getAttribute("href"));
+  assert(href, "no sequence step in Today");
+  await go(href);
+  await clickText("Draft message");
+  assert(await waitFor(() => bodyHas("Why this draft"), 6000), "no explanation panel");
+  assert(await bodyHas("Ends with one easy question"), "checks missing");
+  await clickText("I sent it: log step");
+  assert(await waitFor(() => page.evaluate(() => location.pathname === "/app")), "did not return to Today");
+});
+
+await step("marking a reply pauses the sequence", async () => {
+  await go("/app/sequences");
+  const before = await page.evaluate(() => document.body.innerText.match(/Paused/g)?.length ?? 0);
+  await go("/app");
+  await clickText("Replied", "#today button");
+  await sleep(500);
+  assert(await bodyHas("Sequence paused"), "no pause confirmation");
+  await go("/app/sequences");
+  const after = await page.evaluate(() => document.body.innerText.match(/Paused/g)?.length ?? 0);
+  assert(after > before, "sequence not paused");
 });
 
 await step("follow-up draft generates, saves and logs", async () => {
@@ -135,7 +144,7 @@ await step("follow-up draft generates, saves and logs", async () => {
   assert(text.length > 60, "draft too short");
   await clickText("I sent it: log it");
   await sleep(400);
-  assert(await bodyHas("Logged"), "draft not logged");
+  assert(await bodyHas("Logged as sent"), "draft not logged");
 });
 
 await step("booking can be created from the calendar", async () => {
@@ -169,20 +178,21 @@ await step("command palette finds a lead", async () => {
   await page.keyboard.press("k");
   await page.keyboard.up("Control");
   await sleep(300);
-  await page.keyboard.type("Enquiry Tester");
+  await page.keyboard.type("Test Person");
   await sleep(300);
   await page.keyboard.press("Enter");
   await sleep(900);
   assert(page.url().includes("/app/leads?lead="), "palette did not navigate");
 });
 
-await step("storefront builder theme switch is reflected on the public page", async () => {
-  await go("/app/storefront");
-  await clickText("Bloom");
+await step("a slipping client can start the rescue sequence", async () => {
+  await go("/app/clients");
+  await clickText("At risk", "[role=tab], button");
   await sleep(400);
-  await go("/s/aarav");
-  const bg = await page.$eval(".sf-root", (e) => getComputedStyle(e).backgroundColor);
-  assert(bg === "rgb(246, 241, 234)", "theme not applied: " + bg);
+  await page.evaluate(() => [...document.querySelectorAll("main button")].find((b) => b.querySelector(".rounded-full.bg-bad"))?.click());
+  await sleep(500);
+  const started = await page.evaluate(() => document.body.innerText.includes("In Client rescue") || [...document.querySelectorAll("button")].some((b) => b.textContent.includes("Start rescue sequence")));
+  assert(started, "no rescue control on an at-risk client");
 });
 
 await step("reset restores sample data", async () => {
@@ -190,7 +200,7 @@ await step("reset restores sample data", async () => {
   await clickText("Reset");
   await sleep(800);
   await go("/app/leads?view=list");
-  assert(!(await bodyHas("Enquiry Tester")), "reset did not clear edits");
+  assert(!(await bodyHas("Test Person")), "reset did not clear edits");
 });
 
 console.log(`\n${passed} passed, ${failures.length} failed${errors.length ? `\nPage errors: ${[...new Set(errors)].join(" | ")}` : ""}`);

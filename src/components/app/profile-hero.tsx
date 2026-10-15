@@ -10,7 +10,7 @@ import { cn } from "@/components/ui/cn";
  * with the greeting on top. It is limited to this section: as you scroll, the photo eases back
  * and fades while the greeting lifts away, and the dashboard takes over.
  *
- * Image order: the storefront profile photo (editable in the Storefront builder), then the small
+ * Image order: the coach's profile photo, then the small
  * avatar, then a branded backdrop with initials, so it never shows a broken image.
  */
 export function ProfileHero({ photo, avatar, initials, children, aside }: { photo?: string; avatar?: string; initials: string; children: React.ReactNode; aside?: React.ReactNode }) {

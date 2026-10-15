@@ -6,55 +6,55 @@ import { Logo } from "@/components/ui/logo";
 
 export const metadata: Metadata = {
   title: "Case study",
-  description: "How FITFLOW AI was designed: problem framing, target user, information architecture, design system, motion and the trade-offs behind an interactive SaaS prototype.",
+  description: "How FITFLOW AI was designed: why it focuses on follow-up, the Today queue, sequences that pause on reply, drafts that explain themselves, and the trade-offs behind an interactive SaaS prototype.",
 };
 
 const SHOTS = [
-  { src: "/screens/landing.jpg", cap: "Landing page (light): editorial hero with a product shot that settles flat as you scroll." },
-  { src: "/screens/landing-dark.jpg", cap: "The same page in dark mode. Every surface, text and chart colour is a token with a Light and Dark value." },
-  { src: "/screens/overview.jpg", cap: "Overview: KPIs, trend, AI insights and the day's work on one screen." },
-  { src: "/screens/overview-dark.jpg", cap: "Overview in dark mode." },
-  { src: "/screens/leads.jpg", cap: "Lead CRM: drag-and-drop pipeline with source, value and follow-up urgency on every card." },
-  { src: "/screens/offer-builder.jpg", cap: "AI Offer Builder: five guided steps, then an editable draft with a live preview." },
-  { src: "/screens/storefront-builder.jpg", cap: "Storefront builder: theme, content and sections, previewed on desktop and phone in 3D." },
+  { src: "/screens/landing.jpg", cap: "Landing page: the promise in one line, with the product shot settling flat as you scroll." },
+  { src: "/screens/engine.jpg", cap: "The follow-up engine on the landing page: click a sequence step to see the real draft it produces, with its reasoning." },
+  { src: "/screens/today.jpg", cap: "Today, the app's home: who to message and why, ranked. Replies first, then due sequence steps, overdue leads and slipping clients." },
+  { src: "/screens/compose.jpg", cap: "Compose: the draft, what it used, the checks it passed, and a preview with the personalised parts highlighted." },
+  { src: "/screens/sequences.jpg", cap: "Sequences: four cadences with the reason for every step, the people in each, and sample reply rates." },
+  { src: "/screens/today-dark.jpg", cap: "Today in dark mode. Every colour is a token with a Light and Dark value." },
+  { src: "/screens/clients.jpg", cap: "Clients: weekly check-ins compute a status; slipping clients get a check-in draft or the rescue sequence." },
+  { src: "/screens/leads.jpg", cap: "Lead pipeline: stage, source, value and follow-up urgency on every card." },
   { src: "/screens/analytics.jpg", cap: "Analytics: one filter bar drives every chart; each metric is defined on the page." },
-  { src: "/screens/storefront-bloom.jpg", cap: "A second storefront theme (Bloom) for a yoga coach: same component, different art direction." },
 ];
 
 const DECISIONS = [
   {
-    t: "Pipeline first, not a contacts list",
-    b: "Coaches think in “who do I need to message today”, not in records. The CRM opens on a board grouped by stage, every card shows its follow-up urgency, and a “Due” view lists only what needs action.",
+    t: "A queue, not a dashboard",
+    b: "Coaches think in “who do I message today”, not in charts. The app opens on Today: a ranked list where every row says why it's there. The numbers are still one scroll away, but they're no longer the first thing.",
   },
   {
-    t: "AI as drafts, never as actions",
-    b: "Every AI output lands in an editable field with a clear “not sent” label. Messages are copied and sent by the coach. This keeps the coach's voice and avoids the trust problem of auto-messaging prospective clients.",
+    t: "It decides who and when; you decide what's sent",
+    b: "Sequences never send anything. Each step lands in Today as a draft on its day, and the coach sends it from their own WhatsApp, Instagram or email. Auto-messaging prospective clients is a trust problem, and it would sound like everyone else.",
   },
   {
-    t: "Guardrails visible in the UI",
-    b: "Fitness marketing is prone to guarantees and medical claims. The Offer Builder runs a visible claims check and the pricing step explains its suggestion, rather than hiding judgement inside a black box.",
+    t: "Drafts that show their reasoning",
+    b: "Every draft lists what it used (their name, their own words, the program they asked about, their last check-in), highlights those parts in a preview, and shows the checks it passed: no guarantees or medical claims, one easy question, short enough for a phone.",
   },
   {
-    t: "One storefront component, many art directions",
-    b: "Storefronts are built with container queries, so the same component renders correctly full-screen, inside a phone frame, inside a scaled desktop frame and on the landing page. Themes are token sets, not separate templates.",
+    t: "A reply beats any schedule",
+    b: "When someone replies, one click pauses their sequence and puts them at the top of Today. Someone waiting on you always outranks a scheduled step, so the next message is a human one.",
+  },
+  {
+    t: "Retention is follow-up too",
+    b: "The same engine runs for clients: falling adherence in weekly check-ins flags them, and a three-step rescue sequence offers a lighter week, then a reset call, before they quietly cancel.",
   },
   {
     t: "Numbers you can trust",
-    b: "Every KPI and chart is derived from one dataset through shared functions, metric definitions are shown next to the numbers, rates show “–” rather than 0% when there's no data, and anything sample is labelled as such.",
-  },
-  {
-    t: "CSS 3D + GSAP over WebGL",
-    b: "The brief asked for depth and 3D. A WebGL scene would add ~600 KB and still need a fallback. Layered CSS transforms with spring-driven parallax give the same sense of depth, stay crisp for text, and degrade to flat layouts with reduced motion.",
+    b: "Every count comes from one dataset through shared, tested functions. Rates show “–” rather than 0% when there's no data, and a sequence shows no reply rate until at least three people have had a step.",
   },
 ];
 
 const UX = [
-  ["Leads lost across DMs and spreadsheets", "One pipeline with a source on every lead and storefront enquiries that land automatically"],
-  ["Forgotten follow-ups", "Follow-up dates on every open lead, overdue highlighting, a “Due” view and dashboard reminders"],
-  ["Blank-page offer writing", "Guided five-step builder with price guidance, editable output and a claims check"],
-  ["Writer's block on follow-up messages", "Drafts from the lead's goal and stage, with tone and channel controls"],
-  ["No idea what's working", "Source and offer conversion, a cohort funnel and month-on-month comparison"],
-  ["Clients quietly dropping off", "Weekly check-ins compute an on-track / attention / at-risk status that surfaces on the dashboard"],
+  ["Follow-ups get forgotten", "Today ranks who's due; sequences schedule every next step so nothing relies on memory"],
+  ["Replies get buried under scheduled messages", "Mark a reply and the sequence pauses; they jump to the top of Today"],
+  ["Templates sound like templates", "Drafts built from the lead's own words and stage, with the personal parts highlighted"],
+  ["Not knowing if a draft is safe to send", "Visible checks for guarantees, medical claims, length and a clear question"],
+  ["Leads scattered across DMs and spreadsheets", "One pipeline with a source, stage and sequence on every lead"],
+  ["Clients quietly dropping off", "Check-ins compute a status; slipping clients get a rescue sequence"],
 ];
 
 export default function CaseStudy() {
@@ -73,14 +73,14 @@ export default function CaseStudy() {
 
       <main id="main" className="mx-auto max-w-5xl px-4 pb-24 pt-14 sm:px-6 sm:pt-20">
         <p className="eyebrow">Case study · product design & front-end</p>
-        <h1 className="mt-4 text-balance text-[40px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[60px]">FITFLOW AI: a business OS for fitness coaches</h1>
+        <h1 className="mt-4 text-balance text-[40px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[60px]">FITFLOW AI: the follow-up engine for fitness coaches</h1>
         <p className="mt-6 max-w-3xl text-[18px] leading-relaxed text-fg-2">
-          An interactive SaaS prototype that helps independent fitness coaches turn an online audience into paying clients: offers, a storefront, a lead pipeline, AI-drafted follow-ups, bookings, client tracking and analytics in one workspace.
+          An interactive SaaS prototype for independent fitness coaches, built around one job: never letting an interested lead or a slipping client go quiet. A Today queue says who to message and why, sequences schedule every next step and pause on reply, and every draft shows its reasoning.
         </p>
         <dl className="mt-10 grid gap-4 rounded-2xl border border-line bg-panel p-6 sm:grid-cols-4">
           {[
             ["Role", "Product owner & design lead"],
-            ["Scope", "Landing page, 9-screen app, 2 storefronts"],
+            ["Scope", "Landing page, 9-screen app, follow-up engine"],
             ["Stack", "Figma, Next.js, TypeScript, Tailwind, GSAP, Motion"],
             ["Type", "Portfolio prototype with sample data"],
           ].map(([k, v]) => (
@@ -107,7 +107,7 @@ export default function CaseStudy() {
         <figure className="mt-10">
           <video src="/walkthrough.mp4" poster="/screens/landing.jpg" controls playsInline preload="none" className="w-full rounded-2xl border border-line bg-panel" />
           <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-3 text-[14px] text-fg-3">
-            <span>A narrated walkthrough of the main flows (1:45, synthetic voice).</span>
+            <span>A narrated walkthrough of the main flows (1:39, synthetic voice).</span>
             <a href="https://github.com/anuj1102001/fitflow-showcase" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-medium text-fg hover:underline">
               <Code2 size={15} /> View the code on GitHub
             </a>
@@ -142,23 +142,27 @@ export default function CaseStudy() {
 
         <Section n="03" title="Value proposition & product scope">
           <p>
-            <strong>“Turn followers into paying clients.”</strong> FITFLOW follows the path a follower takes: <em>attract</em> with a storefront, <em>capture</em> every enquiry in a pipeline, <em>follow up</em> with AI-drafted messages, and <em>convert & coach</em> with plans and check-ins. I kept scope to eight features that each map to one step of that journey, and cut anything that didn&apos;t (content scheduling, payments, community).
+            <strong>“Every lead followed up. Every client kept.”</strong> FITFLOW runs one loop: <em>capture</em> every enquiry in a pipeline, <em>prioritise</em> who to message today, <em>follow up</em> with drafts that explain themselves, and <em>retain</em> clients with check-ins and a rescue sequence. Offers, bookings and analytics stay, as support for that loop.
           </p>
           <div className="grid gap-3 sm:grid-cols-4">
-            {["Attract: storefront + offer builder", "Capture: lead CRM", "Follow up: AI drafts + bookings", "Convert: clients + analytics + assistant"].map((x) => (
+            {["Capture: lead pipeline", "Prioritise: Today queue", "Follow up: sequences + explained drafts", "Retain: check-ins + client rescue"].map((x) => (
               <div key={x} className="rounded-2xl border border-line bg-panel-2/50 p-4 text-[14px]">
                 {x}
               </div>
             ))}
           </div>
+          <Callout>
+            <strong>Version 2 refocus.</strong> The first version was a broad “business OS” with a storefront builder and two public coach pages. It overlapped with another project of mine, a creator storefront, and tried to do too much. Version 2 cut the storefront and rebuilt the product around the moment coaches actually lose clients: the follow-up.
+          </Callout>
         </Section>
 
         <Section n="04" title="Key flows">
           <ol className="space-y-3">
             {[
-              ["Create and publish an offer", "Offer Builder → goal → audience → format → price (with guidance) → generate → edit → publish → appears on the storefront."],
-              ["Enquiry to client", "Storefront enquiry → new lead + notification → draft follow-up → book discovery call → move to Proposal → Won → client profile created."],
-              ["Weekly client care", "Clients → at-risk filter → review adherence chart → log check-in → status recalculates → dashboard insight updates."],
+              ["Work through today", "Today → top task (a due sequence step) → Draft → read “Why this draft” and the checks → edit → send from WhatsApp → “I sent it: log step” → next step scheduled, back to Today."],
+              ["A lead replies", "Today → “Replied” on their row → sequence paused → they move to the top as “waiting on you” → personal reply → book a discovery call."],
+              ["Enquiry to client", "New lead → added to the New enquiry sequence → four steps over nine days, paused on reply → discovery call → proposal sequence → Won → client profile created."],
+              ["Rescue a slipping client", "Check-in logs low adherence → status turns at-risk → appears in Today → draft a check-in or start Client rescue → lighter week → reset call."],
               ["Answer a business question", "Assistant → “Which lead source is performing best?” → answer computed from the same data → link to filtered analytics."],
             ].map(([t, b], i) => (
               <li key={t} className="flex gap-4 rounded-2xl border border-line bg-panel p-5">
@@ -209,7 +213,7 @@ export default function CaseStudy() {
         </Section>
 
         <Section n="08" title="Design system">
-          <p>Warm-neutral surfaces in light mode, charcoal in dark, hairline borders, a three-step text hierarchy and one lime accent kept for primary actions and selection. Every colour is a token with a Light and a Dark value, so a theme switch (or a storefront theme) is a token swap.</p>
+          <p>Warm-neutral surfaces in light mode, charcoal in dark, hairline borders, a three-step text hierarchy and one lime accent kept for primary actions and selection. Every colour is a token with a Light and a Dark value, so a theme switch is a token swap.</p>
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
             {[
               ["bg", "#F6F6F3", "#0A0B0D"],
@@ -238,7 +242,7 @@ export default function CaseStudy() {
               <p className="mt-3 font-mono text-[13px]">Geist Mono</p>
               <p>Code-like labels.</p>
               <p className="mt-3 text-[17px]" style={{ fontFamily: "var(--font-fraunces)" }}>Fraunces</p>
-              <p>Only the Bloom storefront theme.</p>
+              <p>Kept for editorial accents.</p>
             </Card>
             <Card title="Components">Buttons (4 variants × 4 sizes), inputs with inline validation, segmented controls with a shared sliding indicator, badges by tone, drawers, menus, dialogs, toasts, command palette, empty states and skeletons.</Card>
             <Card title="Motion">Motion (Framer) for UI micro-interactions: one easing curve, one spring. GSAP for scroll choreography: a SplitText headline reveal and a pinned, scrubbed “How it works” sequence. Everything respects “reduce motion”.</Card>
@@ -256,7 +260,7 @@ export default function CaseStudy() {
 
         <Section n="10" title="Build">
           <p>
-            Next.js App Router with TypeScript and Tailwind. All state lives in a small Zustand store persisted to localStorage, seeded by a deterministic generator (twelve months of leads, clients and bookings, dated relative to today). Analytics are pure functions shared by the dashboard, analytics page and assistant. AI features are deterministic templates over that data, so the demo runs offline at no cost. Charts use Recharts. Motion handles UI micro-interactions and GSAP (ScrollTrigger, SplitText) the scroll choreography. The theme is applied before first paint and switches instantly.
+            Next.js App Router with TypeScript and Tailwind. All state lives in a small Zustand store persisted to localStorage, seeded by a deterministic generator (twelve months of leads, clients and bookings, dated relative to today). Analytics and the follow-up engine (sequences, the Today queue, draft explanations) are pure functions shared across screens and covered by 17 unit tests; 13 end-to-end flows run in headless Chrome. AI features are deterministic templates over that data, so the demo runs offline at no cost. Charts use Recharts. Motion handles UI micro-interactions and GSAP (ScrollTrigger, SplitText) the scroll choreography. The theme is applied before first paint and switches instantly.
           </p>
         </Section>
 
@@ -265,7 +269,9 @@ export default function CaseStudy() {
             {[
               "No backend: no accounts, real data, email or payments. Everything is fictional and stays in the browser.",
               "AI is simulated with templates. A production version would call a language model with the same guardrails and structured outputs.",
-              "No user research or usability testing yet. All problem statements and personas are hypotheses.",
+              "No user research or usability testing yet. All problem statements, personas and the follow-up focus are hypotheses.",
+              "Reply rates and other sequence numbers come from generated sample data, not real outcomes.",
+              "Nothing is sent: coaches copy each draft into their own app. A production version would need WhatsApp Business and Instagram integrations, with consent and opt-out handling.",
               "Pricing is a concept for packaging, not a validated price point.",
               "Drag-and-drop on the pipeline uses native HTML drag events (desktop). On touch devices, stages are changed from the lead panel.",
               "Photos are Unsplash images; the people pictured are not the fictional coaches.",
@@ -280,8 +286,8 @@ export default function CaseStudy() {
         <Section n="12" title="What I'd validate next">
           <ol className="space-y-2.5 text-[15px] text-fg-2">
             <li>1. Five interviews with coaches who sell online, focused on how enquiries and follow-ups are handled today.</li>
-            <li>2. A task-based test of the enquiry-to-client flow on a phone, measuring time to first follow-up.</li>
-            <li>3. A comprehension test of offer cards: can a prospect say what&apos;s included and what it costs in 10 seconds?</li>
+            <li>2. A task-based test of Today on a phone: can a coach clear five follow-ups in under five minutes, and do they trust the drafts enough to send them?</li>
+            <li>3. Does “Why this draft” change behaviour? Compare edits and send rates with and without the explanation panel.</li>
             <li>4. Willingness-to-pay conversations before committing to the pricing concept.</li>
           </ol>
         </Section>

@@ -45,17 +45,17 @@ export function Problem() {
             eyebrow="The problem"
             title={
               <>
-                Coaching is the easy part. <span className="text-fg-3">The business around it isn&apos;t.</span>
+                Coaching is the easy part. <span className="text-fg-3">The follow-up isn&apos;t.</span>
               </>
             }
-            body="Most independent coaches run their business from DMs, spreadsheets and memory. Interested people slip through the cracks, offers are hard to explain, and there's no clear picture of what's working."
+            body="Independent coaches run sales from DMs, spreadsheets and memory. Interested people rarely say no; they go quiet when nobody checks back in, and clients drift the same way after a tough week."
           />
           <Stagger className="mt-9 space-y-3" gap={0.08}>
             {[
-              { t: "Leads are scattered", b: "Enquiries arrive across Instagram, WhatsApp, comments and referrals, with no single list." },
               { t: "Follow-ups get forgotten", b: "A “let me think about it” turns into silence when nobody checks back in." },
-              { t: "Offers are hard to explain", b: "“DM me for price” makes people work to understand what they'd actually get." },
-              { t: "No visibility", b: "Which channel brings clients? Which program sells? It's all guesswork." },
+              { t: "Leads are scattered", b: "Enquiries arrive across Instagram, WhatsApp, comments and referrals, with no single list or next step." },
+              { t: "Templates sound like templates", b: "Copy-pasted messages ignore what the person actually said, so they get ignored back." },
+              { t: "Clients drift quietly", b: "A missed week becomes a missed month, and the first sign is a cancelled renewal." },
             ].map((p) => (
               <StaggerItem key={p.t} className="flex gap-4 rounded-2xl border border-line bg-panel/60 p-4">
                 <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-bad/80" aria-hidden />
@@ -167,8 +167,8 @@ export function AISection() {
 /* ------------------------------------------------------------------ pricing */
 
 const PLANS = [
-  { name: "Starter", price: "₹0", per: "forever", blurb: "For coaches testing the waters.", features: ["1 storefront with 2 programs", "Lead pipeline up to 50 leads", "10 AI drafts a month", "Basic analytics"] },
-  { name: "Pro", price: "₹999", per: "per month", blurb: "For coaches growing a client base.", features: ["Unlimited programs & leads", "200 AI drafts a month", "Bookings & client check-ins", "Full analytics & insights", "Remove FITFLOW branding"], featured: true },
+  { name: "Starter", price: "₹0", per: "forever", blurb: "For coaches testing the waters.", features: ["Lead pipeline up to 50 leads", "Today queue", "1 sequence", "10 AI drafts a month"] },
+  { name: "Pro", price: "₹999", per: "per month", blurb: "For coaches growing a client base.", features: ["Unlimited leads & clients", "All sequences, including Client rescue", "200 AI drafts a month", "Bookings & client check-ins", "Full analytics & insights"], featured: true },
   { name: "Studio", price: "₹2,499", per: "per month", blurb: "For small teams and studios.", features: ["Everything in Pro", "Up to 5 coach seats", "Shared pipeline & assignments", "Priority support"] },
 ];
 
@@ -247,8 +247,9 @@ const FAQ = [
   { q: "Who is it designed for?", a: "Independent fitness coaches, personal trainers and fitness creators who sell coaching online or in person, and currently manage leads through DMs, WhatsApp and spreadsheets." },
   { q: "Does the AI actually run?", a: "No. AI features are simulated with templates and the demo's own data, so the prototype works offline at no cost. The case study explains how a production version would use a language model with guardrails." },
   { q: "Will my changes be saved?", a: "Yes, in your browser's local storage, so you can refresh and continue. Use “Reset” in the demo to load fresh sample data. Nothing is sent to a server." },
-  { q: "Can I try the client-facing side?", a: "Yes. Open Aarav's storefront and send an enquiry: it appears instantly as a new lead in the dashboard. There's also a second storefront (Meera, “Bloom” theme) to compare designs." },
-  { q: "Does it work on mobile?", a: "Yes. The landing page, dashboard and storefronts are responsive. Coaches live on their phones, so the storefront is designed mobile-first." },
+  { q: "Does FITFLOW send messages for me?", a: "No, by design. It decides who to follow up and when, and drafts the message with its reasoning shown. You read it, edit it and send it yourself on WhatsApp, Instagram or email, then tell FITFLOW you sent it." },
+  { q: "What happens when someone replies?", a: "Mark them as replied and their sequence pauses straight away. They move to the top of Today so your next message is a personal one, not the next automated step." },
+  { q: "Does it work on mobile?", a: "Yes. The landing page and the whole app are responsive. Coaches live on their phones, so Today and the composer are designed to work one-handed." },
 ];
 
 export function FaqSection() {
@@ -294,7 +295,7 @@ export function FinalCta() {
         <div className="relative px-6 py-16 sm:px-14 sm:py-24">
           <p className="text-[13px] font-medium text-fg-2">Try it now</p>
           <h2 className="mt-4 max-w-2xl text-balance text-[38px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[52px]">See the whole workflow in 60 seconds.</h2>
-          <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-fg-2">Build an offer with AI, drag a lead to Won, draft a follow-up and restyle a storefront. No sign-up needed.</p>
+          <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-fg-2">Clear today&apos;s queue, open a draft that explains itself, mark a reply and watch the sequence pause. No sign-up needed.</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <LiquidButton href="/app">
               Open the live demo <ArrowRight size={17} />
@@ -311,8 +312,8 @@ export function FinalCta() {
 
 export function Footer() {
   const cols = [
-    { h: "Product", l: [["Overview", "/app"], ["Leads CRM", "/app/leads"], ["Offer Builder", "/app/offers"], ["Follow-ups", "/app/follow-ups"], ["Analytics", "/app/analytics"]] },
-    { h: "Storefronts", l: [["Aarav · Forge theme", "/s/aarav"], ["Meera · Bloom theme", "/s/meera"], ["Storefront builder", "/app/storefront"]] },
+    { h: "Follow-up", l: [["Today", "/app"], ["Sequences", "/app/sequences"], ["Compose", "/app/follow-ups"], ["Clients", "/app/clients"]] },
+    { h: "Business", l: [["Leads CRM", "/app/leads"], ["Offer Builder", "/app/offers"], ["Analytics", "/app/analytics"], ["Assistant", "/app/assistant"]] },
     { h: "Project", l: [["Case study", "/case-study"], ["How it works", "/#workflow"], ["FAQ", "/#faq"]] },
   ];
   return (
@@ -320,7 +321,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.4fr_repeat(3,1fr)] lg:px-8">
         <div>
           <Logo />
-          <p className="mt-4 max-w-xs text-[14px] leading-relaxed text-fg-3">A product design and front-end prototype: the business OS for fitness coaches. Fictional people, sample data, simulated AI.</p>
+          <p className="mt-4 max-w-xs text-[14px] leading-relaxed text-fg-3">A product design and front-end prototype: the follow-up engine for fitness coaches. Fictional people, sample data, simulated AI.</p>
           <p className="mt-4 inline-flex items-center gap-2 rounded-md border border-dashed border-line-2 px-3 py-1 text-[12px] text-fg-3">
             <Sparkles size={12} className="text-lime-fg" /> Portfolio project · not a commercial service
           </p>

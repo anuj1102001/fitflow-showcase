@@ -7,16 +7,16 @@ import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
-// Serif used only by the "Bloom" storefront theme.
+// Serif kept for editorial accents.
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap", axes: ["SOFT", "opsz"] });
 
 const url = process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3200");
 
 export const metadata: Metadata = {
   metadataBase: new URL(url),
-  title: { default: "FITFLOW AI · The business OS for fitness coaches (product prototype)", template: "%s · FITFLOW AI" },
+  title: { default: "FITFLOW AI · The follow-up engine for fitness coaches (product prototype)", template: "%s · FITFLOW AI" },
   description:
-    "An interactive SaaS product prototype: AI offer builder, coaching storefronts, lead CRM, follow-up assistant, bookings, client tracking and analytics for fitness coaches. Portfolio project with sample data.",
+    "An interactive SaaS product prototype: the follow-up engine for fitness coaches. A Today queue, follow-up sequences that pause on reply, drafts that explain themselves and client retention check-ins. Portfolio project with sample data.",
   applicationName: "FITFLOW AI",
   openGraph: { type: "website", siteName: "FITFLOW AI", locale: "en_IN" },
   twitter: { card: "summary_large_image" },

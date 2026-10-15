@@ -19,7 +19,7 @@ const STEPS = [
   {
     icon: <MousePointerClick size={22} />,
     title: "Everything is clickable",
-    body: "Add and move leads, draft follow-ups, build an offer with AI, book sessions and restyle the storefront. Press ⌘K / Ctrl K to jump anywhere.",
+    body: "Work through today's follow-ups, run sequences, draft messages that explain themselves and rescue slipping clients. Press ⌘K / Ctrl K to jump anywhere.",
   },
   {
     icon: <Sparkles size={22} />,

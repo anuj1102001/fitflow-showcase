@@ -1,4 +1,4 @@
-import { AnalyticsPreview, Features, StorefrontShowcase } from "@/components/landing/demos";
+import { AnalyticsPreview, Features, SequenceShowcase } from "@/components/landing/demos";
 import { Hero, LandingNav } from "@/components/landing/hero";
 import { NeuralNoise } from "@/components/landing/neural-noise";
 import { AISection, FaqSection, FinalCta, Footer, Pricing, Problem } from "@/components/landing/sections";
@@ -14,10 +14,11 @@ export default function Home() {
         <Hero />
         <Problem />
         <Workflow />
+        <SequenceShowcase />
         <Features />
         <AnalyticsPreview />
         <AISection />
-        <StorefrontShowcase />
+
         <Pricing />
         <FaqSection />
         <FinalCta />

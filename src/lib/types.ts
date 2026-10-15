@@ -1,6 +1,6 @@
 /** Domain model for the FITFLOW prototype. Everything lives in the browser (see lib/store.ts). */
 
-export const SOURCES = ["Instagram", "Storefront", "Referral", "YouTube", "WhatsApp"] as const;
+export const SOURCES = ["Instagram", "Website", "Referral", "YouTube", "WhatsApp"] as const;
 export type Source = (typeof SOURCES)[number];
 
 /** Pipeline stages in order. `reached` on a lead is the index of the furthest active stage it got to. */
@@ -109,21 +109,5 @@ export type Draft = {
 
 export type Notification = { id: string; at: string; title: string; body: string; href: string; read: boolean };
 
-export type StorefrontTheme = "forge" | "bloom";
-export type Storefront = {
-  slug: string;
-  coachName: string;
-  role: string;
-  city: string;
-  headline: string;
-  bio: string;
-  theme: StorefrontTheme;
-  heroImage: string;
-  offerIds: string[];
-  showTestimonials: boolean;
-  showFaq: boolean;
-  ctaLabel: string;
-  stats: { label: string; value: string }[];
-};
 
 export type ChatMessage = { id: string; role: "user" | "assistant"; text: string; at: string; cards?: { label: string; value: string; href?: string }[] };

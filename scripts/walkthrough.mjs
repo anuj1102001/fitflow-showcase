@@ -174,70 +174,56 @@ async function scene(id, actions) {
 }
 
 // 1. Landing
-await scene("intro", () => sleep(2400));
-await scene("theme", async () => {
-  await clickOn("css:[aria-label='Dark theme']");
-  await sleep(1500);
-  await clickOn("css:[aria-label='Light theme']");
-});
+await scene("intro", () => sleep(2600));
 await scene("workflow", async () => {
   const wf = await page.evaluate(() => document.getElementById("workflow").getBoundingClientRect().top + 70);
   await scrollBy(wf, 1600);
   await scrollBy(H * 2.5, 6200);
 });
+await scene("engine", async () => {
+  const en = await page.evaluate(() => document.getElementById("engine").getBoundingClientRect().top - 30);
+  await scrollBy(en, 1400);
+  await sleep(900);
+  await clickOn("Book a discovery call", "#engine button");
+  await sleep(1600);
+  await clickOn("Share something useful", "#engine button");
+});
 
 // 2. App
-await scene("overview", async () => {
+await scene("today", async () => {
   await go("/app");
-  await sleep(1800); // the coach's photo opening, then on to the dashboard
-  await scrollBy(H * 0.78, 1600);
-  await moveTo(760, 560);
-  await sleep(900);
-  await moveTo(560, 520);
+  await sleep(1600); // the coach's photo opening, then the queue
+  const t = await page.evaluate(() => document.getElementById("today").getBoundingClientRect().top - 70);
+  await scrollBy(t, 1500);
+  await moveTo(700, 420);
 });
-await scene("leads", async () => {
-  await clickOn("Leads", "nav a, aside a");
-  await sleep(1800);
-  await clickOn("css:[draggable][aria-label$='Open details']");
-  await sleep(2600);
-});
-await scene("followups", async () => {
-  await page.keyboard.press("Escape");
-  await sleep(300);
-  await clickOn("Follow-ups", "nav a, aside a");
-  await sleep(1200);
+await scene("compose", async () => {
+  const href = await page.evaluate(() => [...document.querySelectorAll("#today a")].find((a) => a.textContent.trim() === "Draft" && a.href.includes("enrollment="))?.getAttribute("href"));
+  await go(href ?? "/app/follow-ups");
+  await sleep(700);
   await clickOn("Draft message");
+  await sleep(2600);
+  await scrollBy(420, 1400);
+  await sleep(1800);
+  await clickOn("I sent it: log step");
+  await sleep(900);
 });
-await scene("offer", async () => {
-  await go("/app/offers?new=1");
-  for (const t of ["Build strength", "Continue", "Busy desk workers", "Continue", "1:1 online coaching", "Continue"]) {
-    await clickOn(t);
-    await sleep(380);
-  }
-  await clickOn("css:#price");
-  await page.click("#price", { clickCount: 3 });
-  await page.keyboard.type("14999", { delay: 60 });
-  await sleep(300);
-  await clickOn("Continue");
-  await clickOn("Generate offer");
-  await page.waitForSelector("#o-title", { timeout: 15000 });
+await scene("replied", async () => {
+  const t = await page.evaluate(() => document.getElementById("today")?.getBoundingClientRect().top - 70);
+  if (t) await scrollBy(t, 900);
+  await clickOn("Replied", "#today button");
+  await sleep(1400);
 });
-await scene("builder", async () => {
-  await go("/app/storefront");
-  await sleep(1200);
-  await clickOn("Bloom");
-  await sleep(2000);
-  await clickOn("Forge");
+await scene("sequences", async () => {
+  await clickOn("Sequences", "nav a, aside a");
+  await sleep(1400);
+  await scrollBy(700, 3200);
 });
-await scene("storefront", async () => {
-  await go("/s/aarav");
-  await sleep(1200);
-  await scrollBy(1300, 3200);
-});
-await scene("assistant", async () => {
-  await go("/app/assistant");
-  await sleep(600);
-  await clickOn("Which lead source is performing best?");
+await scene("clients", async () => {
+  await clickOn("Clients", "nav a, aside a");
+  await sleep(1300);
+  await clickOn("css:main button .bg-bad");
+  await sleep(1400);
 });
 await scene("dark", () => clickOn("css:[aria-label='Switch to dark mode']"));
 await scene("case", async () => {

@@ -38,7 +38,7 @@ export function CommandPalette() {
     const actions: Item[] = [
       { id: "a-lead", group: "Actions", label: "Add a lead", icon: <UserPlus size={16} />, run: () => (setPalette(false), openLeadForm()) },
       { id: "a-book", group: "Actions", label: "New booking", icon: <CalendarPlus size={16} />, run: () => (setPalette(false), openBookingForm()) },
-      { id: "a-store", group: "Actions", label: "Open my public storefront", icon: <ArrowRight size={16} />, run: () => (setPalette(false), window.open("/s/aarav", "_blank")) },
+      { id: "a-today", group: "Actions", label: "Open today's follow-ups", icon: <ArrowRight size={16} />, run: go("/app") },
     ];
     const people: Item[] = term
       ? leads

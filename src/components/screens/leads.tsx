@@ -18,7 +18,7 @@ import { ACTIVE_STAGES, SOURCES, STAGE_LABEL, type Lead, type Source, type Stage
 import { useUI } from "@/lib/ui-store";
 
 export const STAGE_TONE: Record<Stage, Tone> = { new: "lime", contacted: "info", call: "violet", proposal: "warn", won: "ok", lost: "neutral" };
-const SOURCE_TONE: Record<Source, Tone> = { Instagram: "neutral", Storefront: "lime", Referral: "ok", YouTube: "bad", WhatsApp: "info" };
+const SOURCE_TONE: Record<Source, Tone> = { Instagram: "neutral", Website: "lime", Referral: "ok", YouTube: "bad", WhatsApp: "info" };
 const BOARD: Stage[] = [...ACTIVE_STAGES, "won"];
 const SORTS = { newest: "Newest first", followup: "Follow-up date", value: "Highest value", fit: "Best fit score" } as const;
 

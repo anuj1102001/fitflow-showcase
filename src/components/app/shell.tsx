@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { Bell, CalendarPlus, ChevronsLeft, ExternalLink, Menu as MenuIcon, Plus, RotateCcw, Search, Sparkles, UserPlus, X, BookOpen, Home } from "lucide-react";
+import { Bell, CalendarPlus, ChevronsLeft, Menu as MenuIcon, Plus, RotateCcw, Search, Sparkles, UserPlus, X, BookOpen, Home } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
@@ -187,17 +187,17 @@ function Sidebar({ collapsed, onToggle, path }: { collapsed: boolean; onToggle?:
       </nav>
       <div className="border-t border-line p-3">
         {collapsed ? (
-          <Link href="/s/aarav" target="_blank" title="View storefront" aria-label="View storefront" className="mx-auto grid w-fit place-items-center rounded-full transition hover:opacity-80">
+          <Link href="/app/sequences" title="Your sequences" aria-label="Your sequences" className="mx-auto grid w-fit place-items-center rounded-full transition hover:opacity-80">
             <Avatar name={COACH.name} src={COACH.avatar} size={36} />
           </Link>
         ) : (
-          <Link href="/s/aarav" target="_blank" className="flex items-center gap-3 rounded-2xl border border-line bg-panel-2/50 p-3 transition hover:border-line-2">
+          <Link href="/case-study" className="flex items-center gap-3 rounded-2xl border border-line bg-panel-2/50 p-3 transition hover:border-line-2">
             <Avatar name={COACH.name} src={COACH.avatar} size={36} />
             <div className="min-w-0 flex-1">
               <p className="truncate text-[13px] font-semibold">{COACH.name}</p>
-              <p className="truncate text-[12px] text-fg-3">View storefront</p>
+              <p className="truncate text-[12px] text-fg-3">Strength coach · Bengaluru</p>
             </div>
-            <ExternalLink size={14} className="text-fg-3" />
+            <BookOpen size={14} className="text-fg-3" />
           </Link>
         )}
       </div>
@@ -267,7 +267,6 @@ function Topbar({ title, blurb }: { title: string; blurb?: string }) {
                 <ThemeToggle size="sm" />
               </div>
               <div className="my-1 h-px bg-line" />
-              <MenuItem icon={<ExternalLink size={15} />} onClick={() => (close(), window.open("/s/aarav", "_blank"))}>View my storefront</MenuItem>
               <MenuItem icon={<BookOpen size={15} />} onClick={() => (close(), router.push("/case-study"))}>Read the case study</MenuItem>
               <MenuItem icon={<Home size={15} />} onClick={() => (close(), router.push("/"))}>Back to website</MenuItem>
             </>

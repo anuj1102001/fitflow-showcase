@@ -1,11 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowRight, Baby, BookOpen, Check, CheckCircle2, Dumbbell, Eye, Flame, Footprints, GripVertical, HeartPulse, Laptop, Layers, MonitorSmartphone, Pencil, Plus, RefreshCcw, ShieldCheck, Sparkles, StretchHorizontal, Trash2, TriangleAlert, Users, Wand2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Baby, BookOpen, Check, CheckCircle2, Dumbbell, Eye, Flame, Footprints, GripVertical, HeartPulse, Laptop, Layers, Pencil, Plus, RefreshCcw, ShieldCheck, Sparkles, StretchHorizontal, Trash2, TriangleAlert, Users, Wand2, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { EASE, SPRING, TiltCard } from "@/components/motion/kit";
-import { OfferCardThemed, StorefrontView } from "@/components/storefront/view";
+import { OfferCard } from "@/components/offer-card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/components/ui/cn";
 import { Field, Input, Textarea } from "@/components/ui/field";
@@ -61,7 +61,7 @@ function OfferList({ onNew, onEdit }: { onNew: () => void; onEdit: (id: string) 
               <Sparkles size={12} /> AI Offer Builder
             </Badge>
             <h2 className="mt-3 text-[26px] font-semibold leading-tight tracking-[-0.03em] sm:text-[30px]">Turn what you know into an offer people understand.</h2>
-            <p className="mt-2 text-[14.5px] leading-relaxed text-fg-2">Answer four quick questions. You&apos;ll get a structured offer with a title, description, benefits and pricing guidance that you can edit and publish to your storefront.</p>
+            <p className="mt-2 text-[14.5px] leading-relaxed text-fg-2">Answer four quick questions. You&apos;ll get a structured offer with a title, description, benefits and pricing guidance that you can edit, publish and send in proposals.</p>
           </div>
           <Button size="lg" onClick={onNew} className="shrink-0">
             <Wand2 size={17} /> Create an offer
@@ -84,7 +84,7 @@ function OfferList({ onNew, onEdit }: { onNew: () => void; onEdit: (id: string) 
               <motion.article key={o.id} layout initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE, delay: i * 0.05 }} className="card panel-sheen flex flex-col p-5">
                 <div className="flex items-start justify-between gap-3">
                   <Badge tone={o.status === "live" ? "ok" : "neutral"} dot>
-                    {o.status === "live" ? "Live on storefront" : "Draft"}
+                    {o.status === "live" ? "Live" : "Draft"}
                   </Badge>
                   {o.aiDrafted && (
                     <Badge tone="lime">
@@ -120,7 +120,7 @@ function OfferList({ onNew, onEdit }: { onNew: () => void; onEdit: (id: string) 
                     size="sm"
                     onClick={() => {
                       saveOffer({ ...o, status: o.status === "live" ? "draft" : "live" });
-                      toast({ tone: "success", title: o.status === "live" ? "Removed from storefront" : "Published to storefront", body: o.title });
+                      toast({ tone: "success", title: o.status === "live" ? "Moved to drafts" : "Published", body: o.title });
                     }}
                   >
                     {o.status === "live" ? "Unpublish" : "Publish"}
@@ -161,7 +161,6 @@ type BuilderInput = { goal: GoalId | null; audience: AudienceId | null; type: Of
 function Builder({ editId, onExit }: { editId: string | null; onExit: () => void }) {
   const existing = useDemo((s) => s.offers.find((o) => o.id === editId));
   const saveOffer = useDemo((s) => s.saveOffer);
-  const storefront = useDemo((s) => s.storefront);
   const toast = useToast();
   const [step, setStep] = useState(existing ? 5 : 0);
   const [input, setInput] = useState<BuilderInput>(() =>
@@ -171,7 +170,6 @@ function Builder({ editId, onExit }: { editId: string | null; onExit: () => void
   const [variant, setVariant] = useState(0);
   const [generating, setGenerating] = useState(false);
   const [priceError, setPriceError] = useState<string | null>(null);
-  const [preview, setPreview] = useState<"card" | "page">("card");
 
   const price = Number(input.price.replace(/[^\d]/g, ""));
   const guide = input.type ? priceGuide(input.type, input.weeks, price || undefined) : null;
@@ -218,7 +216,7 @@ function Builder({ editId, onExit }: { editId: string | null; onExit: () => void
       aiDrafted: existing ? existing.aiDrafted : true,
     };
     saveOffer(offer);
-    toast({ tone: "success", title: status === "live" ? "Published to your storefront" : "Saved as draft", body: offer.title });
+    toast({ tone: "success", title: status === "live" ? "Published: ready to use in proposals" : "Saved as draft", body: offer.title });
     onExit();
   };
 
@@ -447,7 +445,7 @@ function Builder({ editId, onExit }: { editId: string | null; onExit: () => void
                     Save as draft
                   </Button>
                   <Button onClick={() => save("live")}>
-                    <CheckCircle2 size={16} /> Publish to storefront
+                    <CheckCircle2 size={16} /> Publish offer
                   </Button>
                 </div>
               </motion.div>
@@ -458,24 +456,15 @@ function Builder({ editId, onExit }: { editId: string | null; onExit: () => void
         <aside className="min-w-0 xl:sticky xl:top-24 xl:self-start">
           <div className="mb-3 flex items-center justify-between gap-2">
             <p className="flex items-center gap-2 text-[13px] font-medium text-fg-2">
-              <Eye size={15} /> Live preview
+              <Eye size={15} /> How it looks in a proposal
             </p>
-            <Segmented label="Preview type" size="sm" value={preview} onChange={setPreview} options={[{ id: "card", label: "Offer card" }, { id: "page", label: "On storefront", icon: <MonitorSmartphone size={13} /> }]} />
           </div>
           {previewOffer && !generating ? (
-            preview === "card" ? (
-              <motion.div initial={{ opacity: 0, rotateY: -18, y: 20 }} animate={{ opacity: 1, rotateY: 0, y: 0 }} transition={{ duration: 0.8, ease: EASE }} style={{ transformPerspective: 1400 }}>
-                <TiltCard max={5} className="rounded-2xl">
-                  <OfferCardThemed offer={previewOffer} theme={storefront.theme} highlight />
-                </TiltCard>
-              </motion.div>
-            ) : (
-              <div className="h-[600px] overflow-hidden rounded-2xl border border-line">
-                <div className="h-full overflow-y-auto">
-                  <StorefrontView sf={storefront} offers={[previewOffer]} preview />
-                </div>
-              </div>
-            )
+            <motion.div initial={{ opacity: 0, rotateY: -18, y: 20 }} animate={{ opacity: 1, rotateY: 0, y: 0 }} transition={{ duration: 0.8, ease: EASE }} style={{ transformPerspective: 1400 }}>
+              <TiltCard max={5} className="rounded-2xl">
+                <OfferCard offer={previewOffer} highlight />
+              </TiltCard>
+            </motion.div>
           ) : (
             <div className="relative grid h-[440px] place-items-center overflow-hidden rounded-2xl border border-dashed border-line-2 p-8 text-center">
               <div className="relative">

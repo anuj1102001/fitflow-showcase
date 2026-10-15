@@ -1,22 +1,20 @@
 "use client";
 
-import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
-import { ArrowRight, CalendarDays, CheckCircle2, ExternalLink, HeartPulse, MessageCircle, Sparkles, Users, Video, Wand2 } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ArrowRight, CalendarDays, CheckCircle2, HeartPulse, MessageCircle, Sparkles, Users, Video, Wand2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SERIES, TrendChart } from "@/components/charts";
-import { EASE, Reveal, SPRING, TiltCard } from "@/components/motion/kit";
-import { BrowserFrame, PhoneFrame } from "@/components/storefront/frames";
-import { StorefrontView, THEME_META } from "@/components/storefront/view";
+import { EASE, Reveal, TiltCard } from "@/components/motion/kit";
 import { cn } from "@/components/ui/cn";
 import { LiquidButton } from "@/components/ui/liquid-button";
 import { Avatar, DemoTag, ProgressRing, Segmented, Skeleton } from "@/components/ui/kit";
-import { draftOffer, GOALS, priceGuide, type GoalId } from "@/lib/ai";
+import { draftFollowUp, draftOffer, goalPhrase, GOALS, priceGuide, type FollowUpGoal, type GoalId } from "@/lib/ai";
 import { bySource, kpis, RANGES, series, type RangeId } from "@/lib/analytics";
-import { pct, rupees, time } from "@/lib/format";
-import { MEERA, MEERA_OFFERS } from "@/lib/storefronts";
+import { firstName, pct, rupees, time } from "@/lib/format";
 import { useDemo, useHydrated } from "@/lib/store";
-import type { OfferType, StorefrontTheme } from "@/lib/types";
+import type { OfferType } from "@/lib/types";
+import { explainDraft, personalSegments, SEQUENCES } from "@/lib/sequences";
 import { SectionIntro } from "./sections";
 
 /* ------------------------------------------------------------------ feature bento */
@@ -25,7 +23,7 @@ export function Features() {
   return (
     <section id="features" className="relative scroll-mt-20 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionIntro eyebrow="Features" title="Everything a coach needs to sell, in one place." body="Each tile below is live. Click around, or open the full demo for the real thing." />
+        <SectionIntro eyebrow="Features" title="Everything around the follow-up." body="The pipeline feeds the queue, the queue feeds the drafts, and check-ins catch clients before they drift. Each tile below is live." />
         <div className="mt-14 grid gap-4 lg:grid-cols-6">
           <Tile className="lg:col-span-4" icon={<Wand2 size={18} />} title="AI Offer Builder" body="Pick a goal and format; get a clear, priced offer you can edit and publish." href="/app/offers?new=1">
             <OfferMini />
@@ -33,13 +31,13 @@ export function Features() {
           <Tile className="lg:col-span-2" icon={<Users size={18} />} title="Lead pipeline" body="Every enquiry, its source and next step." href="/app/leads">
             <PipelineMini />
           </Tile>
-          <Tile className="lg:col-span-2" icon={<MessageCircle size={18} />} title="AI follow-ups" body="Personal drafts in your tone. You send them." href="/app/follow-ups">
+          <Tile className="lg:col-span-2" icon={<MessageCircle size={18} />} title="Drafts that explain themselves" body="Personal drafts in your tone, with the reasons shown. You send them." href="/app/follow-ups">
             <FollowUpMini />
           </Tile>
           <Tile className="lg:col-span-2" icon={<CalendarDays size={18} />} title="Bookings" body="Discovery calls, sessions and check-ins in one calendar." href="/app/bookings">
             <BookingsMini />
           </Tile>
-          <Tile className="lg:col-span-2" icon={<HeartPulse size={18} />} title="Client progress" body="Plans, metrics and weekly check-ins that flag who's slipping." href="/app/clients">
+          <Tile className="lg:col-span-2" icon={<HeartPulse size={18} />} title="Client retention" body="Weekly check-ins flag who's slipping, and a rescue sequence follows up." href="/app/clients">
             <ClientsMini />
           </Tile>
         </div>
@@ -328,85 +326,110 @@ export function AnalyticsPreview() {
   );
 }
 
-/* ------------------------------------------------------------------ storefront showcase */
+/* ------------------------------------------------------------------ sequence showcase */
 
-export function StorefrontShowcase() {
+/**
+ * The follow-up engine, live: pick a step of the New enquiry sequence and see the draft it would
+ * produce for a real sample lead, with the reasoning and checks beside it.
+ */
+export function SequenceShowcase() {
   const hydrated = useHydrated();
-  const sf = useDemo((s) => s.storefront);
+  const leads = useDemo((s) => s.leads);
   const offers = useDemo((s) => s.offers);
-  const [theme, setTheme] = useState<StorefrontTheme>("forge");
-  const reduce = useReducedMotion();
-  const stage = useRef<HTMLDivElement>(null);
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const ry = useSpring(useTransform(px, [-1, 1], [8, 20]), SPRING);
-  const rx = useSpring(useTransform(py, [-1, 1], [8, 2]), SPRING);
-  const live = sf.offerIds.map((id) => offers.find((o) => o.id === id)).filter((o): o is NonNullable<typeof o> => !!o && o.status === "live");
-  const view = theme === "forge" ? <StorefrontView sf={{ ...sf, theme: "forge" }} offers={live} preview /> : <StorefrontView sf={MEERA} offers={MEERA_OFFERS} preview />;
-  const url = theme === "forge" ? "fitflow.demo/s/aarav" : "fitflow.demo/s/meera";
+  const [i, setI] = useState(0);
+  const seq = SEQUENCES[0]!;
+  const lead = useMemo(() => leads.find((l) => l.stage === "new" && /^(lose|get|build|run|feel|improve)/i.test(l.goal)) ?? leads.find((l) => l.stage === "new") ?? leads[0], [leads]);
+  const offer = offers.find((o) => o.id === lead?.offerId);
+  const step = seq.steps[i]!;
+  const text = lead ? draftFollowUp(lead, offer, step.goal as FollowUpGoal, "Warm", step.channel, 0) : "";
+  const why = lead ? explainDraft({ lead, offer, goal: step.goal, tone: "Warm", channel: step.channel, text }) : null;
+  const segs = lead ? personalSegments(text, [firstName(lead.name), goalPhrase(lead), offer?.title ?? ""]) : [];
 
   return (
-    <section id="storefronts" className="relative scroll-mt-20 overflow-hidden py-24 sm:py-32">
+    <section id="engine" className="relative scroll-mt-20 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionIntro eyebrow="Coaching storefronts" title="A page that sells while you coach." body="Every coach gets a fast, mobile-first storefront with programs, pricing, FAQs and an enquiry form that feeds the pipeline. Switch themes to see the same content restyled." />
-        <div className="mt-10 flex flex-col items-center gap-4">
-          <div className="flex flex-wrap justify-center gap-2" role="tablist" aria-label="Storefront theme">
-            {(Object.keys(THEME_META) as StorefrontTheme[]).map((t) => (
-              <button key={t} role="tab" aria-selected={theme === t} onClick={() => setTheme(t)} className={cn("flex items-center gap-3 rounded-2xl border px-4 py-3 text-left transition", theme === t ? "border-lime-fg/60 bg-lime/[.06]" : "border-line hover:border-line-2")}>
-                <span className="flex h-8 w-14 overflow-hidden rounded-lg" aria-hidden>
-                  {THEME_META[t].swatches.map((c) => (
-                    <span key={c} className="flex-1" style={{ background: c }} />
-                  ))}
-                </span>
-                <span>
-                  <span className={cn("block text-[14px] font-semibold", t === "bloom" && "font-[family-name:var(--font-fraunces)] italic")}>
-                    {THEME_META[t].name} · {t === "forge" ? "Aarav" : "Meera"}
-                  </span>
-                  <span className="block text-[12px] text-fg-3">{t === "forge" ? "Strength & fat loss" : "Yoga & mobility"}</span>
-                </span>
-              </button>
-            ))}
-          </div>
+        <SectionIntro eyebrow="The follow-up engine" title="It decides who and when. You decide what's sent." body="A new enquiry goes into a four-step sequence. Each step lands in Today on its day as a draft that shows its reasoning, and the sequence pauses the moment they reply. Click a step." />
+        <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          <Reveal>
+            <ol className="relative grid gap-3" aria-label="New enquiry sequence">
+              <span aria-hidden className="absolute bottom-6 left-[23px] top-6 w-px bg-line" />
+              {seq.steps.map((st, k) => (
+                <li key={k} className="relative">
+                  <button onClick={() => setI(k)} aria-pressed={i === k} className={cn("grid w-full grid-cols-[48px_1fr] items-center gap-3 rounded-2xl border p-3 text-left transition", i === k ? "border-lime-fg/60 bg-lime/10" : "border-line bg-panel/70 hover:border-line-2")}>
+                    <span className={cn("z-[1] grid h-12 w-12 place-items-center rounded-full border font-mono text-[12px]", i === k ? "border-lime-fg bg-lime text-lime-ink" : "border-line bg-panel text-fg-2")}>D{st.day}</span>
+                    <span>
+                      <span className="block text-[14.5px] font-semibold">{st.goal}</span>
+                      <span className="mt-0.5 block text-[12.5px] leading-relaxed text-fg-3">{st.why}</span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+              <li className="relative grid grid-cols-[48px_1fr] items-center gap-3 p-3">
+                <span className="z-[1] grid h-12 w-12 place-items-center rounded-full border border-dashed border-line-2 bg-bg text-[11px] text-fg-3">reply</span>
+                <span className="text-[13px] leading-relaxed text-fg-2">They reply → the sequence pauses and they jump to the top of Today, so the next message is a human one.</span>
+              </li>
+            </ol>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <div className="card overflow-hidden p-0">
+              <div className="flex items-center justify-between gap-2 border-b border-line px-5 py-3">
+                <p className="text-[13px] font-medium text-fg-2">
+                  Step {i + 1} for {hydrated && lead ? lead.name : "a sample lead"} · {step.channel}
+                </p>
+                <DemoTag>Simulated AI</DemoTag>
+              </div>
+              <div className="grid gap-0 md:grid-cols-[1.05fr_1fr]">
+                <div className="bg-[#0b141a] p-5 text-[#e9edef]">
+                  <AnimatePresence mode="wait">
+                    <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.3, ease: EASE }} className="ml-auto max-w-[95%] whitespace-pre-wrap rounded-2xl rounded-tr-sm bg-[#005c4b] px-3.5 py-2.5 text-[13.5px] leading-relaxed">
+                      {hydrated ? (
+                        segs.map((p, k) =>
+                          p.mark ? (
+                            <mark key={k} className="rounded-sm bg-[#c8f04a]/25 px-0.5 text-inherit underline decoration-[#c8f04a] decoration-2 underline-offset-2">
+                              {p.text}
+                            </mark>
+                          ) : (
+                            <span key={k}>{p.text}</span>
+                          ),
+                        )
+                      ) : (
+                        <Skeleton className="h-24 w-full" />
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
+                  <p className="mt-3 text-[11.5px] text-white/50">Highlighted: written for this lead specifically.</p>
+                </div>
+                <div className="p-5">
+                  <p className="text-[12.5px] font-semibold text-fg-2">Why this draft</p>
+                  <ul className="mt-2 space-y-2">
+                    {hydrated &&
+                      why?.used.slice(0, 4).map((u) => (
+                        <li key={u.label} className="text-[12.5px] leading-relaxed">
+                          <b className="font-medium">{u.label}.</b> <span className="text-fg-2">{u.detail}</span>
+                        </li>
+                      ))}
+                  </ul>
+                  <ul className="mt-3 space-y-1.5 border-t border-line pt-3">
+                    {hydrated &&
+                      why?.checks.map((c) => (
+                        <li key={c.label} className="flex items-start gap-1.5 text-[12.5px] text-fg-2">
+                          <CheckCircle2 size={14} className={cn("mt-px shrink-0", c.ok ? "text-ok" : "text-warn")} /> {c.label}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              <LiquidButton href="/app#today">
+                Open Today in the demo <ArrowRight size={16} />
+              </LiquidButton>
+              <LiquidButton href="/app/sequences" variant="secondary">
+                See all sequences
+              </LiquidButton>
+            </div>
+          </Reveal>
         </div>
-        <div
-          ref={stage}
-          className="relative mx-auto mt-12 h-[560px] max-w-6xl [perspective:2400px] sm:h-[640px]"
-          onPointerMove={(e) => {
-            if (reduce || e.pointerType !== "mouse" || !stage.current) return;
-            const r = stage.current.getBoundingClientRect();
-            px.set(((e.clientX - r.left) / r.width) * 2 - 1);
-            py.set(((e.clientY - r.top) / r.height) * 2 - 1);
-          }}
-          onPointerLeave={() => (px.set(0), py.set(0))}
-        >
-          {hydrated ? (
-            <AnimatePresence mode="wait">
-              <motion.div key={theme} className="absolute inset-0" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.55, ease: EASE }}>
-                <motion.div className="absolute left-0 top-0 w-full max-md:hidden md:w-[82%]" style={{ rotateY: ry, rotateX: rx, transformOrigin: "left center", transformStyle: "preserve-3d" }}>
-                  <BrowserFrame url={url} height={540}>
-                    {view}
-                  </BrowserFrame>
-                </motion.div>
-                <motion.div className="absolute bottom-0 left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0" initial={{ y: 40 }} animate={{ y: 0 }} transition={{ duration: 0.8, ease: EASE, delay: 0.1 }} style={{ transformPerspective: 1600, rotateY: reduce ? 0 : -8 }}>
-                  <PhoneFrame height={560} width={280}>
-                    {view}
-                  </PhoneFrame>
-                </motion.div>
-              </motion.div>
-            </AnimatePresence>
-          ) : (
-            <Skeleton className="h-full rounded-2xl" />
-          )}
-        </div>
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <LiquidButton href={theme === "forge" ? "/s/aarav" : "/s/meera"}>
-            <ExternalLink size={15} /> Open {theme === "forge" ? "Aarav's" : "Meera's"} storefront
-          </LiquidButton>
-          <LiquidButton href="/app/storefront" variant="secondary">
-            Customise it in the builder
-          </LiquidButton>
-        </div>
-        <p className="mt-4 text-center text-[12.5px] text-fg-3">The previews are real pages: scroll inside them. Fictional coaches; photos from Unsplash.</p>
       </div>
     </section>
   );

@@ -1,12 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { CalendarPlus, ClipboardCheck, Frown, HeartPulse, Meh, Search, Smile, SmilePlus, Target, Annoyed } from "lucide-react";
+import { CalendarPlus, ClipboardCheck, LifeBuoy, MessageCircle, Frown, HeartPulse, Meh, Search, Smile, SmilePlus, Target, Annoyed } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState, type FormEvent } from "react";
 import { BarsChart, SERIES } from "@/components/charts";
 import { EASE } from "@/components/motion/kit";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { cn } from "@/components/ui/cn";
 import { Field, Textarea } from "@/components/ui/field";
 import { Avatar, Badge, Bar, DemoTag, Empty, Panel, ProgressRing, Segmented, type Tone } from "@/components/ui/kit";
@@ -189,9 +189,13 @@ function ClientDetail({ client, name, goal, program, weeks }: { client: Client; 
           ))}
         </div>
         <div className="relative mt-4 flex flex-wrap gap-2">
+          <ButtonLink size="sm" variant={client.status === "on-track" ? "secondary" : "primary"} href={`/app/follow-ups?client=${client.id}&goal=${encodeURIComponent(client.status === "on-track" ? "Celebrate a win" : "Check in after a tough week")}`}>
+            <MessageCircle size={14} /> {client.status === "on-track" ? "Send a win" : "Draft a check-in"}
+          </ButtonLink>
           <Button variant="secondary" size="sm" onClick={() => openBookingForm({ leadId: client.leadId })}>
             <CalendarPlus size={14} /> Book a session
           </Button>
+          {client.status !== "on-track" && <RescueButton leadId={client.leadId} />}
         </div>
       </section>
 
@@ -292,5 +296,18 @@ function ClientDetail({ client, name, goal, program, weeks }: { client: Client; 
         )}
       </Panel>
     </motion.div>
+  );
+}
+
+/** Starts (or shows) the Client rescue sequence for a slipping client. */
+function RescueButton({ leadId }: { leadId: string }) {
+  const active = useDemo((s) => s.enrollments.find((e) => e.leadId === leadId && e.status === "active" && e.sequenceId === "client-rescue"));
+  const enroll = useDemo((s) => s.enroll);
+  const toast = useToast();
+  if (active) return <Badge tone="violet">In Client rescue · step {active.step + 1} of 3</Badge>;
+  return (
+    <Button variant="secondary" size="sm" onClick={() => (enroll(leadId, "client-rescue"), toast({ tone: "success", title: "Client rescue started", body: "The first check-in is in Today." }))}>
+      <LifeBuoy size={14} /> Start rescue sequence
+    </Button>
   );
 }

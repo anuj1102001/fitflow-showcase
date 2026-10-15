@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "FITFLOW AI: turn followers into paying clients";
+export const alt = "FITFLOW AI: every lead followed up, every client kept";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -13,9 +13,9 @@ export default function OG() {
           FITFLOW AI
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 84, fontWeight: 700, letterSpacing: -3, lineHeight: 1 }}>Turn followers into</div>
-          <div style={{ fontSize: 84, fontWeight: 700, letterSpacing: -3, lineHeight: 1.1, color: "#c8f04a" }}>paying clients.</div>
-          <div style={{ marginTop: 28, fontSize: 30, color: "#abafa8" }}>The business OS for fitness coaches · interactive product prototype</div>
+          <div style={{ fontSize: 84, fontWeight: 700, letterSpacing: -3, lineHeight: 1 }}>Every lead followed up.</div>
+          <div style={{ fontSize: 84, fontWeight: 700, letterSpacing: -3, lineHeight: 1.1, color: "#c8f04a" }}>Every client kept.</div>
+          <div style={{ marginTop: 28, fontSize: 30, color: "#abafa8" }}>The follow-up engine for fitness coaches · interactive product prototype</div>
         </div>
       </div>
     ),

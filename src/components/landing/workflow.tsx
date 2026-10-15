@@ -3,7 +3,7 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CalendarCheck, Check, MessageCircle, Sparkles, Store, UserCheck, Users } from "lucide-react";
+import { CalendarCheck, Check, ListChecks, MessageCircle, Reply, Sparkles, UserCheck, Users } from "lucide-react";
 import { useRef, useState } from "react";
 import { cn } from "@/components/ui/cn";
 import { Avatar } from "@/components/ui/kit";
@@ -12,10 +12,10 @@ import { SectionIntro } from "./sections";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const STEPS = [
-  { k: "Attract", icon: Store, t: "Share one storefront link", b: "A polished page with your programs, pricing and an enquiry form. It goes in your bio and every post." },
-  { k: "Capture", icon: Users, t: "Every enquiry lands in your pipeline", b: "Storefront, Instagram, WhatsApp or referral: each lead gets a source, a stage and a follow-up date." },
-  { k: "Follow up", icon: MessageCircle, t: "Personal messages in seconds", b: "AI drafts a follow-up from the lead's goal and stage. You edit it, copy it and send it yourself." },
-  { k: "Convert & coach", icon: UserCheck, t: "Clients, plans and check-ins", b: "A won lead becomes a client with a plan, progress metrics and weekly check-ins." },
+  { k: "Capture", icon: Users, t: "Every enquiry lands in one pipeline", b: "Instagram, WhatsApp, your website or a referral: each lead gets a source, a stage and joins the right sequence." },
+  { k: "Prioritise", icon: ListChecks, t: "Today tells you who to message", b: "Due sequence steps, people who replied, overdue leads and slipping clients, ranked so the urgent ones come first." },
+  { k: "Follow up", icon: MessageCircle, t: "Drafts that show their reasoning", b: "Each draft says what it used and which checks it passed. You edit it and send it yourself; nothing goes out automatically." },
+  { k: "Retain", icon: UserCheck, t: "Catch clients before they drift", b: "Weekly check-ins flag falling adherence, and a rescue sequence follows up with a lighter week or a reset call." },
 ];
 
 /**
@@ -85,10 +85,10 @@ export function Workflow() {
           </ol>
           <div className="relative hidden min-h-[440px] lg:block">
             <Panel i={0}>
-              <StorefrontVisual />
+              <PipelineVisual />
             </Panel>
             <Panel i={1}>
-              <PipelineVisual />
+              <TodayVisual />
             </Panel>
             <Panel i={2}>
               <MessageVisual />
@@ -115,26 +115,33 @@ function Label({ children }: { children: React.ReactNode }) {
   return <p className="mb-4 text-[12.5px] font-medium text-fg-3">{children}</p>;
 }
 
-function StorefrontVisual() {
+function TodayVisual() {
+  const rows = [
+    ["Kabir M.", "Replied", "Replied to your sequence · waiting on you", "bg-lime/25 text-lime-fg"],
+    ["Rhea K.", "Client", "At risk · 58% adherence last week", "bg-violet-500/15 text-violet-500"],
+    ["Priya S.", "Sequence", "New enquiry · step 2 of 4 · 1 day late", "bg-sky-500/15 text-sky-600"],
+    ["Tara M.", "Sequence", "Proposal follow-through · step 1 of 3", "bg-sky-500/15 text-sky-600"],
+  ];
   return (
     <div className="flex h-full flex-col">
-      <Label>fitflow.demo/s/aarav</Label>
-      <div className="flex-1 overflow-hidden rounded-xl border border-line bg-[#0b0c0e] p-6 text-[#f2f3ee]">
-        <p className="text-[11px] uppercase tracking-wider text-[#a4a89f]">Strength coach · Bengaluru</p>
-        <p className="mt-3 max-w-[16ch] text-[30px] font-bold uppercase leading-[0.95] tracking-tight">Get strong. Keep your desk job.</p>
-        <div className="mt-6 grid grid-cols-2 gap-3">
-          {[
-            ["12-Week Strength", "₹14,999"],
-            ["Fat-Loss Group", "₹5,999"],
-          ].map(([t, p]) => (
-            <div key={t} className="rounded-lg border border-white/10 bg-white/[.04] p-3">
-              <p className="text-[12px] font-semibold">{t}</p>
-              <p className="mt-1 text-[16px] font-bold">{p}</p>
+      <Label>Today · 4 people to message</Label>
+      <ul className="divide-y divide-line rounded-xl border border-line">
+        {rows.map(([n, k, w, cls]) => (
+          <li key={n} className="flex items-center gap-3 px-3 py-2.5">
+            <Avatar name={n} size={28} />
+            <div className="min-w-0 flex-1">
+              <p className="flex items-center gap-2 text-[13px] font-semibold">
+                {n} <span className={cn("rounded-full px-2 py-0.5 text-[10.5px] font-medium", cls)}>{k}</span>
+              </p>
+              <p className="truncate text-[11.5px] text-fg-3">{w}</p>
             </div>
-          ))}
-        </div>
-        <div className="mt-5 inline-flex h-9 items-center rounded-full bg-[#c8f04a] px-4 text-[12.5px] font-semibold text-[#0c0e06]">Book a free discovery call</div>
-      </div>
+            <span className="rounded-lg bg-lime px-2.5 py-1 text-[11.5px] font-semibold text-lime-ink">Draft</span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-auto flex items-center gap-1.5 pt-4 text-[12.5px] text-fg-3">
+        <Reply size={13} /> Replies jump to the top; sequences pause automatically.
+      </p>
     </div>
   );
 }
@@ -161,7 +168,7 @@ function PipelineVisual() {
                     <Avatar name={n} size={22} />
                     <span className="text-[12.5px] font-medium">{n}</span>
                   </div>
-                  <p className="mt-1.5 text-[11px] text-fg-3">{["Instagram", "Storefront", "Referral", "WhatsApp", "Storefront"][(i * 2 + j) % 5]} · ₹14,999</p>
+                  <p className="mt-1.5 text-[11px] text-fg-3">{["Instagram", "Website", "Referral", "WhatsApp", "Website"][(i * 2 + j) % 5]} · ₹14,999</p>
                 </div>
               ))}
             </div>
@@ -184,7 +191,14 @@ function MessageVisual() {
         ))}
       </div>
       <div className="mt-4 rounded-xl border border-line bg-panel-2/50 p-4 text-[14.5px] leading-relaxed">
-        Hi Priya! Thanks for reaching out about your goal to lose 8 kg before your wedding. Could you tell me a little about your current routine? Then I can suggest the right next step.
+        Hi <mark className="rounded-sm bg-lime/30 px-0.5 text-inherit">Priya</mark>! Thanks for reaching out about <mark className="rounded-sm bg-lime/30 px-0.5 text-inherit">your goal to lose 8 kg before your wedding</mark>. Could you tell me a little about your current routine? Then I can suggest the right next step.
+      </div>
+      <div className="mt-3 flex flex-wrap gap-1.5 text-[11.5px] text-fg-2">
+        {["Used: their name", "Used: their own words", "No guarantees", "Ends with a question"].map((x) => (
+          <span key={x} className="rounded-full border border-line px-2 py-0.5">
+            {x}
+          </span>
+        ))}
       </div>
       <div className="mt-auto flex items-center justify-between pt-4">
         <span className="flex items-center gap-1.5 text-[12.5px] text-fg-3">

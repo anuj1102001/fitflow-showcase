@@ -1,23 +1,23 @@
-import { BarChart3, BicepsFlexed, CalendarDays, HeartPulse, LayoutDashboard, MessageSquareText, Sparkles, Store, Users, type LucideIcon } from "lucide-react";
+import { BarChart3, BicepsFlexed, CalendarDays, HeartPulse, LayoutDashboard, MessageSquareText, Repeat, Sparkles, Users, type LucideIcon } from "lucide-react";
 
 export type NavItem = { href: string; label: string; icon: LucideIcon; blurb: string };
 
 export const NAV: { group: string; items: NavItem[] }[] = [
   {
-    group: "Workspace",
+    group: "Follow-up",
     items: [
-      { href: "/app", label: "Overview", icon: LayoutDashboard, blurb: "Today's numbers, what needs you and what's coming up" },
+      { href: "/app", label: "Today", icon: LayoutDashboard, blurb: "Who to follow up today and why, then your numbers" },
+      { href: "/app/sequences", label: "Sequences", icon: Repeat, blurb: "Multi-step follow-up cadences that pause when people reply" },
+      { href: "/app/follow-ups", label: "Compose", icon: MessageSquareText, blurb: "Drafts that show their reasoning; you send" },
       { href: "/app/leads", label: "Leads", icon: Users, blurb: "Every enquiry from every channel, in one pipeline" },
-      { href: "/app/follow-ups", label: "Follow-ups", icon: MessageSquareText, blurb: "AI-drafted, personal follow-up messages" },
+      { href: "/app/clients", label: "Clients", icon: HeartPulse, blurb: "Check-ins, progress and clients who are slipping" },
       { href: "/app/bookings", label: "Bookings", icon: CalendarDays, blurb: "Discovery calls, sessions and check-ins" },
-      { href: "/app/clients", label: "Clients", icon: HeartPulse, blurb: "Plans, progress and check-ins for active clients" },
     ],
   },
   {
-    group: "Grow",
+    group: "Business",
     items: [
       { href: "/app/offers", label: "Offer Builder", icon: Sparkles, blurb: "Package your coaching into clear, priced offers" },
-      { href: "/app/storefront", label: "Storefront", icon: Store, blurb: "Your public coaching page" },
       { href: "/app/analytics", label: "Analytics", icon: BarChart3, blurb: "Lead flow, conversion and revenue trends" },
     ],
   },

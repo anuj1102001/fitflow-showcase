@@ -4,63 +4,53 @@
   "scenes": [
     {
       "id": "intro",
-      "caption": "FITFLOW AI: a business OS for fitness coaches (interactive prototype)",
-      "text": "This is FITFLOW AI: an interactive product prototype of a business operating system for independent fitness coaches who sell their coaching online."
-    },
-    {
-      "id": "theme",
-      "caption": "Light and dark themes, switched instantly",
-      "text": "Every screen comes in light and dark mode, and the switch is instant."
+      "caption": "FITFLOW AI: the follow-up engine for fitness coaches (interactive prototype)",
+      "text": "This is FITFLOW AI: an interactive product prototype of a follow-up engine for independent fitness coaches. The idea is simple: every lead followed up, every client kept."
     },
     {
       "id": "workflow",
-      "caption": "Scroll-driven “How it works” (GSAP ScrollTrigger)",
-      "text": "As you scroll, the How it works section pins in place and steps through the coach's journey: attract, capture, follow up, and convert."
+      "caption": "Capture, prioritise, follow up, retain (GSAP ScrollTrigger)",
+      "text": "As you scroll, How it works pins in place and steps through the loop: capture every enquiry, prioritise who to message today, follow up with drafts that explain themselves, and catch clients before they drift."
     },
     {
-      "id": "overview",
-      "caption": "The live demo: KPIs, trends and AI insights from sample data",
-      "text": "Here's the live demo. The overview pulls key numbers, trends and AI insights from one sample dataset, so every figure on every screen agrees."
+      "id": "engine",
+      "caption": "Each sequence step produces a draft that shows its reasoning",
+      "text": "Here's the engine. A new enquiry goes into a four-step sequence. Each step produces a draft for a real sample lead, with the parts written for them highlighted, and the reasons and checks beside it."
     },
     {
-      "id": "leads",
-      "caption": "Lead pipeline: every enquiry has a source, stage and follow-up date",
-      "text": "Every enquiry lands in a pipeline, with its source, stage, value and next follow-up date. Opening a lead shows its details and full history."
+      "id": "today",
+      "caption": "Today: who to message and why, most urgent first",
+      "text": "In the app, Today is the home screen. It ranks who to message: people who replied, due sequence steps, overdue leads and clients who are slipping. Every row says why it's there."
     },
     {
-      "id": "followups",
-      "caption": "AI drafts the follow-up. The coach edits it and sends it themselves.",
-      "text": "For follow-ups, the AI drafts a personal message from the lead's goal and stage. The coach edits it and sends it themselves. Nothing is ever sent automatically."
+      "id": "compose",
+      "caption": "The draft explains itself. The coach edits it and sends it themselves.",
+      "text": "Opening a step drafts the message. FITFLOW shows what it used, like the lead's own words and the program they asked about, and which checks it passed. The coach edits it, sends it themselves, and logs the step."
     },
     {
-      "id": "offer",
-      "caption": "AI Offer Builder: five guided steps to an editable, claims-checked offer",
-      "text": "The offer builder walks the coach through a few quick choices: the goal, the audience, the format, and a price, with guidance on what's typical. Then it drafts a complete offer, with a title, what's included and who it's for, and checks it for risky health claims. Everything stays editable."
+      "id": "replied",
+      "caption": "A reply pauses the sequence and moves them to the top",
+      "text": "When someone replies, one click pauses their sequence, so the next message is a personal one rather than the next automated step."
     },
     {
-      "id": "builder",
-      "caption": "Storefront builder with live desktop and phone previews",
-      "text": "The storefront builder restyles the coach's public page, with live desktop and phone previews."
+      "id": "sequences",
+      "caption": "Sequences: cadences for new enquiries, proposals, quiet leads and client rescue",
+      "text": "Sequences are the cadences behind it: new enquiries, proposals, quiet leads, and a client rescue sequence. Nothing is ever sent automatically."
     },
     {
-      "id": "storefront",
-      "caption": "The coach's public page: enquiries land straight in the pipeline",
-      "text": "This is the page followers actually see. When someone sends an enquiry here, it shows up in the pipeline as a new lead."
-    },
-    {
-      "id": "assistant",
-      "caption": "Assistant answers questions from the same data as the charts",
-      "text": "The assistant answers business questions using the same numbers as the charts, like which lead source is converting best."
+      "id": "clients",
+      "caption": "Retention: check-ins flag clients who are slipping",
+      "text": "Weekly check-ins flag clients whose adherence is dropping. From here the coach can draft a check-in or start the rescue sequence."
     },
     {
       "id": "dark",
-      "caption": "Every screen works in both themes",
+      "caption": "Every screen works in light and dark",
       "text": "And all of it works in dark mode too."
     },
     {
       "id": "case",
       "caption": "Case study, Figma file and code: links in the description",
-      "text": "The case study covers the problem, the design decisions and the Figma design system. The live demo, the Figma file and the code are all linked in the description."
+      "text": "The case study covers the problem, the decision to focus on follow-up, and the trade-offs. The live demo, the Figma file and the code are all linked in the description."
     }
   ]
 }

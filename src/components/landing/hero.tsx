@@ -23,7 +23,7 @@ const LINKS = [
   { href: "#workflow", label: "Workflow" },
   { href: "#features", label: "Features" },
   { href: "#ai", label: "AI" },
-  { href: "#storefronts", label: "Storefronts" },
+  { href: "#engine", label: "Sequences" },
   { href: "#pricing", label: "Pricing" },
   { href: "#faq", label: "FAQ" },
 ];
@@ -110,27 +110,27 @@ export function Hero() {
             <div aria-hidden className="pointer-events-none absolute -inset-x-10 -inset-y-8 -z-10 rounded-[40px] bg-bg/60 blur-2xl dark:bg-bg/70" />
             <motion.p {...fade(0)} className="flex items-center gap-2 text-[13px] font-medium text-fg-3">
               <span className="h-1.5 w-1.5 rounded-full bg-s1" aria-hidden />
-              Product prototype · the business OS for fitness coaches
+              Product prototype · the follow-up engine for fitness coaches
             </motion.p>
             <h1 ref={title} className="mt-5 text-balance text-[44px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[60px] lg:text-[72px]">
-              <span data-split>Turn followers into</span>{" "}
+              <span data-split>Every lead followed up.</span>{" "}
               <span className="relative whitespace-nowrap">
                 <motion.span aria-hidden className="absolute inset-x-[-0.08em] bottom-[0.02em] top-[0.1em] -z-0 origin-left rounded-[6px] bg-lime" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.6, ease: EASE, delay: 0.1 }} />
-                <span data-split className="relative text-lime-ink">paying clients.</span>
+                <span data-split className="relative text-lime-ink">Every client kept.</span>
               </span>
             </h1>
           </div>
           <div className="relative isolate lg:col-span-5 lg:pb-2">
             <div aria-hidden className="pointer-events-none absolute -inset-x-10 -inset-y-8 -z-10 rounded-[40px] bg-bg/60 blur-2xl dark:bg-bg/70" />
             <motion.p {...fade(0.15)} className="max-w-xl text-[17px] leading-relaxed text-fg-2">
-              FITFLOW packages your coaching into clear offers, gives you a storefront that sells, and keeps every lead, follow-up and client in one calm workspace. AI drafts the busywork; you stay in control.
+              Coaches lose clients in the silence after &ldquo;DM me&rdquo;. FITFLOW tells you who to message today, drafts each follow-up with its reasoning shown, and pauses a sequence the moment someone replies. You always press send.
             </motion.p>
             <motion.div {...fade(0.25)} className="mt-7 flex flex-col gap-2.5 sm:flex-row">
               <LiquidButton href="/app">
                 Explore the live demo <ArrowRight size={16} className="transition group-hover:translate-x-0.5" />
               </LiquidButton>
-              <LiquidButton href="/s/aarav" variant="secondary">
-                See a coach storefront
+              <LiquidButton href="/case-study" variant="secondary">
+                Read the case study
               </LiquidButton>
             </motion.div>
             <motion.ul {...fade(0.35)} className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-fg-3">
