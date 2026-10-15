@@ -10,6 +10,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { EASE, SPRING } from "@/components/motion/kit";
 import { buttonClass } from "@/components/ui/button";
 import { LiquidButton } from "@/components/ui/liquid-button";
+import { NeuralNoise } from "./neural-noise";
 import { cn } from "@/components/ui/cn";
 import { Avatar } from "@/components/ui/kit";
 import { Logo } from "@/components/ui/logo";
@@ -103,9 +104,12 @@ export function Hero() {
   const fade = (d: number) => ({ initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, ease: EASE, delay: d } });
   return (
     <section ref={ref} className="relative overflow-hidden pb-12 pt-28 sm:pt-32 lg:pb-24 lg:pt-36">
+      <NeuralNoise />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
-          <div className="lg:col-span-7">
+          <div className="relative isolate lg:col-span-7">
+            {/* Soft backing so the shader never fights the text */}
+            <div aria-hidden className="pointer-events-none absolute -inset-x-10 -inset-y-8 -z-10 rounded-[40px] bg-bg/60 blur-2xl dark:bg-bg/70" />
             <motion.p {...fade(0)} className="flex items-center gap-2 text-[13px] font-medium text-fg-3">
               <span className="h-1.5 w-1.5 rounded-full bg-s1" aria-hidden />
               Product prototype · the business OS for fitness coaches
@@ -118,7 +122,8 @@ export function Hero() {
               </span>
             </h1>
           </div>
-          <div className="lg:col-span-5 lg:pb-2">
+          <div className="relative isolate lg:col-span-5 lg:pb-2">
+            <div aria-hidden className="pointer-events-none absolute -inset-x-10 -inset-y-8 -z-10 rounded-[40px] bg-bg/60 blur-2xl dark:bg-bg/70" />
             <motion.p {...fade(0.15)} className="max-w-xl text-[17px] leading-relaxed text-fg-2">
               FITFLOW packages your coaching into clear offers, gives you a storefront that sells, and keeps every lead, follow-up and client in one calm workspace. AI drafts the busywork; you stay in control.
             </motion.p>

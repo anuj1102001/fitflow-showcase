@@ -5,6 +5,7 @@ import { ArrowRight, BadgeIndianRupee, CalendarClock, CheckCircle2, Clock, Messa
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { SERIES, TrendChart } from "@/components/charts";
+import { ProfileHero } from "@/components/app/profile-hero";
 import { StatTile } from "@/components/app/stat";
 import { EASE } from "@/components/motion/kit";
 import { buttonClass } from "@/components/ui/button";
@@ -18,7 +19,7 @@ import { STAGE_LABEL } from "@/lib/types";
 import { useUI } from "@/lib/ui-store";
 
 export function OverviewScreen() {
-  const { leads, clients, offers, bookings, drafts } = useDemo();
+  const { leads, clients, offers, bookings, drafts, storefront } = useDemo();
   const openBookingForm = useUI((s) => s.openBookingForm);
   const [range, setRange] = useState<RangeId>("30d");
   const [metric, setMetric] = useState<"leads" | "revenue">("leads");
@@ -45,21 +46,25 @@ export function OverviewScreen() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-[13px] text-fg-3">{dateLong(new Date())}</p>
-          <h2 className="mt-1 text-[26px] font-semibold tracking-[-0.03em] sm:text-[30px]">
-            {greeting}, {firstName(COACH.name)}.
-          </h2>
-          <p className="mt-1 text-[14px] text-fg-2">
-            {todays.length ? `${todays.length} session${todays.length > 1 ? "s" : ""} today` : "No sessions today"} · {ins.overdue.length} overdue follow-up{ins.overdue.length === 1 ? "" : "s"} · {rupees(pipelineValue(leads))} in open pipeline
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <DemoTag />
-          <Segmented label="Date range" value={range} onChange={setRange} options={RANGES.map((r) => ({ id: r.id, label: r.label.replace(" days", "d").replace(" months", "m") }))} size="sm" />
-        </div>
-      </div>
+      <ProfileHero
+        photo={storefront.heroImage}
+        avatar={COACH.avatar}
+        initials={COACH.name.split(" ").map((w) => w[0]).join("")}
+        aside={
+          <div className="flex items-center gap-2 rounded-2xl border border-white/15 bg-black/35 p-1.5 backdrop-blur-md">
+            <DemoTag />
+            <Segmented label="Date range" value={range} onChange={setRange} options={RANGES.map((r) => ({ id: r.id, label: r.label.replace(" days", "d").replace(" months", "m") }))} size="sm" />
+          </div>
+        }
+      >
+        <p className="text-[13px] font-medium text-white/75">{dateLong(new Date())}</p>
+        <h2 className="mt-2 text-balance text-[40px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[56px] lg:text-[64px]">
+          {greeting}, {firstName(COACH.name)}.
+        </h2>
+        <p className="mt-4 text-[15px] leading-relaxed text-white/85 sm:text-[16px]">
+          {todays.length ? `${todays.length} session${todays.length > 1 ? "s" : ""} today` : "No sessions today"} · {ins.overdue.length} overdue follow-up{ins.overdue.length === 1 ? "" : "s"} · {rupees(pipelineValue(leads))} in open pipeline
+        </p>
+      </ProfileHero>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatTile index={0} label="Total leads" icon={<Users size={14} />} value={k.cur.leads} delta={k.delta.leads} spark={s.map((b) => b.leads)} info={METRICS.leads} />

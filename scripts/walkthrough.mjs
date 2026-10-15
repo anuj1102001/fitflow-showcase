@@ -189,10 +189,11 @@ await scene("workflow", async () => {
 // 2. App
 await scene("overview", async () => {
   await go("/app");
-  await sleep(600);
-  await moveTo(760, 640);
-  await sleep(1200);
-  await moveTo(560, 600);
+  await sleep(1800); // the coach's photo opening, then on to the dashboard
+  await scrollBy(H * 0.78, 1600);
+  await moveTo(760, 560);
+  await sleep(900);
+  await moveTo(560, 520);
 });
 await scene("leads", async () => {
   await clickOn("Leads", "nav a, aside a");

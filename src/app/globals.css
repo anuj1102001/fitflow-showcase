@@ -39,7 +39,8 @@
     --axis: 112 115 107;
     --grid: 228 228 222;
   }
-  html.dark {
+  html.dark,
+  .theme-dark {
     color-scheme: dark;
     --bg: 11 12 14;
     --panel: 19 20 23;

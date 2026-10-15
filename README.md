@@ -57,6 +57,10 @@ Things worth clicking: drag a lead across the pipeline, create an offer with the
 - **Type:** Geist throughout (display to caption, tabular numbers), Geist Mono for code-like labels; Fraunces only for the Bloom storefront theme.
 - **Components:** `src/components/ui` (buttons, fields, segmented controls, badges, drawer, menu, dialog, toast, tooltip, progress ring, sparkline, empty states, skeletons) and `src/components/charts.tsx`.
 - **Motion:** one easing curve and one spring preset (`src/components/motion/kit.tsx`). Staggered entrances, sliding tab indicators, counting numbers, chart draw-ins, drawer/modal transitions and an AI generation sequence. Respects `prefers-reduced-motion`.
+- **Hero shader:** the landing hero runs the WebGL "neural noise" shader from [rahil1202's NeuralNoiseCursor](https://21st.dev/@rahil1202/components/neural-noise-cursor) on 21st.dev, held at its green palette, rendered below device resolution and faded out (and paused) once you scroll past the opening screen.
+- **Live Demo opening:** the overview opens on the coach's own profile photo (the storefront photo, so edits in the builder show up here), with a contrast gradient that dissolves into the dashboard as you scroll.
+- **Buttons:** main calls to action use a liquid-metal rim (Paper Design's shader, after johuniq's Liquid Metal Button on 21st.dev) tinted with the FITFLOW palette.
+- **Brand mark:** a six-pack abs symbol on the lime tile, used in the nav, sidebar, favicon and share image.
 - **Scroll choreography (GSAP):** SplitText masked headline reveal and a pinned, scroll-scrubbed “How it works” sequence (ScrollTrigger with snapping) that swaps live product visuals per step.
 - **3D:** restrained CSS 3D transforms with spring parallax (hero product shot, storefront showcase, offer preview). WebGL was deliberately not used; see the case study.
 
