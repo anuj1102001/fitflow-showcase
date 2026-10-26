@@ -73,9 +73,9 @@ export default function CaseStudy() {
 
       <main id="main" className="mx-auto max-w-5xl px-4 pb-24 pt-14 sm:px-6 sm:pt-20">
         <p className="eyebrow">Case study · product design & front-end</p>
-        <h1 className="mt-4 text-balance text-[40px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[60px]">FITFLOW AI: the follow-up engine for fitness coaches</h1>
+        <h1 className="mt-4 text-balance text-[40px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[60px]">FITFLOW AI: the follow-up engine for fitness influencers and creators</h1>
         <p className="mt-6 max-w-3xl text-[18px] leading-relaxed text-fg-2">
-          An interactive SaaS prototype for independent fitness coaches, built around one job: never letting an interested lead or a slipping client go quiet. A Today queue says who to message and why, sequences schedule every next step and pause on reply, and every draft shows its reasoning.
+          An interactive SaaS prototype for fitness influencers and creators who coach their followers, built around one job: never letting an interested lead or a slipping client go quiet. A Today queue says who to message and why, sequences schedule every next step and pause on reply, and every draft shows its reasoning.
         </p>
         <dl className="mt-10 grid gap-4 rounded-2xl border border-line bg-panel p-6 sm:grid-cols-4">
           {[
@@ -94,7 +94,7 @@ export default function CaseStudy() {
         <div className="mt-6 rounded-2xl border border-line bg-panel-2/50 p-6">
           <p className="text-[16px] font-semibold">My role</p>
           <p className="mt-2 text-[15px] leading-relaxed text-fg-2">
-            I picked the problem and the users: fitness coaches who sell coaching online. A lot of them run their whole business from Instagram DMs, WhatsApp and spreadsheets, so leads and follow-ups get lost. I decided what FITFLOW should do and what it shouldn&apos;t: no payments, no real data, everything clearly marked as sample, and the AI only writes drafts, it never sends anything on its own.
+            I picked the problem and the users: fitness influencers and creators who sell coaching to their followers online. A lot of them run their whole business from Instagram DMs, WhatsApp and spreadsheets, so leads and follow-ups get lost. I decided what FITFLOW should do and what it shouldn&apos;t: no payments, no real data, everything clearly marked as sample, and the AI only writes drafts, it never sends anything on its own.
           </p>
           <p className="mt-3 text-[15px] leading-relaxed text-fg-2">
             I reviewed every version of the design. When the first version looked too much like an AI-made template, I pushed it toward a cleaner, Figma-based product design, added light and dark mode, and asked for proper scroll animations with GSAP.
@@ -116,7 +116,7 @@ export default function CaseStudy() {
 
         <Section n="01" title="The problem">
           <p>
-            Many fitness coaches build an audience on Instagram or YouTube long before they build a business. Enquiries arrive as DMs, WhatsApp messages and comments; offers are explained one conversation at a time (“DM me for price”); follow-ups live in memory; and there is little visibility into which channel or program actually produces clients.
+            Many fitness influencers and creators build an audience on Instagram or YouTube long before they build a business. Enquiries arrive as DMs, WhatsApp messages and comments; offers are explained one conversation at a time (“DM me for price”); follow-ups live in memory; and there is little visibility into which channel or program actually produces clients.
           </p>
           <p>Generic CRMs and website builders cover pieces of this, but they are built for sales teams or online stores, not for one person selling a 12-week coaching program from their phone.</p>
           <Callout>
@@ -285,7 +285,7 @@ export default function CaseStudy() {
 
         <Section n="12" title="What I'd validate next">
           <ol className="space-y-2.5 text-[15px] text-fg-2">
-            <li>1. Five interviews with coaches who sell online, focused on how enquiries and follow-ups are handled today.</li>
+            <li>1. Five interviews with fitness creators who sell coaching online, focused on how enquiries and follow-ups are handled today.</li>
             <li>2. A task-based test of Today on a phone: can a coach clear five follow-ups in under five minutes, and do they trust the drafts enough to send them?</li>
             <li>3. Does “Why this draft” change behaviour? Compare edits and send rates with and without the explanation panel.</li>
             <li>4. Willingness-to-pay conversations before committing to the pricing concept.</li>

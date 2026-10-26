@@ -48,7 +48,7 @@ export function Problem() {
                 Coaching is the easy part. <span className="text-fg-3">The follow-up isn&apos;t.</span>
               </>
             }
-            body="Independent coaches run sales from DMs, spreadsheets and memory. Interested people rarely say no; they go quiet when nobody checks back in, and clients drift the same way after a tough week."
+            body="Fitness creators who coach their followers run sales from DMs, spreadsheets and memory. Interested people rarely say no; they go quiet when nobody checks back in, and clients drift the same way after a tough week."
           />
           <Stagger className="mt-9 space-y-3" gap={0.08}>
             {[
@@ -167,8 +167,8 @@ export function AISection() {
 /* ------------------------------------------------------------------ pricing */
 
 const PLANS = [
-  { name: "Starter", price: "₹0", per: "forever", blurb: "For coaches testing the waters.", features: ["Lead pipeline up to 50 leads", "Today queue", "1 sequence", "10 AI drafts a month"] },
-  { name: "Pro", price: "₹999", per: "per month", blurb: "For coaches growing a client base.", features: ["Unlimited leads & clients", "All sequences, including Client rescue", "200 AI drafts a month", "Bookings & client check-ins", "Full analytics & insights"], featured: true },
+  { name: "Starter", price: "₹0", per: "forever", blurb: "For fitness creators testing the waters.", features: ["Lead pipeline up to 50 leads", "Today queue", "1 sequence", "10 AI drafts a month"] },
+  { name: "Pro", price: "₹999", per: "per month", blurb: "For creators growing a client base.", features: ["Unlimited leads & clients", "All sequences, including Client rescue", "200 AI drafts a month", "Bookings & client check-ins", "Full analytics & insights"], featured: true },
   { name: "Studio", price: "₹2,499", per: "per month", blurb: "For small teams and studios.", features: ["Everything in Pro", "Up to 5 coach seats", "Shared pipeline & assignments", "Priority support"] },
 ];
 
@@ -244,7 +244,7 @@ export function Pricing() {
 
 const FAQ = [
   { q: "Is FITFLOW a real product?", a: "It's a product design and front-end prototype built as a portfolio project. Everything you see works in your browser with a fictional coach and sample data, but there are no real accounts, payments or messages." },
-  { q: "Who is it designed for?", a: "Independent fitness coaches, personal trainers and fitness creators who sell coaching online or in person, and currently manage leads through DMs, WhatsApp and spreadsheets." },
+  { q: "Who is it designed for?", a: "Fitness influencers and creators, including coaches and personal trainers with a social following, who sell coaching online or in person, and currently manage leads through DMs, WhatsApp and spreadsheets." },
   { q: "Does the AI actually run?", a: "No. AI features are simulated with templates and the demo's own data, so the prototype works offline at no cost. The case study explains how a production version would use a language model with guardrails." },
   { q: "Will my changes be saved?", a: "Yes, in your browser's local storage, so you can refresh and continue. Use “Reset” in the demo to load fresh sample data. Nothing is sent to a server." },
   { q: "Does FITFLOW send messages for me?", a: "No, by design. It decides who to follow up and when, and drafts the message with its reasoning shown. You read it, edit it and send it yourself on WhatsApp, Instagram or email, then tell FITFLOW you sent it." },
@@ -321,7 +321,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.4fr_repeat(3,1fr)] lg:px-8">
         <div>
           <Logo />
-          <p className="mt-4 max-w-xs text-[14px] leading-relaxed text-fg-3">A product design and front-end prototype: the follow-up engine for fitness coaches. Fictional people, sample data, simulated AI.</p>
+          <p className="mt-4 max-w-xs text-[14px] leading-relaxed text-fg-3">A product design and front-end prototype: the follow-up engine for fitness influencers and creators. Fictional people, sample data, simulated AI.</p>
           <p className="mt-4 inline-flex items-center gap-2 rounded-md border border-dashed border-line-2 px-3 py-1 text-[12px] text-fg-3">
             <Sparkles size={12} className="text-lime-fg" /> Portfolio project · not a commercial service
           </p>

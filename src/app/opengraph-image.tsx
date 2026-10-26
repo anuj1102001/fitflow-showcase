@@ -15,7 +15,7 @@ export default function OG() {
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 84, fontWeight: 700, letterSpacing: -3, lineHeight: 1 }}>Every lead followed up.</div>
           <div style={{ fontSize: 84, fontWeight: 700, letterSpacing: -3, lineHeight: 1.1, color: "#c8f04a" }}>Every client kept.</div>
-          <div style={{ marginTop: 28, fontSize: 30, color: "#abafa8" }}>The follow-up engine for fitness coaches · interactive product prototype</div>
+          <div style={{ marginTop: 28, fontSize: 30, color: "#abafa8" }}>The follow-up engine for fitness creators · interactive product prototype</div>
         </div>
       </div>
     ),

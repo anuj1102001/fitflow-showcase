@@ -110,7 +110,7 @@ export function Hero() {
             <div aria-hidden className="pointer-events-none absolute -inset-x-10 -inset-y-8 -z-10 rounded-[40px] bg-bg/60 blur-2xl dark:bg-bg/70" />
             <motion.p {...fade(0)} className="flex items-center gap-2 text-[13px] font-medium text-fg-3">
               <span className="h-1.5 w-1.5 rounded-full bg-s1" aria-hidden />
-              Product prototype · the follow-up engine for fitness coaches
+              Product prototype · the follow-up engine for fitness influencers and creators
             </motion.p>
             <h1 ref={title} className="mt-5 text-balance text-[44px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[60px] lg:text-[72px]">
               <span data-split>Every lead followed up.</span>{" "}

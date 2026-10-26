@@ -14,9 +14,9 @@ const url = process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.VERCEL_PROJECT_PROD
 
 export const metadata: Metadata = {
   metadataBase: new URL(url),
-  title: { default: "FITFLOW AI · The follow-up engine for fitness coaches (product prototype)", template: "%s · FITFLOW AI" },
+  title: { default: "FITFLOW AI · The follow-up engine for fitness influencers and creators (product prototype)", template: "%s · FITFLOW AI" },
   description:
-    "An interactive SaaS product prototype: the follow-up engine for fitness coaches. A Today queue, follow-up sequences that pause on reply, drafts that explain themselves and client retention check-ins. Portfolio project with sample data.",
+    "An interactive SaaS product prototype: the follow-up engine for fitness influencers and creators. A Today queue, follow-up sequences that pause on reply, drafts that explain themselves and client retention check-ins. Portfolio project with sample data.",
   applicationName: "FITFLOW AI",
   openGraph: { type: "website", siteName: "FITFLOW AI", locale: "en_IN" },
   twitter: { card: "summary_large_image" },
