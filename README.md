@@ -1,8 +1,8 @@
-# FITFLOW AI: the follow-up engine for fitness coaches (product prototype)
+# FITFLOW AI: the follow-up engine for fitness influencers and creators (product prototype)
 
-An interactive SaaS product prototype for independent fitness coaches, built around one job: never letting an interested lead or a slipping client go quiet. A Today queue says who to message and why, sequences schedule every next step and pause when someone replies, and every draft shows its reasoning. The coach always sends the message.
+An interactive SaaS product prototype for fitness influencers and creators who coach their followers, built around one job: never letting an interested lead or a slipping client go quiet. A Today queue says who to message and why, sequences schedule every next step and pause when someone replies, and every draft shows its reasoning. The creator always sends the message.
 
-> **Portfolio project.** Fictional coach, sample data, simulated AI. There is no backend, no accounts, no payments and no messages are ever sent. Everything runs in the browser.
+> **Portfolio project.** A fictional fitness creator, sample data, simulated AI. There is no backend, no accounts, no payments and no messages are ever sent. Everything runs in the browser.
 
 **Live demo: [fitflow-showcase.vercel.app](https://fitflow-showcase.vercel.app)** · [Case study](https://fitflow-showcase.vercel.app/case-study) · [Figma file](https://www.figma.com/design/tplM1llRbk13QxwC9bzAxU) · [Narrated walkthrough (1:39)](https://fitflow-showcase.vercel.app/walkthrough.mp4)
 
@@ -10,7 +10,7 @@ An interactive SaaS product prototype for independent fitness coaches, built aro
 
 ## My role
 
-I picked the problem and the users: fitness coaches who sell coaching online. A lot of them run their whole business from Instagram DMs, WhatsApp and spreadsheets, so leads and follow-ups get lost. I decided what FITFLOW should do and what it shouldn't: no payments, no real data, everything clearly marked as sample, and the AI only writes drafts, it never sends anything on its own.
+I picked the problem and the users: fitness influencers and creators who sell coaching to their followers online. A lot of them run their whole business from Instagram DMs, WhatsApp and spreadsheets, so leads and follow-ups get lost. I decided what FITFLOW should do and what it shouldn't: no payments, no real data, everything clearly marked as sample, and the AI only writes drafts, it never sends anything on its own.
 
 I reviewed every version of the design. When the first version looked too much like an AI-made template, I pushed it toward a cleaner, Figma-based product design, added light and dark mode, and asked for proper scroll animations with GSAP.
 
@@ -31,7 +31,7 @@ Things worth clicking: open the top task in Today and read “Why this draft”,
 
 ## Product overview
 
-**Target user:** independent fitness coaches, personal trainers and fitness creators who sell coaching online or in person and currently run their business from Instagram DMs, WhatsApp and spreadsheets.
+**Target user:** fitness influencers and creators, including coaches and personal trainers with a social following, who sell coaching online or in person and currently run their business from Instagram DMs, WhatsApp and spreadsheets.
 
 **Problem (design hypotheses):** interested people rarely say no; they go quiet when nobody checks back in. Follow-ups live in memory, copy-pasted templates get ignored, replies get buried, and clients drift after a tough week.
 
